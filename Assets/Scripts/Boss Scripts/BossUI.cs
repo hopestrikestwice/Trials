@@ -1,0 +1,29 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class BossUI : MonoBehaviour
+{
+    private KrakenManager boss;
+
+    [Tooltip("UI Slider to display Player's Health")]
+    [SerializeField]
+    private Slider bossHealthSlider;
+
+    private void Update()
+    {
+        if (boss != null)
+        {
+            // Reflect the Player Health
+            if (bossHealthSlider != null)
+            {
+                bossHealthSlider.value = boss.GetHealth();
+            }
+        }
+        else
+        {
+            boss = GameObject.Find("Kraken").GetComponent<KrakenManager>();
+        }
+    }
+}
