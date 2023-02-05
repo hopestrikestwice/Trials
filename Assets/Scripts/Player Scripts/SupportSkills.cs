@@ -31,7 +31,10 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
 
     private void Start()
     {
-        this.playerUI = this.GetComponent<PlayerManagerCore>().getPlayerUI();
+        if (photonView.IsMine)
+        {
+            this.playerUI = this.GetComponent<PlayerManagerCore>().getPlayerUI();
+        }
 
         this.controller = this.GetComponent<CharacterController>();
         if (!controller)
@@ -94,7 +97,13 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         Debug.Log("Finish Attack");
 
         animator.SetBool("IsChannelingElement", false);
-        playerUI.UnshadeUltimateIcon();
+
+        if (photonView.IsMine)
+        {
+            playerUI.UnshadeUltimateIcon();
+        }
+
+        this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);
     }
 
     #endregion
