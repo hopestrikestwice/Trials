@@ -127,14 +127,15 @@ public class TentacleAnimationManager : MonoBehaviourPun
                 closestDist = distToPlayer;
             }
         }
-        this.transform.LookAt(closestPlayer.transform);
-
-        this.transform.Rotate(0, 90, 0);
 
         if (closestPlayer == null)
         {
             Debug.Log("no closest player!");
+            return;
         }
+
+        this.transform.LookAt(closestPlayer.transform);
+        this.transform.Rotate(0, 90, 0);
     }
 
     #endregion
