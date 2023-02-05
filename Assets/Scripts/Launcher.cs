@@ -135,11 +135,11 @@ public class Launcher : MonoBehaviourPunCallbacks
         // First player is always the master.
         if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
-            Debug.Log("We load the 'Room for 1'");
+            Debug.Log("We load the 'Main Game'");
 
             // #Critical
             // Load the room level.
-            PhotonNetwork.LoadLevel("Room for 1");
+            PhotonNetwork.LoadLevel("Main Game");
         }
     }
     #endregion
