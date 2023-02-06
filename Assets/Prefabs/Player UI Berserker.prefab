@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 392239452910451674, guid: 59e742994bac0374a90d4fc778eaf993, type: 3}
+      propertyPath: skillIconUI.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2811404963251989149, guid: 59e742994bac0374a90d4fc778eaf993, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

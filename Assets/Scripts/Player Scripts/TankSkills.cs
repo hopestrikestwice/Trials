@@ -61,7 +61,7 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
 
         if (photonView.IsMine)
         {
-            playerUI.UnshadeSkillIcon();
+            playerUI.UnshadeIcon(SkillUI.SECONDARY);
         }
 
         this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);
@@ -73,7 +73,7 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
 
         if (photonView.IsMine)
         {
-            playerUI.UnshadeUltimateIcon();
+            playerUI.UnshadeIcon(SkillUI.ULTIMATE);
         }
 
         this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);

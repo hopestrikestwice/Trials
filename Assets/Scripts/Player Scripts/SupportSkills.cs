@@ -100,7 +100,7 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
 
         if (photonView.IsMine)
         {
-            playerUI.UnshadeUltimateIcon();
+            playerUI.UnshadeIcon(SkillUI.ULTIMATE);
         }
 
         this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);

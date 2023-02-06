@@ -82,7 +82,7 @@ public class PlayerActionCore : MonoBehaviourPun
 
                 if (photonView.IsMine)
                 {
-                    playerUI.ShadeBasicAttackIcon();
+                    playerUI.ShadeIcon(SkillUI.PRIMARY);
                 }
 
                 this.ActivateBasicAttack();
@@ -94,7 +94,7 @@ public class PlayerActionCore : MonoBehaviourPun
 
                 if (photonView.IsMine)
                 {
-                    playerUI.ShadeSkillIcon();
+                    playerUI.ShadeIcon(SkillUI.SECONDARY);
                 }
 
                 skills.ActivateSkill();
@@ -106,7 +106,7 @@ public class PlayerActionCore : MonoBehaviourPun
 
                 if (photonView.IsMine)
                 {
-                    playerUI.ShadeUltimateIcon();
+                    playerUI.ShadeIcon(SkillUI.ULTIMATE);
                 }
 
                 skills.ActivateUltimate();
@@ -207,7 +207,7 @@ public class PlayerActionCore : MonoBehaviourPun
 
         if (photonView.IsMine)
         {
-            playerUI.UnshadeBasicAttackIcon();
+            playerUI.UnshadeIcon(SkillUI.PRIMARY);
         }
 
         this.immobile = false;
