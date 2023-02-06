@@ -143,7 +143,7 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
 
         if (photonView.IsMine)
         {
-            playerUI.UnshadeSkillIcon();
+            playerUI.UnshadeIcon(SkillUI.SECONDARY);
         }
     }
 
@@ -153,7 +153,7 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
 
         if (photonView.IsMine)
         {
-            playerUI.UnshadeUltimateIcon();
+            playerUI.UnshadeIcon(SkillUI.ULTIMATE);
         }
     }
     #endregion

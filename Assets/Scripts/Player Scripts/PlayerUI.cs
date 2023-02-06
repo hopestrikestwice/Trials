@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum SkillUI { PRIMARY, SECONDARY, ULTIMATE }
+
 public class PlayerUI : MonoBehaviour
 {
+
     #region Private Fields
 
     [Tooltip("Pixel offset  from the player target")]
@@ -20,11 +23,7 @@ public class PlayerUI : MonoBehaviour
     private Slider playerHealthSlider;
 
     [SerializeField]
-    private GameObject primarySkillUI;
-    [SerializeField]
-    private GameObject secondarySkillUI;
-    [SerializeField]
-    private GameObject ultimateSkillUI;
+    private GameObject[] skillUI;
 
     private PlayerManagerCore target;
 
@@ -108,66 +107,38 @@ public class PlayerUI : MonoBehaviour
     }
 
     /* Darken the attack icon for feedback while attacking. */
-    public void ShadeBasicAttackIcon()
-    {
-        /* Get the "Outer ring" object, which represents the attack icon */
-        GameObject primarySkillIcon = primarySkillUI.transform.GetChild(0).gameObject;
-        primarySkillIcon.GetComponent<Image>().color = primarySkillIcon.GetComponent<Image>().color * new Color(0.5f, 0.5f, 0.5f);
+    public void ShadeIcon(SkillUI skill) {
+         /* Get the "Outer ring" object, which represents the attack icon */
+        GameObject icon = skillUI[(int)skill].transform.GetChild(0).gameObject;
+        icon.GetComponent<Image>().color = icon.GetComponent<Image>().color * new Color(0.5f, 0.5f, 0.5f);
     }
 
-    public void UnshadeBasicAttackIcon()
-    {
-        /* Get the "Outer ring" object, which represents the attack icon */
-        GameObject primarySkillIcon = primarySkillUI.transform.GetChild(0).gameObject;
-        primarySkillIcon.GetComponent<Image>().color = primarySkillIcon.GetComponent<Image>().color * new Color(2f, 2f, 2f);
-    }
-
-    public void ShadeSkillIcon()
-    {
-        /* Get the "Outer ring" object, which represents the attack icon */
-        GameObject secondarySkillIcon = secondarySkillUI.transform.GetChild(0).gameObject;
-        secondarySkillIcon.GetComponent<Image>().color = secondarySkillIcon.GetComponent<Image>().color * new Color(0.5f, 0.5f, 0.5f);
-    }
-
-    public void UnshadeSkillIcon()
-    {
-        /* Get the "Outer ring" object, which represents the attack icon */
-        GameObject secondarySkillIcon = secondarySkillUI.transform.GetChild(0).gameObject;
-        secondarySkillIcon.GetComponent<Image>().color = secondarySkillIcon.GetComponent<Image>().color * new Color(2f, 2f, 2f);
-    }
-    public void ShadeUltimateIcon()
-    {
-        /* Get the "Outer ring" object, which represents the attack icon */
-        GameObject ultimateSkillIcon = ultimateSkillUI.transform.GetChild(0).gameObject;
-        ultimateSkillIcon.GetComponent<Image>().color = ultimateSkillIcon.GetComponent<Image>().color * new Color(0.5f, 0.5f, 0.5f);
-    }
-
-    public void UnshadeUltimateIcon()
-    {
-        /* Get the "Outer ring" object, which represents the attack icon */
-        GameObject ultimateSkillIcon = ultimateSkillUI.transform.GetChild(0).gameObject;
-        ultimateSkillIcon.GetComponent<Image>().color = ultimateSkillIcon.GetComponent<Image>().color * new Color(2f, 2f, 2f);
+    public void UnshadeIcon(SkillUI skill) {
+         /* Get the "Outer ring" object, which represents the attack icon */
+        GameObject icon = skillUI[(int)skill].transform.GetChild(0).gameObject;
+        icon.GetComponent<Image>().color = icon.GetComponent<Image>().color * new Color(2f, 2f, 2f);
     }
 
     public void UpdateElement()
     {
         // Display the element enhancing player
-        if (primarySkillUI != null)
-        {
-            switch (target.GetElement())
-            {
-                case Element.Fire:
-                    primarySkillUI.transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.red;
-                    break;
-                case Element.Water:
-                    primarySkillUI.transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.blue;
-                    break;
-                case Element.Earth:
-                    primarySkillUI.transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.yellow;
-                    break;
-                default:
-                    primarySkillUI.transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.white;
-                    break;
+        foreach(GameObject icon in skillUI) {
+            if(icon != null) {
+                switch (target.GetElement())
+                {
+                    case Element.Fire:
+                        icon.transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.red;
+                        break;
+                    case Element.Water:
+                        icon.transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.blue;
+                        break;
+                    case Element.Earth:
+                        icon.transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.yellow;
+                        break;
+                    default:
+                        icon.transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.white;
+                        break;
+                }
             }
         }
     }
