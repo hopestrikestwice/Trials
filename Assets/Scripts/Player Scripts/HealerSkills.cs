@@ -11,36 +11,21 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 
     private Animator animator;
 
-    #region Dash Variables
-    private CharacterController controller;
-
-    // Dash direction, is not null when in middle of dash
-    private Vector3 dashDirection = Vector3.zero;
-    private float dashSpeed = 50f;
-    // Maximum dash time in seconds
-    private float dashTimeMax = 0.1f;
-    // Current amount of time spent dashing.
-    private float dashTimeCurrent = 0f;
-    #endregion
-
     #endregion
 
     #region Monobehaviour Callbacks
 
     private void Start()
     {
-        this.playerUI = this.GetComponent<PlayerManagerCore>().getPlayerUI();
-
-        this.controller = this.GetComponent<CharacterController>();
-        if (!controller)
+        if (photonView.IsMine)
         {
-            Debug.LogError("PlayerMovement is Missing CharacterController Component", this);
+            this.playerUI = this.GetComponent<PlayerManagerCore>().getPlayerUI();
         }
 
         animator = GetComponent<Animator>();
         if (!animator)
         {
-            Debug.LogError("BeserkerSkills is Missing Animator Component", this);
+            Debug.LogError("HealerSkills is Missing Animator Component", this);
         }
     }
 
@@ -51,40 +36,42 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         {
             return;
         }
-
-        if (!dashDirection.Equals(Vector3.zero))
-        {
-            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
-            dashTimeCurrent += Time.deltaTime;
-            if (dashTimeCurrent >= dashTimeMax)
-            {
-                dashTimeCurrent = 0;
-                dashDirection = Vector3.zero;
-            }
-        }
     }
 
     #endregion
 
     #region IPlayerSkills Implementation
+    public void ActivateBasicAttack()
+    {
+        Debug.Log("Healer basic attack");
+    }
 
     public void ActivateSkill()
     {
-        Debug.Log("Dash button pressed.");
-        dashDirection = this.transform.forward;
+        Debug.Log("Healer secondary skill activated");
+        animator.SetBool("isSecondarySkilling", true);
     }
 
     public void ActivateUltimate()
     {
         Debug.Log("AOE heal ability pressed");
-        animator.SetBool("IsLargeHealing", true);
+        animator.SetBool("isLargeHealing", true);
     }
     #endregion
 
     #region Animation Events
-    public void FinishShieldLarge()
+    public void FinishHealerSecondary()
     {
-        animator.SetBool("IsLargeHealing", false);
+        playerUI.UnshadeIcon(SkillUI.SECONDARY);
+        animator.SetBool("isSecondarySkilling", false);
+        this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);
+    }
+
+    public void FinishLargeHeal()
+    {
+        playerUI.UnshadeIcon(SkillUI.ULTIMATE);
+        animator.SetBool("isLargeHealing", false);
+        this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);
     }
     #endregion
 
