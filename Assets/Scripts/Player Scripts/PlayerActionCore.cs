@@ -213,5 +213,25 @@ public class PlayerActionCore : MonoBehaviourPun
         this.immobile = false;
     }
 
+    public void FinishSecondarySkill() {
+        animator.SetBool("isSecondarySkilling", false);
+
+        if (photonView.IsMine) {
+            playerUI.UnshadeIcon(SkillUI.SECONDARY);
+        }
+
+        this.immobile = false;
+    }
+
+    public void FinishUltimate() {
+        animator.SetBool("isUltimating", false);
+
+        if (photonView.IsMine) {
+            playerUI.UnshadeIcon(SkillUI.ULTIMATE);
+        }
+
+        this.immobile = false;
+    }
+
     #endregion
 }

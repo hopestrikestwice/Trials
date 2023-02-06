@@ -50332,8 +50332,8 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 2.2666667
-    functionName: FinishShieldSmall
+  - time: 2.3
+    functionName: FinishSecondarySkill
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
