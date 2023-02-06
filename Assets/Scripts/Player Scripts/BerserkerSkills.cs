@@ -76,6 +76,12 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         if (bullet == null)
         {
             isCharging = true;
+        } else {
+            if (photonView.IsMine)
+            {
+                playerUI.UnshadeIcon(SkillUI.ULTIMATE);
+            }
+            this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);
         }
     }
     #endregion
@@ -87,8 +93,9 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     {
         if (bullet == null)
         {
-            if (Input.GetButtonDown("Fire3") || Input.GetButton("Fire3"))
+            if ((Input.GetButtonDown("Fire3") || Input.GetButton("Fire3")))
             {
+
                 animator.SetBool("isCharging", true);
 
                 if (charge < maxCharge)
