@@ -38,12 +38,18 @@ public class TentacleAnimationManager : MonoBehaviourPun
     }
     #endregion Monobehaviour
 
+    #region Animation Events
     /// <summary>
     /// val = 1 to set to true, val = 0 for false.
     /// </summary>
     /// <param name="val"> val = 1 to set to true, val = 0 for false. </param>
     public void SetSlam(int val)
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         if (val == 1)
         {
             animator.SetBool("slamming", true);
@@ -59,6 +65,11 @@ public class TentacleAnimationManager : MonoBehaviourPun
 
     public void SetSwipe(int val)
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         if (val == 1)
         {
             animator.SetBool("swiping", true);
@@ -76,6 +87,11 @@ public class TentacleAnimationManager : MonoBehaviourPun
 
     public void SetChainslam(int val)
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         if (val == 1)
         {
             animator.SetBool("chainslam", true);
@@ -92,11 +108,21 @@ public class TentacleAnimationManager : MonoBehaviourPun
 
     public void ReportChainslamUpwards()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         parentKrakenAnimationManager.ReportChainslam();
     }
 
     public void SetReadyChainslam(int val)
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         if (val == 1)
         {
             animator.SetBool("readyChainslam", true);
@@ -110,6 +136,7 @@ public class TentacleAnimationManager : MonoBehaviourPun
             Debug.LogError("Invalid input to SetReadyChainslam!");
         }
     }
+    #endregion
 
     #region Private Methods
 

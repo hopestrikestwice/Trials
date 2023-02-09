@@ -60,6 +60,11 @@ public class KrakenAnimationManager : MonoBehaviourPun
     /// <param name="val"> val = 1 to set to true, val = 0 for false. </param>
     public void SetSlam(int val)
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         if (val == 1)
         {
             animator.SetBool("slamming", true);
@@ -76,6 +81,11 @@ public class KrakenAnimationManager : MonoBehaviourPun
 
     public void SetSwipe(int val)
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         if (val == 1)
         {
             animator.SetBool("swiping", true);
@@ -92,6 +102,11 @@ public class KrakenAnimationManager : MonoBehaviourPun
 
     public void SetChainslam(int val)
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         if (val == 1)
         {
             chainslamWait = 3;
@@ -116,54 +131,22 @@ public class KrakenAnimationManager : MonoBehaviourPun
 
     public void SlamRandomTentacle()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         this.SlamTentacle(Random.Range(0, 3));
     }
 
     public void SwipeRandomTentacle()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         this.SwipeTentacle(Random.Range(0, 3));
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="tentacleIndex"> Child index of tentacle to slam </param>
-    public void SlamTentacle(int tentacleIndex)
-    {
-        Transform tentacle = this.transform.GetChild(tentacleIndex);
-        tentacle.GetComponent<TentacleAnimationManager>().SetSlam(1);
-        //TODO: error handling
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <param name="tentacleIndex"> Child index of tentacle to sweep </param>
-    public void SwipeTentacle(int tentacleIndex)
-    {
-        Transform tentacle = this.transform.GetChild(tentacleIndex);
-        tentacle.GetComponent<TentacleAnimationManager>().SetSwipe(1);
-        //TODO: error handling
-    }
-
-    /// <summary>
-    /// For Chainslam
-    /// </summary>
-    /// <param name="tentacleIndex"> Child index of tentacle to hover </param>
-    public void HoverTentacle(int tentacleIndex)
-    {
-        Transform tentacle = this.transform.GetChild(tentacleIndex);
-        tentacle.GetComponent<TentacleAnimationManager>().SetChainslam(1);
-        //TODO: error handling
-    }
-
-    /// <summary>
-    /// For Chainslam
-    /// </summary>
-    /// <param name="tentacleIndex"> Child index of tentacle to hoverslam </param>
-    public void ChainslamTentacle(int tentacleIndex)
-    {
-        Transform tentacle = this.transform.GetChild(tentacleIndex);
-        tentacle.GetComponent<TentacleAnimationManager>().SetReadyChainslam(1);
-        //TODO: error handling
     }
     #endregion
 
@@ -206,5 +189,46 @@ public class KrakenAnimationManager : MonoBehaviourPun
         }
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="tentacleIndex"> Child index of tentacle to slam </param>
+    private void SlamTentacle(int tentacleIndex)
+    {
+        Transform tentacle = this.transform.GetChild(tentacleIndex);
+        tentacle.GetComponent<TentacleAnimationManager>().SetSlam(1);
+        //TODO: error handling
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <param name="tentacleIndex"> Child index of tentacle to sweep </param>
+    private void SwipeTentacle(int tentacleIndex)
+    {
+        Transform tentacle = this.transform.GetChild(tentacleIndex);
+        tentacle.GetComponent<TentacleAnimationManager>().SetSwipe(1);
+        //TODO: error handling
+    }
+
+    /// <summary>
+    /// For Chainslam
+    /// </summary>
+    /// <param name="tentacleIndex"> Child index of tentacle to hover </param>
+    private void HoverTentacle(int tentacleIndex)
+    {
+        Transform tentacle = this.transform.GetChild(tentacleIndex);
+        tentacle.GetComponent<TentacleAnimationManager>().SetChainslam(1);
+        //TODO: error handling
+    }
+
+    /// <summary>
+    /// For Chainslam
+    /// </summary>
+    /// <param name="tentacleIndex"> Child index of tentacle to hoverslam </param>
+    private void ChainslamTentacle(int tentacleIndex)
+    {
+        Transform tentacle = this.transform.GetChild(tentacleIndex);
+        tentacle.GetComponent<TentacleAnimationManager>().SetReadyChainslam(1);
+        //TODO: error handling
+    }
     #endregion
 }
