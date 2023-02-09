@@ -68,7 +68,7 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     public void ActivateSkill()
     {
         Debug.Log("Berserker Shield");
-        animator.SetBool("isShielding", true);
+        animator.SetBool("isSecondarySkilling", true);
     }
 
     public void ActivateUltimate()
@@ -76,6 +76,12 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         if (bullet == null)
         {
             isCharging = true;
+        } else {
+            if (photonView.IsMine)
+            {
+                playerUI.UnshadeIcon(SkillUI.ULTIMATE);
+            }
+            this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);
         }
     }
     #endregion
@@ -87,8 +93,9 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     {
         if (bullet == null)
         {
-            if (Input.GetButtonDown("Fire3") || Input.GetButton("Fire3"))
+            if ((Input.GetButtonDown("Fire3") || Input.GetButton("Fire3")))
             {
+
                 animator.SetBool("isCharging", true);
 
                 if (charge < maxCharge)
@@ -113,7 +120,7 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
                 }
 
                 //Animations and fire attack
-                animator.SetBool("isChargedAttacking", true);
+                animator.SetBool("isUltimating", true);
                 animator.SetBool("isCharging", false);
                 isCharging = false;
 
@@ -136,25 +143,20 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     #endregion
 
     #region Animation Events
-
-    public void FinishShield()
-    {
-        animator.SetBool("isShielding", false);
-
-        if (photonView.IsMine)
-        {
-            playerUI.UnshadeIcon(SkillUI.SECONDARY);
-        }
-    }
-
-    public void FinishChargedAttack()
-    {
-        animator.SetBool("isChargedAttacking", false);
-
-        if (photonView.IsMine)
-        {
-            playerUI.UnshadeIcon(SkillUI.ULTIMATE);
-        }
-    }
+    /*  Each ability animation dispatches an event named
+            Finish{BasicAttack, SecondarySkill, Ultimate}          
+        
+        This event is handled in two places:
+        1) In PlayerActionCore.cs, for general shared behavior like resetting
+            the immobile flag, UI, and animation parameter.
+        2) [Optionally] Here for character-specific effects. Not all abilities
+        have character-specific effects, so should see which stubs can be
+        deleted later on.
+        
+        Note: If we want more control over when the character-specific
+        effects take place (before/after the character regains mobility, how
+        long before/after), we can dispatch a separate event instead of handling
+        the same-named event.
+    */
     #endregion
 }

@@ -43,41 +43,32 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     public void ActivateSkill()
     {
         Debug.Log("Shield button pressed.");
-        animator.SetBool("isSmallShielding", true);
+        animator.SetBool("isSecondarySkilling", true);
     }
 
     public void ActivateUltimate()
     {
         Debug.Log("Large shield button pressed.");
-        animator.SetBool("isLargeShielding", true);
+        animator.SetBool("isUltimating", true);
     }
     #endregion
 
     #region Animation Events
-
-    public void FinishShieldSmall()
-    {
-        animator.SetBool("isSmallShielding", false);
-
-        if (photonView.IsMine)
-        {
-            playerUI.UnshadeIcon(SkillUI.SECONDARY);
-        }
-
-        this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);
-    }
-    
-    public void FinishShieldLarge()
-    {
-        animator.SetBool("isLargeShielding", false);
-
-        if (photonView.IsMine)
-        {
-            playerUI.UnshadeIcon(SkillUI.ULTIMATE);
-        }
-
-        this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);
-    }
+    /*  Each ability animation dispatches an event named
+            Finish{BasicAttack, SecondarySkill, Ultimate}          
+        
+        This event is handled in two places:
+        1) In PlayerActionCore.cs, for general shared behavior like resetting
+            the immobile flag, UI, and animation parameter.
+        2) [Optionally] Here for character-specific effects. Not all abilities
+        have character-specific effects, so should see which stubs can be
+        deleted later on.
+        
+        Note: If we want more control over when the character-specific
+        effects take place (before/after the character regains mobility, how
+        long before/after), we can dispatch a separate event instead of handling
+        the same-named event.
+    */
     #endregion
 
 }

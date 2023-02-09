@@ -73373,7 +73373,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 2.1333334
-    functionName: FinishShieldLarge
+    functionName: FinishUltimate
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
