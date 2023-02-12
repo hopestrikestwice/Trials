@@ -23,7 +23,8 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
     private float dashTimeCurrent = 0f;
     #endregion
 
-    private Element mostRecentElement;
+    private Element mostRecentElement = Element.Fire;
+    // private bool isUltimatingSup = false;
 
     #endregion
 
@@ -67,6 +68,11 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
                 dashDirection = Vector3.zero;
             }
         }
+        
+        // if (isUltimatingSup)
+        // {
+        //     isUltimatingSup = false;
+        // }
     }
 
     #endregion
@@ -89,6 +95,7 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
 
         mostRecentElement = ElementFunctions.NextElement(mostRecentElement);
         this.GetComponent<PlayerManagerCore>().SetElement(mostRecentElement);
+        // isUltimatingSup = true;
     }
     #endregion
 

@@ -24,7 +24,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     private float Health = 1f;
 
     private bool isShielded = false;
-    private Element currentElement = Element.Fire;
+    private Element currentElement = Element.None;
 
     #endregion
 
@@ -81,6 +81,9 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
                 Debug.Log("Player Died");
             }
         }
+        // Debug.Log("Shielded? "+this.isShielded);
+        Debug.Log("Player's element "+this.currentElement);
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -111,7 +114,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
 
         if (other.CompareTag("ElementBuff"))
         {
-            this.gameObject.GetComponent<PlayerActionCore>().setElement(Element.Fire);
+            this.gameObject.GetComponent<PlayerActionCore>().setElement(Element.None);
         }
     }
 
@@ -126,6 +129,11 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         {
             Debug.Log("Player no longer shielded");
             this.isShielded = false;
+        }
+
+        if (other.CompareTag("ElementBuff"))
+        {
+            this.gameObject.GetComponent<PlayerActionCore>().setElement(Element.None);
         }
     }
 
@@ -163,12 +171,18 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             // We own this player: send others our data
             stream.SendNext(this.Health);
             stream.SendNext(this.isShielded);
+            stream.SendNext(this.currentElement);
         }
         else
         {
             //Network player, receive data
             this.Health = (float)stream.ReceiveNext();
             this.isShielded = (bool)stream.ReceiveNext();
+            
+            // if ((bool)stream.ReceiveNext())
+            this.currentElement = (Element)stream.ReceiveNext();
+            // Debug.Log("Player's element "+this.currentElement);
+            // Debug.Log("Shielded? "+this.isShielded);
         }
     }
 
