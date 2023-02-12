@@ -1,3 +1,9 @@
+/// ProjectileMovement.cs
+/// 
+/// Attach to a projectile to control its speed and lifetime. In this way we
+/// can create "melee" and "ranged" projectiles.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

@@ -1,3 +1,8 @@
+/// BossUI.cs
+/// 
+/// Updates UI elements with boss stats.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

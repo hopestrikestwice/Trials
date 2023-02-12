@@ -1,3 +1,9 @@
+/// PlayerActionCore.cs
+///
+/// Player movement and keypresses for abilities, calling the character
+/// specific skills implementation.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

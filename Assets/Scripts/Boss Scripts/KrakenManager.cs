@@ -1,3 +1,8 @@
+/// KrakenManager.cs
+/// 
+/// Manages Kraken's stats (health, etc.) and syncs them across the network.
+/// 
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

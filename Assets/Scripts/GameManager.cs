@@ -1,3 +1,10 @@
+/// GameManager.cs
+/// 
+/// Handles this player leaving the room and other players leaving or joining
+/// the room. Also instantiates networked assets related to setting up the game
+/// or player.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -87,7 +94,6 @@ public class GameManager : MonoBehaviourPunCallbacks
                                         Quaternion.Euler(0, -90, 0),
                                         0);
         }
-
     }
 
     #endregion

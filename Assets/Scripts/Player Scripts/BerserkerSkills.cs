@@ -1,3 +1,8 @@
+/// BerserkerSkills.cs
+///
+/// Script-side implementation of Berserker's unique abilities.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

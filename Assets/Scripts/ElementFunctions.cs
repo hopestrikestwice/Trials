@@ -1,3 +1,8 @@
+/// ElementFunctions.cs
+/// 
+/// Enumerator for Elements.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

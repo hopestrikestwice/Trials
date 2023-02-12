@@ -1,3 +1,8 @@
+/// KrakenAnimationManager.cs
+/// 
+/// Kraken collision detection. Forwards collisions to KrakenAnimationManager.cs
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

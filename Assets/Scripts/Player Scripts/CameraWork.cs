@@ -1,10 +1,13 @@
+/// CameraWork.cs
+/// 
+/// Attach to GameObject to have the local camera follow that object.
+/// For example, the local player character.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Camera follow target.
-/// </summary>
 public class CameraWork : MonoBehaviour
 {
     #region Private Fields

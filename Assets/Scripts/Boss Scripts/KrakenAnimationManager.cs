@@ -1,3 +1,9 @@
+/// KrakenAnimationManager.cs
+/// 
+/// Handles Kraken's attacks and animations. Calls TentacleAnimationManager.cs
+/// functions to animate the tentacles.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

@@ -1,3 +1,8 @@
+/// SupportSkills.cs
+///
+/// Script-side implementation of Support's unique abilities.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

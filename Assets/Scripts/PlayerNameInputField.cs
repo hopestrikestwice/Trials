@@ -1,3 +1,10 @@
+/// PlayerNameInputField.cs
+/// 
+/// Game lobby UI script that allows players to input their display name for
+/// the game session.
+///
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

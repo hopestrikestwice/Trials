@@ -1,3 +1,8 @@
+/// TankSkills.cs
+///
+/// Script-side implementation of Tank's unique abilities.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

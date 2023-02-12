@@ -1,3 +1,9 @@
+/// TentacleAnimationManager.cs
+/// 
+/// Handles Tentacle's attacks and animations. Also reports state to
+/// KrakenAnimationManager.cs as necessary.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

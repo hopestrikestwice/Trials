@@ -1,3 +1,9 @@
+/// Launcher.cs
+///
+/// Script in the game lobby scene that allows connecting to the Photon Cloud
+/// server. Joins an existing game room or creates one if necessary.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

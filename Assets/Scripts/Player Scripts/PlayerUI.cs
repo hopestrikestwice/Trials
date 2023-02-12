@@ -1,3 +1,8 @@
+/// PlayerUI.cs
+/// 
+/// Updates UI with player stats.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

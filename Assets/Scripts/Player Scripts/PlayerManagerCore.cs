@@ -1,3 +1,9 @@
+/// PlayerManagerCore.cs
+/// 
+/// Manages player stats (health, etc.) and sync them across the network.
+/// Sets up camera and UI upon character initialization for the local player.
+///
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
