@@ -82,7 +82,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
         // Debug.Log("Shielded? "+this.isShielded);
-        Debug.Log("Player's element "+this.currentElement);
+        // Debug.Log("Player's element "+this.currentElement);
 
     }
 
@@ -131,10 +131,11 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             this.isShielded = false;
         }
 
-        if (other.CompareTag("ElementBuff"))
-        {
-            this.gameObject.GetComponent<PlayerActionCore>().setElement(Element.None);
-        }
+        //Removes element buff?
+        // if (other.CompareTag("ElementBuff"))
+        // {
+        //     this.gameObject.GetComponent<PlayerActionCore>().setElement(Element.None);
+        // }
     }
 
     void OnLevelWasLoaded(int level)
