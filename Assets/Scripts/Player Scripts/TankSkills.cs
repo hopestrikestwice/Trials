@@ -22,6 +22,8 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     [SerializeField]
     private GameObject shieldSmallParticles;
     [SerializeField]
+    private GameObject shieldLargeParticles;
+    [SerializeField]
     private GameObject shieldLarge;
     #endregion
 
@@ -42,12 +44,13 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
             Debug.LogError("BeserkerSkills is Missing Animator Component", this);
         }
 
-        if (!shieldSmallParticles)
+        if (!shieldSmallParticles || !shieldLargeParticles)
         {
-            Debug.LogError("TankSkills is Missing Small Shield Particles", this);
+            Debug.LogError("TankSkills is Missing Shield Particles", this);
         }
         else {
             shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = false;
+            shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = false;
         }
     }
 
@@ -66,6 +69,7 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     {
         Debug.Log("Large shield button pressed.");
         animator.SetBool("isUltimating", true);
+        shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = true;
     }
     #endregion
 
@@ -85,9 +89,13 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
         long before/after), we can dispatch a separate event instead of handling
         the same-named event.
     */
-    public void FinishSecondarySkillParticles()
+    public void FinishSmallShieldParticles()
     {
         shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = false;
+    }
+    public void FinishLargeShieldParticles()
+    {
+        shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = false;
     }
     #endregion
 
