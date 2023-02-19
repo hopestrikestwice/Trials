@@ -46,6 +46,9 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
         {
             Debug.LogError("TankSkills is Missing Small Shield Particles", this);
         }
+        else {
+            shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = false;
+        }
     }
 
     #endregion
@@ -56,7 +59,7 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     {
         Debug.Log("Shield button pressed.");
         animator.SetBool("isSecondarySkilling", true);
-        shieldSmallParticles.gameObject.GetComponent<Renderer>().enabled = true;
+        shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = true;
     }
 
     public void ActivateUltimate()
@@ -84,7 +87,7 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     */
     public void FinishSecondarySkillParticles()
     {
-        shieldSmallParticles.gameObject.GetComponent<Renderer>().enabled = false;
+        shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = false;
     }
     #endregion
 
