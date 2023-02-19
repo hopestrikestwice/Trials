@@ -14,7 +14,8 @@ public class TentacleAnimationManager : MonoBehaviourPun
 {
     private Animator animator;
 
-    private KrakenAnimationManager parentKrakenAnimationManager;
+    private BossActionCore parentActionCore;
+    private KrakenSkills parentKrakenSkills;
 
     #region Monobehaviour
     private void Start()
@@ -25,7 +26,9 @@ public class TentacleAnimationManager : MonoBehaviourPun
             Debug.LogError("Tentacle is Missing Animator Component", this);
         }
 
-        parentKrakenAnimationManager = this.GetComponentInParent<KrakenAnimationManager>();
+        parentActionCore = this.GetComponentInParent<BossActionCore>();
+
+        parentKrakenSkills = this.GetComponentInParent<KrakenSkills>();
     }
 
     private void Update()
@@ -34,7 +37,7 @@ public class TentacleAnimationManager : MonoBehaviourPun
         {
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("Tentacle Idle"))
             {
-                TargetNearestPlayer();
+                FaceTarget();
             }
             if (animator.GetBool("chainslam"))
             {
@@ -62,7 +65,7 @@ public class TentacleAnimationManager : MonoBehaviourPun
         } else if (val == 0)
         {
             animator.SetBool("slamming", false);
-            parentKrakenAnimationManager.SetSlam(0);
+            parentKrakenSkills.SetSlam(0);
         } else
         {
             Debug.LogError("Invalid input to SetSlam!");
@@ -83,7 +86,7 @@ public class TentacleAnimationManager : MonoBehaviourPun
         else if (val == 0)
         {
             animator.SetBool("swiping", false);
-            parentKrakenAnimationManager.SetSwipe(0);
+            parentKrakenSkills.SetSwipe(0);
         }
         else
         {
@@ -119,7 +122,7 @@ public class TentacleAnimationManager : MonoBehaviourPun
             return;
         }
 
-        parentKrakenAnimationManager.ReportChainslam();
+        parentKrakenSkills.ReportChainslam();
     }
 
     public void SetReadyChainslam(int val)
@@ -146,20 +149,9 @@ public class TentacleAnimationManager : MonoBehaviourPun
 
     #region Private Methods
 
-    private void TargetNearestPlayer()
+    private void FaceTarget()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        GameObject closestPlayer = null;
-        float closestDist = Mathf.Infinity;
-        foreach (GameObject player in players)
-        {
-            float distToPlayer = (player.transform.position - this.transform.position).sqrMagnitude;
-            if (distToPlayer < closestDist)
-            {
-                closestPlayer = player;
-                closestDist = distToPlayer;
-            }
-        }
+        GameObject closestPlayer = this.parentActionCore.GetTargetPlayer();
 
         if (closestPlayer == null)
         {

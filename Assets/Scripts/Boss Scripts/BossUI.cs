@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class BossUI : MonoBehaviour
 {
-    private KrakenManager boss;
+    private BossManagerCore boss;
 
     [Tooltip("UI Slider to display Player's Health")]
     [SerializeField]
@@ -28,7 +28,7 @@ public class BossUI : MonoBehaviour
         }
         else
         {
-            boss = GameObject.Find("Kraken").GetComponent<KrakenManager>();
+            boss = GameObject.FindWithTag("Boss").GetComponent<BossManagerCore>();
         }
     }
 }
