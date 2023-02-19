@@ -29,7 +29,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _1st_ShadeMap:
-        m_Texture: {fileID: 2800000, guid: ab53ba05c45224343ac0bc792ac8fd28, type: 3}
+        m_Texture: {fileID: 2800000, guid: 321ed9ea63e62ad43ac3a3a53517f9cd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _2nd_ShadeMap:
