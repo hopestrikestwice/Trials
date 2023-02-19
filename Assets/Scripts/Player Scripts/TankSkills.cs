@@ -62,14 +62,12 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     {
         Debug.Log("Shield button pressed.");
         animator.SetBool("isSecondarySkilling", true);
-        shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = true;
     }
 
     public void ActivateUltimate()
     {
         Debug.Log("Large shield button pressed.");
         animator.SetBool("isUltimating", true);
-        shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = true;
     }
     #endregion
 
@@ -89,9 +87,19 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
         long before/after), we can dispatch a separate event instead of handling
         the same-named event.
     */
+    /* Secondary Skill Animation Events */
+    public void StartSmallShieldParticles()
+    {
+        shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = true;
+    }
     public void FinishSmallShieldParticles()
     {
         shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = false;
+    }
+    /* Ultimate Skill Animation Events */
+    public void StartLargeShieldParticles()
+    {
+        shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = true;
     }
     public void FinishLargeShieldParticles()
     {
