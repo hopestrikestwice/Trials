@@ -30,7 +30,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     private float Health = 1f;
 
     private bool isShielded = false;
-    private Element currentElement = Element.Fire;
+    private Element currentElement = Element.None;
 
     #endregion
 
@@ -86,7 +86,10 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             {
                 Debug.Log("Player Died");
             }
+            // Debug.Log("Shielded? "+this.isShielded);
+            // Debug.Log("Player's element "+this.currentElement);
         }
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -117,7 +120,12 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
 
         if (other.CompareTag("ElementBuff"))
         {
-            this.gameObject.GetComponent<PlayerActionCore>().setElement(Element.Fire);
+            Element newElement = other.GetComponent<GiveElement>().getElement();
+            Debug.Log("New Element "+newElement);
+            // this.gameObject.GetComponent<PlayerActionCore>().setElement(newElement);
+            this.gameObject.GetComponent<PlayerManagerCore>().SetElement(newElement);
+            Debug.Log("Player's element is now "+this.currentElement);
+            other.GetComponent<GiveElement>().changeElement();
         }
     }
 
@@ -133,6 +141,12 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             Debug.Log("Player no longer shielded");
             this.isShielded = false;
         }
+
+        //Removes element buff?
+        // if (other.CompareTag("ElementBuff"))
+        // {
+        //     this.gameObject.GetComponent<PlayerActionCore>().setElement(Element.None);
+        // }
     }
 
     void OnLevelWasLoaded(int level)
@@ -169,12 +183,18 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             // We own this player: send others our data
             stream.SendNext(this.Health);
             stream.SendNext(this.isShielded);
+            stream.SendNext(this.currentElement);
         }
         else
         {
             //Network player, receive data
             this.Health = (float)stream.ReceiveNext();
             this.isShielded = (bool)stream.ReceiveNext();
+            
+            // if ((bool)stream.ReceiveNext())
+            this.currentElement = (Element)stream.ReceiveNext();
+            // Debug.Log("Player's element "+this.currentElement);
+            // Debug.Log("Shielded? "+this.isShielded);
         }
     }
 
@@ -196,6 +216,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     {
         this.currentElement = newElement;
         playerUI.GetComponent<PlayerUI>().UpdateElement();
+        Debug.Log("Changing Element (manager): "+newElement);
     }
 
     /* Gets the script PlayerUI attached to the playerUI for this player */
