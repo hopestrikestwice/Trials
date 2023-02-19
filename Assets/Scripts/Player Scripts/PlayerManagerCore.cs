@@ -116,7 +116,8 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         {
             Element newElement = other.GetComponent<GiveElement>().getElement();
             Debug.Log("New Element "+newElement);
-            this.gameObject.GetComponent<PlayerActionCore>().setElement(newElement);
+            // this.gameObject.GetComponent<PlayerActionCore>().setElement(newElement);
+            this.gameObject.GetComponent<PlayerManagerCore>().SetElement(newElement);
             Debug.Log("Player's element is now "+this.currentElement);
             other.GetComponent<GiveElement>().changeElement();
         }
@@ -209,6 +210,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     {
         this.currentElement = newElement;
         playerUI.GetComponent<PlayerUI>().UpdateElement();
+        Debug.Log("Changing Element (manager): "+newElement);
     }
 
     /* Gets the script PlayerUI attached to the playerUI for this player */

@@ -126,6 +126,7 @@ public class PlayerActionCore : MonoBehaviourPun
     public void setElement(Element element)
     {
         this.currentElement = element;
+        Debug.Log("Changing Element (action): "+element);
     }
 
     #region Private Functions
