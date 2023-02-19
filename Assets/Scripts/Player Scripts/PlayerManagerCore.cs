@@ -80,9 +80,9 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             {
                 Debug.Log("Player Died");
             }
+            // Debug.Log("Shielded? "+this.isShielded);
+            // Debug.Log("Player's element "+this.currentElement);
         }
-        // Debug.Log("Shielded? "+this.isShielded);
-        // Debug.Log("Player's element "+this.currentElement);
 
     }
 
@@ -114,7 +114,11 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
 
         if (other.CompareTag("ElementBuff"))
         {
-            this.gameObject.GetComponent<PlayerActionCore>().setElement(Element.None);
+            Element newElement = other.GetComponent<GiveElement>().getElement();
+            Debug.Log("New Element "+newElement);
+            this.gameObject.GetComponent<PlayerActionCore>().setElement(newElement);
+            Debug.Log("Player's element is now "+this.currentElement);
+            other.GetComponent<GiveElement>().changeElement();
         }
     }
 

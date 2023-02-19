@@ -93,8 +93,8 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         Debug.Log("Change element button pressed");
         animator.SetBool("isUltimating", true);
 
-        mostRecentElement = ElementFunctions.NextElement(mostRecentElement);
-        this.GetComponent<PlayerManagerCore>().SetElement(mostRecentElement);
+        // mostRecentElement = ElementFunctions.NextElement(mostRecentElement);
+        // this.GetComponent<PlayerManagerCore>().SetElement(mostRecentElement);
         // isUltimatingSup = true;
     }
     #endregion
