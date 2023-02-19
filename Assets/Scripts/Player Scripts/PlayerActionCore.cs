@@ -67,10 +67,6 @@ public class PlayerActionCore : MonoBehaviourPun
         }
 
         this.skills = this.GetComponent<IPlayerSkills>();
-        if (!controller)
-        {
-            Debug.LogError("PlayerActionCore is missing IPlayerSkills Component", this);
-        }
     }
     // Update is called once per frame
     void Update()
@@ -132,6 +128,7 @@ public class PlayerActionCore : MonoBehaviourPun
     public void setElement(Element element)
     {
         this.currentElement = element;
+        Debug.Log("Changing Element (action): "+element);
     }
 
     #region Private Functions

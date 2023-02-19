@@ -20,6 +20,10 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     [SerializeField]
     private GameObject shieldSmall;
     [SerializeField]
+    private GameObject shieldSmallParticles;
+    [SerializeField]
+    private GameObject shieldLargeParticles;
+    [SerializeField]
     private GameObject shieldLarge;
     #endregion
 
@@ -38,6 +42,15 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
         if (!animator)
         {
             Debug.LogError("BeserkerSkills is Missing Animator Component", this);
+        }
+
+        if (!shieldSmallParticles || !shieldLargeParticles)
+        {
+            Debug.LogError("TankSkills is Missing Shield Particles", this);
+        }
+        else {
+            shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = false;
+            shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = false;
         }
     }
 
@@ -74,6 +87,24 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
         long before/after), we can dispatch a separate event instead of handling
         the same-named event.
     */
+    /* Secondary Skill Animation Events */
+    public void StartSmallShieldParticles()
+    {
+        shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = true;
+    }
+    public void FinishSmallShieldParticles()
+    {
+        shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = false;
+    }
+    /* Ultimate Skill Animation Events */
+    public void StartLargeShieldParticles()
+    {
+        shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = true;
+    }
+    public void FinishLargeShieldParticles()
+    {
+        shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = false;
+    }
     #endregion
 
 }

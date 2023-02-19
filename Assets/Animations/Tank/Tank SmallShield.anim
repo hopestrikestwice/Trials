@@ -50332,6 +50332,20 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
+  - time: 0
+    functionName: StartSmallShieldParticles
+    data: 
+    objectReferenceParameter: {fileID: 11500000, guid: 3753aa23252f02447a90463ebd71dfc7, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1
+    functionName: FinishSmallShieldParticles
+    data: 
+    objectReferenceParameter: {fileID: 11500000, guid: 3753aa23252f02447a90463ebd71dfc7, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 2.3
     functionName: FinishSecondarySkill
     data: 
