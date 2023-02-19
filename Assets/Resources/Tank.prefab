@@ -5022,7 +5022,7 @@ GameObject:
   - component: {fileID: 3455073710268373499}
   - component: {fileID: 1932628716060897299}
   - component: {fileID: 7395382833710979286}
-  - component: {fileID: 1877906300545622541}
+  - component: {fileID: 3279619303987465694}
   m_Layer: 0
   m_Name: Tank
   m_TagString: Player
@@ -5168,7 +5168,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 3115472819802592865}
   - {fileID: 3626436676808533836}
-  - {fileID: 1877906300545622541}
+  - {fileID: 3279619303987465694}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -5202,7 +5202,7 @@ MonoBehaviour:
   shieldSmallParticles: {fileID: 700939703658016002}
   shieldLargeParticles: {fileID: 5505323477339269188}
   shieldLarge: {fileID: 4236700255969449024}
---- !u!114 &1877906300545622541
+--- !u!114 &3279619303987465694
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5218,19 +5218,19 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 2
+    SynchronizeType: 1
     Name: isMoving
   - Type: 4
-    SynchronizeType: 2
+    SynchronizeType: 1
     Name: isBasicAttacking
   - Type: 4
-    SynchronizeType: 2
+    SynchronizeType: 1
     Name: isSecondarySkilling
   - Type: 4
-    SynchronizeType: 2
+    SynchronizeType: 1
     Name: isUltimating
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 1
     LayerIndex: 0
 --- !u!1 &1238897233453472194
 GameObject:
