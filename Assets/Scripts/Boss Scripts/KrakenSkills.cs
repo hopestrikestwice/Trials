@@ -1,31 +1,17 @@
-/// KrakenAnimationManager.cs
-/// 
-/// Handles Kraken's attacks and animations. Calls TentacleAnimationManager.cs
-/// functions to animate the tentacles.
-///
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 using Photon.Pun;
 
-public class KrakenAnimationManager : MonoBehaviourPun
+public class KrakenSkills : MonoBehaviourPun, IBossSkills
 {
-    #region Private Variables
-
     private Animator animator;
-
-    //AI logic
-    private float attackCooldown = 5f;
-    private float currentAttackCooldown = 5f;
 
     private int chainslamWait;
 
-    #endregion
-
-    #region Monobehavior
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         animator = this.GetComponent<Animator>();
         if (!animator)
@@ -33,31 +19,6 @@ public class KrakenAnimationManager : MonoBehaviourPun
             Debug.LogError("Kraken is Missing Animator Component", this);
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (photonView.IsMine)
-        {
-            if (currentAttackCooldown <= 0f && animator.GetCurrentAnimatorStateInfo(0).IsName("Kraken Idle"))
-            {
-                randomAttack();
-                currentAttackCooldown = attackCooldown;
-            } else
-            {
-                currentAttackCooldown -= Time.deltaTime;
-            }
-        }
-    }
-    #endregion
-
-    #region Public Methods
-
-    public void SetAnimatorParam(string paramName, bool val)
-    {
-        //set animator param;
-    }
-    #endregion
 
     #region Animation Events
     /// <summary>
@@ -121,7 +82,7 @@ public class KrakenAnimationManager : MonoBehaviourPun
         else if (val == 0)
         {
             animator.SetBool("chainslam", false);
-            
+
             //iterate through tentacles, finishing the chainslam on each.
             for (int i = 0; i < 3; i++)
             {
@@ -156,6 +117,36 @@ public class KrakenAnimationManager : MonoBehaviourPun
     }
     #endregion
 
+    #region IBossSkills Implementation
+    public void ActivateRandomBasicAttack()
+    {
+        int randNum = Random.Range(0, 2);
+
+        switch (randNum)
+        {
+            case 0:
+                this.SetSlam(1);
+                break;
+            case 1:
+                this.SetSwipe(1);
+                break;
+        }
+    }
+
+    public void ActivateRandomSpecialAttack()
+    {
+        int randNum = Random.Range(0, 1);
+
+        switch (randNum)
+        {
+            case 0:
+                this.SetChainslam(1);
+                break;
+        }
+    }
+    #endregion
+
+
     #region Public Methods
     public void ReportChainslam()
     {
@@ -168,33 +159,6 @@ public class KrakenAnimationManager : MonoBehaviourPun
     #endregion
 
     #region Private Methods
-    private void randomAttack()
-    {
-        int randNum = Random.Range(0, 3);
-
-        switch (randNum)
-        {
-            case 0:
-                this.SetSlam(1);
-                break;
-            case 1:
-                this.SetSwipe(1);
-                break;
-            case 2:
-                this.SetChainslam(1);
-                break;
-            //case 3:
-            //    animator.SetBool("Scream", true);
-            //    break;
-            //case 4:
-            //    animator.SetBool("Drill", true);
-            //    break;
-            default:
-                Debug.Log("Should never reach here!");
-                break;
-        }
-    }
-
     /// <summary>
     /// </summary>
     /// <param name="tentacleIndex"> Child index of tentacle to slam </param>
