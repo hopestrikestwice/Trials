@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class BossUI : MonoBehaviour
 {
-    private KrakenManager boss;
+    private BossManagerCore boss;
 
     [Tooltip("UI Slider to display Boss' Health")]
     [SerializeField]

@@ -11,11 +11,11 @@ using Photon.Pun;
 
 public class TentacleBaseManager : MonoBehaviourPun
 {
-    private KrakenManager krakenManager;
+    private BossManagerCore krakenManager;
 
     private void Start()
     {
-        this.krakenManager = transform.parent.GetComponent<KrakenManager>();
+        this.krakenManager = transform.parent.GetComponent<BossManagerCore>();
     }
 
     private void OnTriggerEnter(Collider other)

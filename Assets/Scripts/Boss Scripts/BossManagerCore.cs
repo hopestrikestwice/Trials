@@ -1,6 +1,6 @@
-/// KrakenManager.cs
+/// BossManagerCore.cs
 /// 
-/// Manages Kraken's stats (health, etc.) and syncs them across the network.
+/// Manages Boss's stats (health, etc.) and syncs them across the network.
 /// 
 
 using System.Collections;
@@ -9,7 +9,7 @@ using UnityEngine;
 
 using Photon.Pun;
 
-public class KrakenManager : MonoBehaviourPun, IPunObservable
+public class BossManagerCore : MonoBehaviourPun, IPunObservable
 {
     [Tooltip("The Kraken's UI GameObject Prefab")]
     [SerializeField]
