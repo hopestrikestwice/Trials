@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f3557578f914e74daced810dd0e80a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  KrakenUiPrefab: {fileID: 6649751427905233598, guid: 19e3cd41f43de2b43aa2a8740c08c42b, type: 3}
 --- !u!114 &3328907591535504588
 MonoBehaviour:
   m_ObjectHideFlags: 0

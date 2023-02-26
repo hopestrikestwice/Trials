@@ -12,23 +12,48 @@ public class BossUI : MonoBehaviour
 {
     private KrakenManager boss;
 
-    [Tooltip("UI Slider to display Player's Health")]
+    [Tooltip("UI Slider to display Boss' Health")]
     [SerializeField]
     private Slider bossHealthSlider;
+
+    Transform bossTransform;
+    Renderer bossRenderer;
+
+    private void Awake()
+    {
+        this.transform.SetParent(GameObject.Find("Canvas").GetComponent<Transform>(), false);
+
+        // _canvasGroup = this.GetComponent<CanvasGroup>();
+    }
 
     private void Update()
     {
         if (boss != null)
         {
-            // Reflect the Player Health
+            // Reflect the Boss Health
             if (bossHealthSlider != null)
             {
                 bossHealthSlider.value = boss.GetHealth();
             }
         }
-        else
+        // else
+        // {
+        //     boss = GameObject.Find("Kraken").GetComponent<KrakenManager>();
+        // }
+    }
+
+    public void SetTarget(KrakenManager _boss)
+    {
+        if (_boss == null)
         {
-            boss = GameObject.Find("Kraken").GetComponent<KrakenManager>();
+            Debug.LogError("<Color=Red><a>Missing</a></Color> PlayMakerManager target for KrakenUI.SetTarget.", this);
+            return;
         }
+
+        //Cache references for efficiency
+        boss = _boss;
+
+        bossTransform = this.boss.GetComponent<Transform>();
+        bossRenderer = this.boss.GetComponent<Renderer>();
     }
 }

@@ -11,8 +11,21 @@ using Photon.Pun;
 
 public class KrakenManager : MonoBehaviourPun, IPunObservable
 {
+    [Tooltip("The Kraken's UI GameObject Prefab")]
+    [SerializeField]
+    public GameObject KrakenUiPrefab;
+
+    private GameObject krakenUI;
+
     [Tooltip("The current Health of the boss")]
     private float Health = 1f;
+
+
+    private void Start()
+    {
+        krakenUI = Instantiate(KrakenUiPrefab);
+        krakenUI.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+    }
 
     public void Hit()
     {
