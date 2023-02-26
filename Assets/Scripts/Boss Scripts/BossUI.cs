@@ -42,7 +42,7 @@ public class BossUI : MonoBehaviour
         // }
     }
 
-    public void SetTarget(KrakenManager _boss)
+    public void SetTarget(BossManagerCore _boss)
     {
         if (_boss == null)
         {
