@@ -18,13 +18,9 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
 
     #region Shield Variables
     [SerializeField]
-    private GameObject shieldSmall;
-    [SerializeField]
     private GameObject shieldSmallParticles;
     [SerializeField]
     private GameObject shieldLargeParticles;
-    [SerializeField]
-    private GameObject shieldLarge;
     #endregion
 
     #endregion

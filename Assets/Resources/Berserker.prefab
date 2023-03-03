@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 5758182148899678224}
   - component: {fileID: 1958166258940127504}
   m_Layer: 0
-  m_Name: Berserker Rig Model
+  m_Name: Berserker
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
