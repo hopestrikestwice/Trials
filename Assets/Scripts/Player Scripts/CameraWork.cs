@@ -13,7 +13,7 @@ public class CameraWork : MonoBehaviour
     #region Private Fields
 
     [Tooltip("The distance in the local x-z plane to the target")]
-    private float distance = 7.0f;
+    private float distance = 8.0f;
 
     [Tooltip("The height we want the camera to be above the target")]
     private float height = 5.0f;
