@@ -112,7 +112,9 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             this.isShielded = true;
         }
 
-        if (other.CompareTag("Heal"))
+        // if (other.CompareTag("Heal"))
+        //Needs another condition to check if it is the healer's projectile
+        if (other.CompareTag("PlayerProjectile"))
         {
             Debug.Log("Player got healed");
             this.Health += 0.25f;
@@ -127,6 +129,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             Debug.Log("Player's element is now "+this.currentElement);
             other.GetComponent<GiveElement>().changeElement();
         }
+
     }
 
     private void OnTriggerExit(Collider other)

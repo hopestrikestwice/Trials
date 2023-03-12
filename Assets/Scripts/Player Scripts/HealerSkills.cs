@@ -14,7 +14,22 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     #region Private Fields
     private PlayerUI playerUI;
 
-    private Animator animator;
+    private Animator animator;    
+
+    #region Attack Variables
+    [SerializeField]
+    private GameObject defaultBulletPrefab;
+    [SerializeField]
+    private GameObject chargedBulletPrefab;
+    private GameObject bullet;
+
+    private float bulletOffset = 1f;
+    private float bulletLifetime = 1f;
+
+    private int ultCharges = 0;
+    private bool successfulCharge = false;
+
+    #endregion
 
     #endregion
 
@@ -41,6 +56,11 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         {
             return;
         }
+
+        if (successfulCharge) //when basic atk hits opponent
+        {
+            ultCharges++;
+        }
     }
 
     #endregion
@@ -50,13 +70,49 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     {
         Debug.Log("Healer secondary skill activated");
         animator.SetBool("isSecondarySkilling", true);
+        ultCharges++; //change so shield must block to increment?
     }
 
     public void ActivateUltimate()
     {
+        // if (ultCharges == 5)
+        // {
+        DoSignature();
+        ultCharges = 0;
+        // }
+    }
+    #endregion
+
+    #region Private Methods
+    public void DoSignature()
+    {
+        //Note: code below from player basic atk code for a projectile
+        //Calculate direction for attack by intersecting mouse ray with selectable objects on raycastable layer.
+        Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        int mainRaycastMask = 1 << 6; // Mask to just the main Raycast layer, so we only find hits to objects in that layer.
+
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, mainRaycastMask))
+        {
+            Debug.Log("Hit object is: " + hitInfo.collider.name);
+            this.transform.LookAt(new Vector3(hitInfo.point.x, 1, hitInfo.point.z));
+
+            // //If hit player object, then heal them - else if hit kraken, deals dmg to kraken
+            // Collider hitTarget = hitInfo.collider;
+            // if (hitTarget.compareTag("Player"))
+            // {
+            //     hitTarget.gameObject.GetComponent<PlayerManagerCore>().setHealth();
+            // }
+        }
+
         Debug.Log("AOE heal ability pressed");
         animator.SetBool("isUltimating", true);
+
+        bullet = PhotonNetwork.Instantiate(this.defaultBulletPrefab.name, this.transform.position + Vector3.up * bulletOffset, this.transform.rotation);
+        bullet.GetComponent<ProjectileMovement>().SetLifetime(bulletLifetime);
     }
+
     #endregion
 
     #region Animation Events
