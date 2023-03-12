@@ -16,13 +16,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     #region Public Fields
 
-    public static GameManager Instance;
-
     [Tooltip("The prefab to use for representing the player")]
     public GameObject[] playerPrefabs;
 
-    [Tooltip("The prefab to use for representing the Kraken")]
-    public GameObject krakenPrefab;
+    [Tooltip("The prefab to use for representing the boss")]
+    public GameObject bossPrefab;
+
+    [Tooltip("The prefab to use for representing the arena")]
+    public GameObject arenaPrefab;
 
     #endregion
 
@@ -66,7 +67,17 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        Instance = this;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Instantiate(this.arenaPrefab.name, new Vector3(0f, 0f, 0f), Quaternion.Euler(0, 0, 0));
+
+            Debug.LogFormat("Instantiating Kraken from {0}", Application.loadedLevelName);
+
+            PhotonNetwork.Instantiate(this.bossPrefab.name,
+                                        new Vector3(0f, 0f, 20f),
+                                        Quaternion.Euler(0, -90, 0),
+                                        0);
+        }
 
         if (playerPrefabs.Length <= 0)
         {
@@ -81,18 +92,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         else
         {
             Debug.LogFormat("Ignoring scene load for {0}", SceneManagerHelper.ActiveSceneName);
-        }
-
-        // Kraken must be instantiated after LocalPlayer, or else player doesn't show on the screen
-        // I think this has to do with TentacleAnimationManager's TargetNearestPlayer(), but need to read more to see
-        if (PhotonNetwork.IsMasterClient)
-        {
-            Debug.LogFormat("Instantiating Kraken from {0}", Application.loadedLevelName);
-
-            PhotonNetwork.Instantiate(this.krakenPrefab.name,
-                                        new Vector3(0f, 0f, 20f),
-                                        Quaternion.Euler(0, -90, 0),
-                                        0);
         }
     }
 
