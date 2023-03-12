@@ -6,6 +6,9 @@ using Photon.Pun;
 
 public class KrakenSkills : MonoBehaviourPun, IBossSkills
 {
+    [SerializeField]
+    private GameObject rock;
+
     private Animator animator;
 
     private int chainslamWait;
@@ -96,6 +99,23 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
         }
     }
 
+    /* TODO: there is no accompanying animation to this attack yet, so
+     * this code just executes the attack and does not deal with animations.
+     */
+    public void SetRockStrike(int val)
+    {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            PhotonNetwork.Instantiate(this.rock.name, player.transform.position + Vector3.up * 10, Quaternion.Euler(90, 0, 0));
+        }
+    }
+
     public void SlamRandomTentacle()
     {
         if (!photonView.IsMine)
@@ -135,12 +155,15 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
 
     public void ActivateRandomSpecialAttack()
     {
-        int randNum = Random.Range(0, 1);
+        int randNum = Random.Range(1, 2);
 
         switch (randNum)
         {
             case 0:
                 this.SetChainslam(1);
+                break;
+            case 1:
+                this.SetRockStrike(1);
                 break;
         }
     }
