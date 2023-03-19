@@ -82,7 +82,6 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
         Debug.Log("Shield button pressed.");
         animator.SetBool("isSecondarySkilling", true);
 
-        Debug.Log(secondarySkillClip.length);
         actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClip.length);
     }
 

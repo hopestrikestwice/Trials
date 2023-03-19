@@ -231,7 +231,7 @@ public class PlayerActionCore : MonoBehaviourPun
         animator.SetBool("isUltimating", false);
     }
 
-    public void FinishBasicAttack()
+    public void FinishBasicAttack() // TODO: Eventually refactor so that this only finishes the animation?
     {
         animator.SetBool("isBasicAttacking", false);
 
