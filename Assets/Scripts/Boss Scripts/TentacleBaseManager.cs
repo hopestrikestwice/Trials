@@ -11,7 +11,7 @@ using Photon.Pun;
 
 public class TentacleBaseManager : MonoBehaviourPun
 {
-    private BossManagerCore krakenManager;
+    private BossManagerCore krakenManager; 
 
     private void Start()
     {
@@ -25,10 +25,17 @@ public class TentacleBaseManager : MonoBehaviourPun
             return;
         }
 
-        //If object is a boss projectile, decrement health
+        //If object is a player projectile, decrement health
         if (other.CompareTag("PlayerProjectile"))
         {
             this.krakenManager.Hit();
+        }
+
+        //If object is a healer projectile (signature), decrement health more
+        if (other.CompareTag("Heal"))
+        {
+            float scale = (float)((other.GetComponent<HealerProjectile>().getCharge())/5.0);
+            this.krakenManager.SignatureHit(scale);
         }
     }
 }

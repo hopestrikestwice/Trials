@@ -29,8 +29,9 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     [Tooltip("The current Health of our player")]
     private float Health = 1f;
 
-    private bool isShielded = false;
+    private bool isShielded = false; //Used for tank's abilities
     private Element currentElement = Element.None;
+    private PlayerType playerType;
 
     #endregion
 
@@ -43,6 +44,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         if (photonView.IsMine)
         {
             PlayerManagerCore.LocalPlayerInstance = this.gameObject;
+            SetPlayerType(this.gameObject.name);
         }
         // #Critical
         //  we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
@@ -106,18 +108,33 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             this.Health -= 0.25f;
         }
 
+        if (other.CompareTag("BossProjectile") && this.gameObject.GetComponent<PlayerActionCore>().IsBlocked())
+        {
+            //Must check if healer
+            Debug.Log("Boss atk blocked");
+            this.gameObject.GetComponent<PlayerActionCore>().AddCharge();
+        }
+
         if (other.CompareTag("Shield"))
         {
             Debug.Log("Player is now shielded");
             this.isShielded = true;
         }
 
-        // if (other.CompareTag("Heal"))
-        //Needs another condition to check if it is the healer's projectile
-        if (other.CompareTag("PlayerProjectile"))
+        // if (playerType != PlayerType.Healer && other.CompareTag("Heal"))
+        if (other.CompareTag("Heal")) //Note: will heal healer whenever ult activated
         {
             Debug.Log("Player got healed");
-            this.Health += 0.25f;
+            this.gameObject.GetComponent<PlayerActionCore>().setImmobile(true);
+            // this.Health += 0.25f;
+            //Note: should be out of 5 but need to fix UI (only shows in quarters)
+            double scale = (other.GetComponent<HealerProjectile>().getCharge())/4.0;
+            if (scale > 1) scale = 1.0; //to change
+            Debug.Log("scale = "+scale+" float:"+(float)scale);
+            HealPlayer((float)scale);
+            //Heals healer once player is healed (collides with projectile) (does not work)
+            // other.GetComponent<ProjectileMovement>().GetPlayer().GetComponent<PlayerManagerCore>().HealPlayer((float)scale);
+            // Debug.Log("healer"+other.GetComponent<ProjectileMovement>().GetPlayer().GetComponent<PlayerManagerCore>().GetPlayerType());
         }
 
         if (other.CompareTag("ElementBuff"))
@@ -143,6 +160,12 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         {
             Debug.Log("Player no longer shielded");
             this.isShielded = false;
+        }
+
+        if (other.CompareTag("Heal"))
+        {
+            Debug.Log("Player Heal Gone");
+            this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);
         }
 
         //Removes element buff?
@@ -226,6 +249,25 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     public PlayerUI getPlayerUI()
     {
         return playerUI.GetComponent<PlayerUI>();
+    }
+
+    public void SetPlayerType(string player)
+    {
+        if (player == "Healer" || player == "Healer(Clone)") playerType = PlayerType.Healer;
+        else if (player == "Berserker" || player == "Berserker(Clone)") playerType = PlayerType.Berserker;
+        else if (player == "Tank" || player == "Tank(Clone)") playerType = PlayerType.Tank;
+        else if (player == "Support" || player == "Support(Clone)") playerType = PlayerType.Support;
+        else playerType = PlayerType.None;
+    }
+
+    public PlayerType GetPlayerType()
+    {
+        return this.playerType;
+    }
+
+    public void HealPlayer(float scale)
+    {
+        this.Health += scale; //f?
     }
 
     #endregion

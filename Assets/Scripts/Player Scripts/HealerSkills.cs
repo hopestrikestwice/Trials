@@ -15,19 +15,16 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     private PlayerUI playerUI;
 
     private Animator animator;    
+    private GameObject healer;
 
     #region Attack Variables
     [SerializeField]
     private GameObject defaultBulletPrefab;
     [SerializeField]
-    private GameObject chargedBulletPrefab;
     private GameObject bullet;
 
     private float bulletOffset = 1f;
     private float bulletLifetime = 1f;
-
-    private int ultCharges = 0;
-    private bool successfulCharge = false;
 
     #endregion
 
@@ -56,11 +53,6 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         {
             return;
         }
-
-        if (successfulCharge) //when basic atk hits opponent
-        {
-            ultCharges++;
-        }
     }
 
     #endregion
@@ -70,16 +62,12 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     {
         Debug.Log("Healer secondary skill activated");
         animator.SetBool("isSecondarySkilling", true);
-        ultCharges++; //change so shield must block to increment?
+        this.GetComponent<PlayerActionCore>().Block();
     }
 
     public void ActivateUltimate()
     {
-        // if (ultCharges == 5)
-        // {
         DoSignature();
-        ultCharges = 0;
-        // }
     }
     #endregion
 
@@ -111,6 +99,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 
         bullet = PhotonNetwork.Instantiate(this.defaultBulletPrefab.name, this.transform.position + Vector3.up * bulletOffset, this.transform.rotation);
         bullet.GetComponent<ProjectileMovement>().SetLifetime(bulletLifetime);
+        bullet.GetComponent<HealerProjectile>().setCharge(this.GetComponent<PlayerActionCore>().GetCharge());
     }
 
     #endregion

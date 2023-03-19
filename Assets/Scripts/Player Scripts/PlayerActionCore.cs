@@ -19,6 +19,7 @@ public class PlayerActionCore : MonoBehaviourPun
     private float walkSpeed = 7f;
     private float gravity = 9.8f;
     private bool immobile = false;
+    
 
     private Animator animator;
     private IPlayerSkills skills;
@@ -37,6 +38,9 @@ public class PlayerActionCore : MonoBehaviourPun
 
     private float attackProjectileOffset = 1f;
     private float attackProjectileLifetime = 1f;
+    private int sigCharge = 0;
+    private bool isBlocked = false; //for healer's skill
+
     #endregion
 
     #endregion
@@ -67,6 +71,7 @@ public class PlayerActionCore : MonoBehaviourPun
         }
 
         this.skills = this.GetComponent<IPlayerSkills>();
+
     }
     // Update is called once per frame
     void Update()
@@ -104,14 +109,19 @@ public class PlayerActionCore : MonoBehaviourPun
 
             if (Input.GetButtonDown("Fire3"))
             {
-                immobile = true;
-
-                if (photonView.IsMine)
+                Debug.Log("Signature Charges: "+this.sigCharge);
+                PlayerType playerType = this.GetComponent<PlayerManagerCore>().GetPlayerType();
+                Debug.Log("Player"+playerType);
+                if (playerType != PlayerType.Healer || (playerType == PlayerType.Healer && this.sigCharge > 0))
                 {
-                    playerUI.ShadeIcon(SkillUI.ULTIMATE);
+                    immobile = true;
+                    if (photonView.IsMine)
+                    {
+                        playerUI.ShadeIcon(SkillUI.ULTIMATE);
+                    }
+                    skills.ActivateUltimate();
+                    if (playerType == PlayerType.Healer) this.sigCharge = 0;
                 }
-
-                skills.ActivateUltimate();
             }
         }
 
@@ -129,6 +139,27 @@ public class PlayerActionCore : MonoBehaviourPun
     {
         this.currentElement = element;
         Debug.Log("Changing Element (action): "+element);
+    }
+
+    //Increments signature charge
+    public void AddCharge()
+    {
+        if (this.sigCharge < 5) this.sigCharge++;
+    }
+
+    public int GetCharge()
+    {
+        return this.sigCharge;
+    }
+
+    public bool IsBlocked()
+    {
+        return this.isBlocked;
+    }
+
+    public void Block()
+    {
+        this.isBlocked = true;
     }
 
     #region Private Functions
@@ -158,6 +189,7 @@ public class PlayerActionCore : MonoBehaviourPun
             this.currentAttackProjectile = PhotonNetwork.Instantiate(this.elementalAttackPrefabs[(int)currentElement].name, this.transform.position + Vector3.up * this.attackProjectileOffset, this.transform.rotation);
             this.currentAttackProjectile.GetComponent<ProjectileMovement>().SetLifetime(attackProjectileLifetime);
         }
+        this.currentAttackProjectile.GetComponent<ProjectileMovement>().SetPlayer(this.gameObject);
     }
 
     private void MoveCharacter()
@@ -224,6 +256,7 @@ public class PlayerActionCore : MonoBehaviourPun
         }
 
         this.immobile = false;
+        this.isBlocked = false;
     }
 
     public void FinishUltimate() {

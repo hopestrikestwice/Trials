@@ -17,9 +17,21 @@ public class ProjectileMovement : MonoBehaviour
     private float lifetime = float.MaxValue;
     private float aliveTime = 0f;
 
+    private GameObject playerSource = null;
+
     public void SetLifetime(float l)
     {
         this.lifetime = l;
+    }
+
+    public void SetPlayer(GameObject player)
+    {
+        this.playerSource = player;
+    }
+
+    public GameObject GetPlayer()
+    {
+        return this.playerSource;
     }
 
     // Update is called once per frame
@@ -40,7 +52,13 @@ public class ProjectileMovement : MonoBehaviour
     {
         if (other.CompareTag("BossProjectile"))
         {
+            if (playerSource != null && playerSource.GetComponent<PlayerManagerCore>().GetPlayerType() == PlayerType.Healer)
+            {
+                playerSource.GetComponent<PlayerActionCore>().AddCharge();
+                Debug.Log("Healer Charge +1");
+            }
             PhotonNetwork.Destroy(this.gameObject);
         }
     }
+
 }
