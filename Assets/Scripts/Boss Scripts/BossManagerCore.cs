@@ -35,7 +35,7 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
 
     public void SignatureHit(float scale)
     {
-        Debug.Log("Boss Hit (by signature)!");
+        Debug.Log("Boss Hit (by signature)! scale:"+scale);
         Health -= scale;
     }
 

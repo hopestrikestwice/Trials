@@ -34,7 +34,7 @@ public class TentacleBaseManager : MonoBehaviourPun
         //If object is a healer projectile (signature), decrement health more
         if (other.CompareTag("Heal"))
         {
-            float scale = (float)((other.GetComponent<HealerProjectile>().getCharge())/5.0);
+            float scale = (float)((other.GetComponent<HealerProjectile>().GetCharge())/5.0);
             this.krakenManager.SignatureHit(scale);
         }
     }

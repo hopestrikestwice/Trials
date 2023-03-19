@@ -111,7 +111,7 @@ public class PlayerActionCore : MonoBehaviourPun
             {
                 Debug.Log("Signature Charges: "+this.sigCharge);
                 PlayerType playerType = this.GetComponent<PlayerManagerCore>().GetPlayerType();
-                Debug.Log("Player"+playerType);
+                Debug.Log("PlayerType "+playerType);
                 if (playerType != PlayerType.Healer || (playerType == PlayerType.Healer && this.sigCharge > 0))
                 {
                     immobile = true;
@@ -145,6 +145,7 @@ public class PlayerActionCore : MonoBehaviourPun
     public void AddCharge()
     {
         if (this.sigCharge < 5) this.sigCharge++;
+        Debug.Log("Added charge - total charge: "+this.sigCharge);
     }
 
     public int GetCharge()
@@ -190,6 +191,7 @@ public class PlayerActionCore : MonoBehaviourPun
             this.currentAttackProjectile.GetComponent<ProjectileMovement>().SetLifetime(attackProjectileLifetime);
         }
         this.currentAttackProjectile.GetComponent<ProjectileMovement>().SetPlayer(this.gameObject);
+        // Debug.Log("setting player of proj to "+this.gameObject.GetComponent<PlayerManagerCore>().GetPlayerType());
     }
 
     private void MoveCharacter()
@@ -230,6 +232,24 @@ public class PlayerActionCore : MonoBehaviourPun
 
         // Apply Movement to Player
         controller.Move(distance);
+    }
+
+    #endregion
+
+    #region IPunObservable Implementation
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // We own this player: send others our data
+            stream.SendNext(this.sigCharge);
+        }
+        else
+        {
+            //Network player, receive data
+            this.sigCharge = (int)stream.ReceiveNext();
+        }
     }
 
     #endregion

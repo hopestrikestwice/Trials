@@ -17,7 +17,7 @@ public class ProjectileMovement : MonoBehaviour
     private float lifetime = float.MaxValue;
     private float aliveTime = 0f;
 
-    private GameObject playerSource = null;
+    private GameObject playerSource;
 
     public void SetLifetime(float l)
     {
@@ -27,6 +27,7 @@ public class ProjectileMovement : MonoBehaviour
     public void SetPlayer(GameObject player)
     {
         this.playerSource = player;
+        Debug.Log("This player: "+player);
     }
 
     public GameObject GetPlayer()
@@ -52,10 +53,11 @@ public class ProjectileMovement : MonoBehaviour
     {
         if (other.CompareTag("BossProjectile"))
         {
+            Debug.Log("Proj hit Boss");
+            Debug.Log("PlayerSource "+playerSource+" PlayerType "+playerSource.GetComponent<PlayerManagerCore>().GetPlayerType());
             if (playerSource != null && playerSource.GetComponent<PlayerManagerCore>().GetPlayerType() == PlayerType.Healer)
             {
                 playerSource.GetComponent<PlayerActionCore>().AddCharge();
-                Debug.Log("Healer Charge +1");
             }
             PhotonNetwork.Destroy(this.gameObject);
         }

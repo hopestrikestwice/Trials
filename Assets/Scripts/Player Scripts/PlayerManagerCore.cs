@@ -88,8 +88,6 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             {
                 Debug.Log("Player Died");
             }
-            // Debug.Log("Shielded? "+this.isShielded);
-            // Debug.Log("Player's element "+this.currentElement);
         }
 
     }
@@ -104,14 +102,14 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         //If object is a boss projectile, decrement health
         if (other.CompareTag("BossProjectile") && !isShielded)
         {
-            Debug.Log("player hit!");
+            Debug.Log("Player hit!");
             this.Health -= 0.25f;
         }
 
         if (other.CompareTag("BossProjectile") && this.gameObject.GetComponent<PlayerActionCore>().IsBlocked())
         {
-            //Must check if healer
-            Debug.Log("Boss atk blocked");
+            //Note: Should only run if player is healer
+            Debug.Log("Boss atk blocked by healer");
             this.gameObject.GetComponent<PlayerActionCore>().AddCharge();
         }
 
@@ -121,20 +119,19 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             this.isShielded = true;
         }
 
-        // if (playerType != PlayerType.Healer && other.CompareTag("Heal"))
-        if (other.CompareTag("Heal")) //Note: will heal healer whenever ult activated
+        //If player is not the healer and hit by healer projectile, heal itself
+        if (playerType != PlayerType.Healer && other.CompareTag("Heal"))
+        // if (other.CompareTag("Heal")) //Note: will heal healer whenever ult activated
         {
-            Debug.Log("Player got healed");
+            Debug.Log("Player got healed. Playertype: "+playerType);
             this.gameObject.GetComponent<PlayerActionCore>().setImmobile(true);
             // this.Health += 0.25f;
             //Note: should be out of 5 but need to fix UI (only shows in quarters)
-            double scale = (other.GetComponent<HealerProjectile>().getCharge())/4.0;
-            if (scale > 1) scale = 1.0; //to change
-            Debug.Log("scale = "+scale+" float:"+(float)scale);
-            HealPlayer((float)scale);
+            HealPlayer(other.GetComponent<HealerProjectile>().GetCharge());
             //Heals healer once player is healed (collides with projectile) (does not work)
-            // other.GetComponent<ProjectileMovement>().GetPlayer().GetComponent<PlayerManagerCore>().HealPlayer((float)scale);
-            // Debug.Log("healer"+other.GetComponent<ProjectileMovement>().GetPlayer().GetComponent<PlayerManagerCore>().GetPlayerType());
+            // Debug.Log("healer"+other.GetComponent<HealerProjectile>().GetPlayer());
+            // other.GetComponent<HealerProjectile>().GetPlayer().GetComponent<PlayerManagerCore>().HealPlayer((float)scale);
+            // Debug.Log("healer"+other.GetComponent<HealerProjectile>().GetPlayer().GetComponent<PlayerManagerCore>().GetPlayerType());
         }
 
         if (other.CompareTag("ElementBuff"))
@@ -164,7 +161,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
 
         if (other.CompareTag("Heal"))
         {
-            Debug.Log("Player Heal Gone");
+            // Debug.Log("Player Heal Gone");
             this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);
         }
 
@@ -265,9 +262,12 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         return this.playerType;
     }
 
-    public void HealPlayer(float scale)
+    public void HealPlayer(int charge)
     {
-        this.Health += scale; //f?
+        double scale = charge/4.0; //Note: sigCharge max is 5
+        if (scale > 1) scale = 1.0; //to change
+        Debug.Log("Healing "+this.gameObject+"by "+(float)scale);
+        this.Health += (float)scale; //f?
     }
 
     #endregion

@@ -68,6 +68,8 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     public void ActivateUltimate()
     {
         DoSignature();
+        // Debug.Log("AOE heal ability pressed");
+        // animator.SetBool("isUltimating", true);
     }
     #endregion
 
@@ -98,8 +100,9 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         animator.SetBool("isUltimating", true);
 
         bullet = PhotonNetwork.Instantiate(this.defaultBulletPrefab.name, this.transform.position + Vector3.up * bulletOffset, this.transform.rotation);
-        bullet.GetComponent<ProjectileMovement>().SetLifetime(bulletLifetime);
-        bullet.GetComponent<HealerProjectile>().setCharge(this.GetComponent<PlayerActionCore>().GetCharge());
+        bullet.GetComponent<HealerProjectile>().SetLifetime(bulletLifetime);
+        bullet.GetComponent<HealerProjectile>().SetPlayer(this.gameObject);
+        bullet.GetComponent<HealerProjectile>().SetCharge(this.GetComponent<PlayerActionCore>().GetCharge());
     }
 
     #endregion
