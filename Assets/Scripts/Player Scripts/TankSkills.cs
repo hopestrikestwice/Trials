@@ -18,13 +18,19 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     private PlayerActionCore actionCoreScript;
 
     #region Shield Variables
+     [Header("Shielding GameObjects")]
     [SerializeField]
     private GameObject shieldSmallParticles;
     [SerializeField]
     private GameObject shieldLargeParticles;
+    [SerializeField]
+    private GameObject smallShield;
+    [SerializeField]
+    private GameObject largeShield;
     #endregion
 
     #region Animation variables
+     [Header("Animation Clips")]
     // Used to tell how long the secondary/ultimate skills take
     [SerializeField]
     private AnimationClip secondarySkillClip;
@@ -47,6 +53,15 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
         if (!animator)
         {
             Debug.LogError("BeserkerSkills is Missing Animator Component", this);
+        }
+
+        if (!smallShield || !largeShield)
+        {
+            Debug.LogError("TankSkills is Missing Shield GameObject", this);
+        }
+        else {
+            smallShield.SetActive(false);
+            largeShield.SetActive(false);
         }
 
         if (!shieldSmallParticles || !shieldLargeParticles)
@@ -81,16 +96,34 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     {
         Debug.Log("Shield button pressed.");
         animator.SetBool("isSecondarySkilling", true);
+        smallShield.SetActive(true); // enable the small shield, so that it collides with players
 
         actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClip.length);
+        Invoke("DeactivateSmallShield", secondarySkillClip.length);
     }
 
     public void ActivateUltimate()
     {
         Debug.Log("Large shield button pressed.");
         animator.SetBool("isUltimating", true);
+        largeShield.SetActive(true); // enable the large shield, so that it collides with players
 
         actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
+        Invoke("DeactivateLargeShield", ultimateClip.length);
+    }
+    #endregion
+
+    #region Invoked Functions
+    /* Functions that deal with additional skill logic that need to be invoked.
+    Usually signals the end of a skill */
+    public void DeactivateSmallShield()
+    {
+        smallShield.SetActive(false);
+    }
+
+    public void DeactivateLargeShield()
+    {
+        largeShield.SetActive(false);
     }
     #endregion
 
