@@ -371,6 +371,8 @@ MonoBehaviour:
   secondarySkillShield: {fileID: 4856604275027106061}
   defaultBulletPrefab: {fileID: 8087487053105947311, guid: 72e89f17914084144a9e42be17ab1f2d, type: 3}
   chargedBulletPrefab: {fileID: 8087487053105947311, guid: 72e89f17914084144a9e42be17ab1f2d, type: 3}
+  secondarySkillClip: {fileID: 7400000, guid: 5de46aaeb1b3ec5478b3a3879da9a1f7, type: 2}
+  ultimateClip: {fileID: 7400000, guid: b8cf1125315a89f49b672c52fd80f8d8, type: 2}
 --- !u!114 &1958166258940127504
 MonoBehaviour:
   m_ObjectHideFlags: 0

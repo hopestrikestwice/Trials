@@ -6141,8 +6141,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shieldSmallParticles: {fileID: 6441000187545742215}
   shieldLargeParticles: {fileID: 2098910370814701101}
-  secondarySkillClip: {fileID: 7400000, guid: f6136d49f960a3e458a8309e3c0c62a6, type: 2}
-  ultimateClip: {fileID: 7400000, guid: b1568ea59a437bb4b96548206acb7024, type: 2}
 --- !u!114 &8459579938485939989
 MonoBehaviour:
   m_ObjectHideFlags: 0
