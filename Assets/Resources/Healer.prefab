@@ -442,6 +442,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcb4cc90d23caa643a8b63ca274fe997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  secondarySkillClips:
+  - {fileID: 7400000, guid: 37f0dc01443c2644ab68205770c9c789, type: 2}
+  - {fileID: 7400000, guid: 91e0d82ef1a900649b2492bc0c89756b, type: 2}
+  ultimateClip: {fileID: 7400000, guid: fe0ffc9f3b1314446bb98cd0eac3c7a5, type: 2}
 --- !u!114 &5495911065371474050
 MonoBehaviour:
   m_ObjectHideFlags: 0
