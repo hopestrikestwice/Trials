@@ -15,6 +15,7 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
     private PlayerUI playerUI;
 
     private Animator animator;
+    private PlayerActionCore actionCoreScript;
 
     #region Dash Variables
     private CharacterController controller;
@@ -26,6 +27,14 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
     private float dashTimeMax = 0.1f;
     // Current amount of time spent dashing.
     private float dashTimeCurrent = 0f;
+    #endregion
+
+    #region Animation variables
+    // Used to tell how long the secondary/ultimate skills take
+    [SerializeField]
+    private AnimationClip secondarySkillClip;
+    [SerializeField]
+    private AnimationClip ultimateClip;
     #endregion
 
     private Element mostRecentElement = Element.Fire;
@@ -52,6 +61,20 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         if (!animator)
         {
             Debug.LogError("BeserkerSkills is Missing Animator Component", this);
+        }
+
+        actionCoreScript = GetComponent<PlayerActionCore>();
+        if (!actionCoreScript)
+        {
+            Debug.LogError("TankSkills is Missing PlayerActionCore.cs");
+        }
+        if (!secondarySkillClip)
+        {
+            Debug.LogError("TankSkills is Missing Secondary Skill Animation Clip");
+        }
+        if (!ultimateClip)
+        {
+            Debug.LogError("TankSkills is Missing Ultimate Animation Clip");
         }
     }
 
@@ -91,12 +114,16 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         animator.SetBool("isSecondarySkilling", true);
 
         dashDirection = this.transform.forward;
+
+        actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClip.length);
     }
 
     public void ActivateUltimate()
     {
         Debug.Log("Change element button pressed");
         animator.SetBool("isUltimating", true);
+
+        actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
 
         // mostRecentElement = ElementFunctions.NextElement(mostRecentElement);
         // this.GetComponent<PlayerManagerCore>().SetElement(mostRecentElement);
