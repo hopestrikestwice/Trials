@@ -84,8 +84,8 @@ public class Launcher : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnected)
         {
             Debug.Log("Connected currentplayercount is: " + (PhotonNetwork.CurrentRoom.PlayerCount - 1));
-            // #Critical: We attempt to join a Random Room. If it fails, we get notified in OnJoinRandomFailed() and we'll create a room instead.
-            PhotonNetwork.JoinRandomRoom();
+            // #Critical: We attempt to join the specified room. If it fails, we get notified in OnJoinRandomFailed() and we'll create a room instead.
+            PhotonNetwork.JoinOrCreateRoom("public", null, null);
         }
         else
         {
@@ -109,7 +109,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             // #Critical: First thing we want to do once connected to master is to join a potential existing room.
             // If one does not exist, we'll be called back with OnJoinRandomFailed()
-            PhotonNetwork.JoinRandomRoom();
+            PhotonNetwork.JoinOrCreateRoom("public", null, null);
             isConnecting = false;
         }
     }
