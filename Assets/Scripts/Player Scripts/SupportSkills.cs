@@ -124,6 +124,7 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         animator.SetBool("isUltimating", true);
 
         actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
+        Invoke("FinishChannelingElement", ultimateClip.length);
 
         // mostRecentElement = ElementFunctions.NextElement(mostRecentElement);
         // this.GetComponent<PlayerManagerCore>().SetElement(mostRecentElement);
