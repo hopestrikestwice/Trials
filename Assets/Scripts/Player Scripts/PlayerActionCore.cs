@@ -119,6 +119,7 @@ public class PlayerActionCore : MonoBehaviourPun
     }
     #endregion
 
+    #region Public Functions
     /* TODO: more clear method to manipulate moveability? */
     public void setImmobile(bool m)
     {
@@ -130,6 +131,23 @@ public class PlayerActionCore : MonoBehaviourPun
         this.currentElement = element;
         Debug.Log("Changing Element (action): "+element);
     }
+
+    public void FinishSecondarySkillLogic() {
+        if (photonView.IsMine) {
+            playerUI.UnshadeIcon(SkillUI.SECONDARY);
+        }
+
+        this.immobile = false;
+    }
+
+    public void FinishUltimateLogic() {
+        if (photonView.IsMine) {
+            playerUI.UnshadeIcon(SkillUI.ULTIMATE);
+        }
+
+        this.immobile = false;
+    }
+    #endregion
 
     #region Private Functions
     private void ActivateBasicAttack()
@@ -204,7 +222,16 @@ public class PlayerActionCore : MonoBehaviourPun
 
     #region Animation Events
 
-    public void FinishBasicAttack()
+    public void FinishSecondarySkillAnimation()
+    {
+        animator.SetBool("isSecondarySkilling", false);
+    }
+    public void FinishUltimateAnimation() 
+    {
+        animator.SetBool("isUltimating", false);
+    }
+
+    public void FinishBasicAttack() // TODO: Eventually refactor so that this only finishes the animation?
     {
         animator.SetBool("isBasicAttacking", false);
 
@@ -216,7 +243,7 @@ public class PlayerActionCore : MonoBehaviourPun
         this.immobile = false;
     }
 
-    public void FinishSecondarySkill() {
+    public void FinishSecondarySkill() { // TODO: Delete function after all characters using FinishAnimation & FinishLogic
         animator.SetBool("isSecondarySkilling", false);
 
         if (photonView.IsMine) {
@@ -226,7 +253,7 @@ public class PlayerActionCore : MonoBehaviourPun
         this.immobile = false;
     }
 
-    public void FinishUltimate() {
+    public void FinishUltimate() { // TODO: Delete function after all characters using FinishAnimation & FinishLogic
         animator.SetBool("isUltimating", false);
 
         if (photonView.IsMine) {
