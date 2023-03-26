@@ -15,6 +15,7 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     private PlayerUI playerUI;
 
     private Animator animator;
+    private PlayerActionCore actionCoreScript;
 
     #region Secondary Skill Variables
     [SerializeField]
@@ -37,6 +38,14 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     private bool isCharging = false;
     #endregion
 
+    #region Animation variables
+    // Used to tell how long the secondary/ultimate skills take
+    [SerializeField]
+    private AnimationClip secondarySkillClip;
+    [SerializeField]
+    private AnimationClip ultimateClip;
+    #endregion
+
     #endregion
 
     #region Monobehaviour Callbacks
@@ -51,6 +60,20 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         if (!animator)
         {
             Debug.LogError("BeserkerSkills is Missing Animator Component", this);
+        }
+
+        actionCoreScript = GetComponent<PlayerActionCore>();
+        if (!actionCoreScript)
+        {
+            Debug.LogError("BeserkerSkills is Missing PlayerActionCore.cs");
+        }
+        if (!secondarySkillClip)
+        {
+            Debug.LogError("BeserkerSkills is Missing Secondary Skill Animation Clip");
+        }
+        if (!ultimateClip)
+        {
+            Debug.LogError("BeserkerSkills is Missing Ultimate Animation Clip");
         }
     }
 
@@ -74,6 +97,8 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     {
         Debug.Log("Berserker Shield");
         animator.SetBool("isSecondarySkilling", true);
+
+        actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClip.length);
     }
 
     public void ActivateUltimate()
@@ -128,6 +153,8 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
                 animator.SetBool("isUltimating", true);
                 animator.SetBool("isCharging", false);
                 isCharging = false;
+
+                actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
 
                 if (charge >= maxCharge)
                 {
