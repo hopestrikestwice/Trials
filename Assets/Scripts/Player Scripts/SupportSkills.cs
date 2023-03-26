@@ -60,21 +60,21 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         animator = GetComponent<Animator>();
         if (!animator)
         {
-            Debug.LogError("BeserkerSkills is Missing Animator Component", this);
+            Debug.LogError("SupportSkills is Missing Animator Component", this);
         }
 
         actionCoreScript = GetComponent<PlayerActionCore>();
         if (!actionCoreScript)
         {
-            Debug.LogError("TankSkills is Missing PlayerActionCore.cs");
+            Debug.LogError("SupportSkills is Missing PlayerActionCore.cs");
         }
         if (!secondarySkillClip)
         {
-            Debug.LogError("TankSkills is Missing Secondary Skill Animation Clip");
+            Debug.LogError("SupportSkills is Missing Secondary Skill Animation Clip");
         }
         if (!ultimateClip)
         {
-            Debug.LogError("TankSkills is Missing Ultimate Animation Clip");
+            Debug.LogError("SupportSkills is Missing Ultimate Animation Clip");
         }
     }
 
