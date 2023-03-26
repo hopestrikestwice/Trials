@@ -36,6 +36,10 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     private float maxCharge = 1f;
 
     private bool isCharging = false;
+
+    private CharacterController controller;
+    private float slamForwardSpeed = 10f;
+    private bool isUltimatingMoveForward = false;
     #endregion
 
     #region Animation variables
@@ -75,6 +79,12 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         {
             Debug.LogError("BeserkerSkills is Missing Ultimate Animation Clip");
         }
+
+        this.controller = this.GetComponent<CharacterController>();
+        if (!controller)
+        {
+            Debug.LogError("PlayerActionCore is missing CharacterController Component", this);
+        }
     }
 
     void Update()
@@ -87,6 +97,14 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         if (isCharging)
         {
             HandleAttack();
+        }
+
+        if (isUltimatingMoveForward)
+        {
+            Vector3 distance = this.transform.forward * slamForwardSpeed * Time.deltaTime;
+
+            // Apply Movement to Player
+            controller.Move(distance);
         }
     }
     #endregion
@@ -125,9 +143,6 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         {
             if ((Input.GetButtonDown("Fire3") || Input.GetButton("Fire3")))
             {
-
-                animator.SetBool("isCharging", true);
-
                 if (charge < maxCharge)
                 {
                     charge += Time.deltaTime;
@@ -151,13 +166,16 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
 
                 //Animations and fire attack
                 animator.SetBool("isUltimating", true);
-                animator.SetBool("isCharging", false);
                 isCharging = false;
 
+                isUltimatingMoveForward = true;
+
                 actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
+                this.Invoke("FinishUltimateMoveForward", ultimateClip.length / 3); // The berserker doesn't actually jump the full length of the ultimateClip animation.
 
                 if (charge >= maxCharge)
                 {
+                    Debug.Log("Berserker MaxCharge Fire!");
                     bullet = PhotonNetwork.Instantiate(this.chargedBulletPrefab.name, this.transform.position + Vector3.up * bulletOffset, this.transform.rotation);
                     bullet.GetComponent<ProjectileMovement>().SetLifetime(bulletLifetime * 2);
                 }
@@ -172,6 +190,10 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         }
     }
 
+    private void FinishUltimateMoveForward()
+    {
+        isUltimatingMoveForward = false;
+    }
     #endregion
 
     #region Animation Events
