@@ -15,6 +15,15 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     private PlayerUI playerUI;
 
     private Animator animator;
+    private PlayerActionCore actionCoreScript;
+
+    #region Animation variables
+    // Used to tell how long the secondary/ultimate skills take
+    [SerializeField]
+    private AnimationClip[] secondarySkillClips;
+    [SerializeField]
+    private AnimationClip ultimateClip;
+    #endregion
 
     #endregion
 
@@ -31,6 +40,20 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         if (!animator)
         {
             Debug.LogError("HealerSkills is Missing Animator Component", this);
+        }
+
+        actionCoreScript = GetComponent<PlayerActionCore>();
+        if (!actionCoreScript)
+        {
+            Debug.LogError("HealerSkills is Missing PlayerActionCore.cs");
+        }
+        if (secondarySkillClips.Length == 0)
+        {
+            Debug.LogError("HealerSkills is Missing Secondary Skill Animation Clip");
+        }
+        if (!ultimateClip)
+        {
+            Debug.LogError("HealerSkills is Missing Ultimate Animation Clip");
         }
     }
 
@@ -50,12 +73,21 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     {
         Debug.Log("Healer secondary skill activated");
         animator.SetBool("isSecondarySkilling", true);
+
+        // Calculate total length of secondary skill
+        float secondarySkillClipLength = 0;
+        foreach (AnimationClip secondarySkillClip in secondarySkillClips) {
+            secondarySkillClipLength += secondarySkillClip.length;
+        }
+        actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClipLength);
     }
 
     public void ActivateUltimate()
     {
         Debug.Log("AOE heal ability pressed");
         animator.SetBool("isUltimating", true);
+
+        actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
     }
     #endregion
 
