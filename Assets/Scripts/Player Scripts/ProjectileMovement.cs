@@ -54,7 +54,7 @@ public class ProjectileMovement : MonoBehaviour
         if (other.CompareTag("BossProjectile"))
         {
             Debug.Log("Proj hit Boss");
-            Debug.Log("PlayerSource "+playerSource+" PlayerType "+playerSource.GetComponent<PlayerManagerCore>().GetPlayerType());
+            // Debug.Log("PlayerSource "+playerSource+" PlayerType "+playerSource.GetComponent<PlayerManagerCore>().GetPlayerType());
             if (playerSource != null && playerSource.GetComponent<PlayerManagerCore>().GetPlayerType() == PlayerType.Healer)
             {
                 playerSource.GetComponent<PlayerActionCore>().AddCharge();

@@ -4,7 +4,7 @@ using UnityEngine;
 
 using Photon.Pun;
 
-public class HealerProjectile : MonoBehaviour
+public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
 {
     private int sigCharge;
     private GameObject playerSource;
@@ -13,6 +13,14 @@ public class HealerProjectile : MonoBehaviour
 
     private float lifetime = float.MaxValue;
     private float aliveTime = 0f;
+
+    private bool isMine;
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        object[] instantiationData = info.photonView.InstantiationData;
+        sigCharge = (int)instantiationData[0];
+    }
 
     public void SetLifetime(float l)
     {
@@ -55,21 +63,19 @@ public class HealerProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("BossProjectile")) //Boss?
+        if (other.CompareTag("BossProjectile"))
         {
             PhotonNetwork.Destroy(this.gameObject);
         }
-        if (other.CompareTag("Player") && other.gameObject != this.playerSource)
+        if (other.CompareTag("Player") && other.gameObject.GetComponent<PlayerManagerCore>().GetPlayerType() != PlayerType.Healer)
         {
-            Debug.Log("The healerProjectile's PlayerSource: "+this.playerSource);
-            //If tank is main, says this playerSource is none
-            Debug.Log("The player hit by heal: "+other.gameObject);
-            this.playerSource.GetComponent<PlayerManagerCore>().HealPlayer(this.sigCharge);
-            // other.gameObject.GetComponent<PlayerManagerCore>().HealPlayer(this.sigCharge);
-            //This does not heal that actual player even though it says it does ^ (might be healing clone?)
+            Debug.Log("Proj hit Player");
 
-            PhotonNetwork.Destroy(this.gameObject);
+            if (playerSource != null)
+            {
+                this.playerSource.GetComponent<PlayerManagerCore>().HealPlayer(this.sigCharge);
+            }
+            // PhotonNetwork.Destroy(this.gameObject);
         }
     }
-
 }

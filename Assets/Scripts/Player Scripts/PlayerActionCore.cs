@@ -191,7 +191,6 @@ public class PlayerActionCore : MonoBehaviourPun
             this.currentAttackProjectile.GetComponent<ProjectileMovement>().SetLifetime(attackProjectileLifetime);
         }
         this.currentAttackProjectile.GetComponent<ProjectileMovement>().SetPlayer(this.gameObject);
-        // Debug.Log("setting player of proj to "+this.gameObject.GetComponent<PlayerManagerCore>().GetPlayerType());
     }
 
     private void MoveCharacter()

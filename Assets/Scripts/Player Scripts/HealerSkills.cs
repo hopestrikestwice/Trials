@@ -67,16 +67,15 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 
     public void ActivateUltimate()
     {
+        Debug.Log("AOE heal ability pressed");
+        animator.SetBool("isUltimating", true);
         DoSignature();
-        // Debug.Log("AOE heal ability pressed");
-        // animator.SetBool("isUltimating", true);
     }
     #endregion
 
     #region Private Methods
     public void DoSignature()
     {
-        //Note: code below from player basic atk code for a projectile
         //Calculate direction for attack by intersecting mouse ray with selectable objects on raycastable layer.
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         int mainRaycastMask = 1 << 6; // Mask to just the main Raycast layer, so we only find hits to objects in that layer.
@@ -85,24 +84,17 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 
         if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, mainRaycastMask))
         {
-            Debug.Log("Hit object is: " + hitInfo.collider.name);
             this.transform.LookAt(new Vector3(hitInfo.point.x, 1, hitInfo.point.z));
-
-            // //If hit player object, then heal them - else if hit kraken, deals dmg to kraken
-            // Collider hitTarget = hitInfo.collider;
-            // if (hitTarget.compareTag("Player"))
-            // {
-            //     hitTarget.gameObject.GetComponent<PlayerManagerCore>().setHealth();
-            // }
         }
 
-        Debug.Log("AOE heal ability pressed");
-        animator.SetBool("isUltimating", true);
+        object[] myCustomInitData = new object[]
+        {
+            this.GetComponent<PlayerActionCore>().GetCharge()
+        };
 
-        bullet = PhotonNetwork.Instantiate(this.defaultBulletPrefab.name, this.transform.position + Vector3.up * bulletOffset, this.transform.rotation);
+        bullet = PhotonNetwork.Instantiate(this.defaultBulletPrefab.name, this.transform.position + Vector3.up * bulletOffset, this.transform.rotation, 0, myCustomInitData);
         bullet.GetComponent<HealerProjectile>().SetLifetime(bulletLifetime);
         bullet.GetComponent<HealerProjectile>().SetPlayer(this.gameObject);
-        bullet.GetComponent<HealerProjectile>().SetCharge(this.GetComponent<PlayerActionCore>().GetCharge());
     }
 
     #endregion
