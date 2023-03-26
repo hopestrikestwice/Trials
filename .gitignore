@@ -74,3 +74,6 @@ crashlytics-build.properties
 ########## Trials Specific Gitignores ##########
 .vsconfig
 /Other Media/
+
+# 3/26/2023 Ignoring Launcher.cs script so room string is not overwritten.
+/[Aa]ssets/Scripts/Launcher.cs
