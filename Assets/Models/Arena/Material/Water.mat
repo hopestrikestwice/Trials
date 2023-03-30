@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: water
+  m_Name: Water
   m_Shader: {fileID: -6465566751694194690, guid: 4ae4f694fefce874c925e0b8c26aff8f, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -59,8 +59,8 @@ Material:
     - _tester: 0.47
     m_Colors:
     - _Albedo: {r: 0, g: 0, b: 0, a: 0}
-    - _UV1: {r: 6, g: 6, b: 0.31, a: 0.53}
-    - _UV2: {r: 8, g: 8, b: 0, a: 0}
+    - _UV1: {r: 37, g: 30, b: 0.31, a: 0.53}
+    - _UV2: {r: 22, g: 21, b: 0, a: 0}
     - _Water_Speed1: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _Water_Speed2: {r: -0.1, g: -0.1, b: 0, a: 0}
     - _distancetest: {r: 0.61, g: 0.48, b: 0, a: 0}
