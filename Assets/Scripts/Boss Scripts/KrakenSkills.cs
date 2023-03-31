@@ -103,7 +103,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
             return;
         }
 
-        this.SlamTentacle(Random.Range(0, 3));
+        this.SlamTentacle(Random.Range(0, 4));
     }
 
     public void SwipeRandomTentacle()
@@ -113,7 +113,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
             return;
         }
 
-        this.SwipeTentacle(Random.Range(0, 3));
+        this.SwipeTentacle(Random.Range(0, 4));
     }
     #endregion
 
