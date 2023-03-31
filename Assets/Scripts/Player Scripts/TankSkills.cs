@@ -15,21 +15,12 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     private PlayerUI playerUI;
 
     private Animator animator;
-    private PlayerActionCore actionCoreScript;
 
     #region Shield Variables
     [SerializeField]
     private GameObject shieldSmallParticles;
     [SerializeField]
     private GameObject shieldLargeParticles;
-    #endregion
-
-    #region Animation variables
-    // Used to tell how long the secondary/ultimate skills take
-    [SerializeField]
-    private AnimationClip secondarySkillClip;
-    [SerializeField]
-    private AnimationClip ultimateClip;
     #endregion
 
     #endregion
@@ -57,20 +48,6 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
             shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = false;
             shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = false;
         }
-
-        actionCoreScript = GetComponent<PlayerActionCore>();
-        if (!actionCoreScript)
-        {
-            Debug.LogError("TankSkills is Missing PlayerActionCore.cs");
-        }
-        if (!secondarySkillClip)
-        {
-            Debug.LogError("TankSkills is Missing Secondary Skill Animation Clip");
-        }
-        if (!ultimateClip)
-        {
-            Debug.LogError("TankSkills is Missing Ultimate Animation Clip");
-        }
     }
 
     #endregion
@@ -81,16 +58,12 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     {
         Debug.Log("Shield button pressed.");
         animator.SetBool("isSecondarySkilling", true);
-
-        actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClip.length);
     }
 
     public void ActivateUltimate()
     {
         Debug.Log("Large shield button pressed.");
         animator.SetBool("isUltimating", true);
-
-        actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
     }
     #endregion
 
