@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_ToonShading 1
+  m_Name: Tentacle
   m_Shader: {fileID: -6465566751694194690, guid: 130138ed880a5454285609cfd30304a5, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []

@@ -76,7 +76,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
 
         if (val == 1)
         {
-            chainslamWait = 3;
+            chainslamWait = 4;
             animator.SetBool("chainslam", true);
         }
         else if (val == 0)
@@ -84,7 +84,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
             animator.SetBool("chainslam", false);
 
             //iterate through tentacles, finishing the chainslam on each.
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 Transform tentacle = this.transform.GetChild(i);
                 tentacle.GetComponent<TentacleAnimationManager>().SetChainslam(0);

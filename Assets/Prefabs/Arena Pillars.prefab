@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4676931441208433554}
   m_Layer: 0
-  m_Name: Pillars
+  m_Name: Arena Pillars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
