@@ -38,8 +38,6 @@ public class PlayerActionCore : MonoBehaviourPun
 
     private float attackProjectileOffset = 1f;
     private float attackProjectileLifetime = 1f;
-    private int sigCharge = 0;
-    private bool isBlocked = false; //for healer's skill
 
     #endregion
 
@@ -109,10 +107,9 @@ public class PlayerActionCore : MonoBehaviourPun
 
             if (Input.GetButtonDown("Fire3"))
             {
-                Debug.Log("Signature Charges: "+this.sigCharge);
                 PlayerType playerType = this.GetComponent<PlayerManagerCore>().GetPlayerType();
                 Debug.Log("PlayerType "+playerType);
-                if (playerType != PlayerType.Healer || (playerType == PlayerType.Healer && this.sigCharge > 0))
+                if (playerType != PlayerType.Healer || (playerType == PlayerType.Healer && this.GetComponent<HealerSkills>().GetCharge() > 0))
                 {
                     immobile = true;
                     if (photonView.IsMine)
@@ -120,7 +117,7 @@ public class PlayerActionCore : MonoBehaviourPun
                         playerUI.ShadeIcon(SkillUI.ULTIMATE);
                     }
                     skills.ActivateUltimate();
-                    if (playerType == PlayerType.Healer) this.sigCharge = 0;
+                    if (playerType == PlayerType.Healer) this.GetComponent<HealerSkills>().ResetCharge();
                 }
             }
         }
@@ -139,28 +136,6 @@ public class PlayerActionCore : MonoBehaviourPun
     {
         this.currentElement = element;
         Debug.Log("Changing Element (action): "+element);
-    }
-
-    //Increments signature charge
-    public void AddCharge()
-    {
-        if (this.sigCharge < 5) this.sigCharge++;
-        Debug.Log("Added charge - total charge: "+this.sigCharge);
-    }
-
-    public int GetCharge()
-    {
-        return this.sigCharge;
-    }
-
-    public bool IsBlocked()
-    {
-        return this.isBlocked;
-    }
-
-    public void Block()
-    {
-        this.isBlocked = true;
     }
 
     #region Private Functions
@@ -235,24 +210,6 @@ public class PlayerActionCore : MonoBehaviourPun
 
     #endregion
 
-    #region IPunObservable Implementation
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            // We own this player: send others our data
-            stream.SendNext(this.sigCharge);
-        }
-        else
-        {
-            //Network player, receive data
-            this.sigCharge = (int)stream.ReceiveNext();
-        }
-    }
-
-    #endregion
-
     #region Animation Events
 
     public void FinishBasicAttack()
@@ -275,7 +232,10 @@ public class PlayerActionCore : MonoBehaviourPun
         }
 
         this.immobile = false;
-        this.isBlocked = false;
+        if (this.GetComponent<PlayerManagerCore>().GetPlayerType() == PlayerType.Healer)
+        {
+            this.GetComponent<HealerSkills>().Block(false);
+        }
     }
 
     public void FinishUltimate() {

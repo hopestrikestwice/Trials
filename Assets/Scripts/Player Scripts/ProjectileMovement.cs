@@ -57,7 +57,7 @@ public class ProjectileMovement : MonoBehaviour
             // Debug.Log("PlayerSource "+playerSource+" PlayerType "+playerSource.GetComponent<PlayerManagerCore>().GetPlayerType());
             if (playerSource != null && playerSource.GetComponent<PlayerManagerCore>().GetPlayerType() == PlayerType.Healer)
             {
-                playerSource.GetComponent<PlayerActionCore>().AddCharge();
+                playerSource.GetComponent<HealerSkills>().AddCharge();
             }
             PhotonNetwork.Destroy(this.gameObject);
         }

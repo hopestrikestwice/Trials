@@ -25,6 +25,8 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 
     private float bulletOffset = 1f;
     private float bulletLifetime = 1f;
+    private int sigCharge = 0;
+    private bool isBlocked = false;
 
     #endregion
 
@@ -62,7 +64,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     {
         Debug.Log("Healer secondary skill activated");
         animator.SetBool("isSecondarySkilling", true);
-        this.GetComponent<PlayerActionCore>().Block();
+        Block(true);
     }
 
     public void ActivateUltimate()
@@ -73,7 +75,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     }
     #endregion
 
-    #region Private Methods
+    #region Public Methods
     public void DoSignature()
     {
         //Calculate direction for attack by intersecting mouse ray with selectable objects on raycastable layer.
@@ -89,12 +91,57 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 
         object[] myCustomInitData = new object[]
         {
-            this.GetComponent<PlayerActionCore>().GetCharge()
+            GetCharge()
         };
 
         bullet = PhotonNetwork.Instantiate(this.defaultBulletPrefab.name, this.transform.position + Vector3.up * bulletOffset, this.transform.rotation, 0, myCustomInitData);
         bullet.GetComponent<HealerProjectile>().SetLifetime(bulletLifetime);
         bullet.GetComponent<HealerProjectile>().SetPlayer(this.gameObject);
+    }
+
+    //Increments signature charge
+    public void AddCharge()
+    {
+        if (this.sigCharge < 5) this.sigCharge++;
+        Debug.Log("Added charge - total charge: "+this.sigCharge);
+    }
+
+    public void ResetCharge()
+    {
+        this.sigCharge = 0;
+    }
+
+    public int GetCharge()
+    {
+        return this.sigCharge;
+    }
+
+    public bool IsBlocked()
+    {
+        return this.isBlocked;
+    }
+
+    public void Block(bool blocked)
+    {
+        this.isBlocked = blocked;
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // if (other.CompareTag("BossProjectile") && (this.playerType == PlayerType.Healer && this.gameObject.GetComponent<HealerSkills>().IsBlocked()))
+        // {
+        //     Debug.Log("Boss atk blocked by healer");
+        //     this.gameObject.GetComponent<HealerSkills>().AddCharge();
+        // }
+        if (other.CompareTag("BossProjectile") && IsBlocked())
+        {
+            Debug.Log("Boss atk blocked by healer");
+            AddCharge();
+        }
     }
 
     #endregion

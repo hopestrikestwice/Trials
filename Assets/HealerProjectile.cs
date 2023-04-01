@@ -73,9 +73,14 @@ public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
 
             if (playerSource != null)
             {
+                //Heals healer
                 this.playerSource.GetComponent<PlayerManagerCore>().HealPlayer(this.sigCharge);
             }
-            // PhotonNetwork.Destroy(this.gameObject);
+            if (photonView.IsMine)
+            {
+                PhotonNetwork.Destroy(this.gameObject);
+            }
+            
         }
     }
 }

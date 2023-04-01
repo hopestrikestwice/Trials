@@ -105,13 +105,6 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             this.Health -= 0.2f;
         }
 
-        if (other.CompareTag("BossProjectile") && this.gameObject.GetComponent<PlayerActionCore>().IsBlocked())
-        {
-            //Note: Should only run if player is healer - isBlocked only changed in HealerSkills.cs
-            Debug.Log("Boss atk blocked by healer");
-            this.gameObject.GetComponent<PlayerActionCore>().AddCharge();
-        }
-
         if (other.CompareTag("Shield"))
         {
             Debug.Log("Player is now shielded");
