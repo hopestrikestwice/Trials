@@ -190,7 +190,6 @@ public class PlayerActionCore : MonoBehaviourPun
         this.cameraForward.y = 0;
 
         // Calculate the Direction to Move based on the tranform of the Player
-        Debug.Log("Camera Forward is: " + this.cameraForward);
         Vector3 moveDirectionForward = this.cameraForward * verticalInput;
         Vector3 moveDirectionSide = -1 * Vector3.Cross(this.cameraForward, Vector3.up) * horizontalInput;
         // Normalize the direction
