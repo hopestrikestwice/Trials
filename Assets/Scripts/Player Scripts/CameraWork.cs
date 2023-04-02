@@ -75,6 +75,14 @@ public class CameraWork : MonoBehaviour
         isFollowing = true;
     }
 
+    /// <summary>
+    /// Returns the main camera's current transform component.
+    /// </summary>
+    public Transform GetCameraTransform()
+    {
+        return cameraTransform;
+    }
+
     #endregion
 
     #region Private Methods
