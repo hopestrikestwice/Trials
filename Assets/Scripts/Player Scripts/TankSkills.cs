@@ -15,6 +15,7 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
     private PlayerUI playerUI;
 
     private Animator animator;
+    private PlayerActionCore actionCoreScript;
 
     #region Shield Variables
      [Header("Shielding GameObjects")]
@@ -80,6 +81,20 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
             shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = false;
             shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = false;
         }
+
+        actionCoreScript = GetComponent<PlayerActionCore>();
+        if (!actionCoreScript)
+        {
+            Debug.LogError("TankSkills is Missing PlayerActionCore.cs");
+        }
+        if (!secondarySkillClip)
+        {
+            Debug.LogError("TankSkills is Missing Secondary Skill Animation Clip");
+        }
+        if (!ultimateClip)
+        {
+            Debug.LogError("TankSkills is Missing Ultimate Animation Clip");
+        }
     }
 
     #endregion
@@ -102,8 +117,8 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
         animator.SetBool("isUltimating", true);
         largeShieldEnabled = true; // enable the large shield, so that it collides with players
 
-        actionCoreScript.Invoke("FinishUltimateLogic", 20);
-        Invoke("DeactivateLargeShield", 20);
+        actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
+        Invoke("DeactivateLargeShield", ultimateClip.length);
     }
     #endregion
 
