@@ -16,24 +16,19 @@ public class CameraWork : MonoBehaviour
     private float distance = 8.0f;
 
     [Tooltip("The height we want the camera to be above the target")]
-    private float height = 5.0f;
-
-    [Tooltip("Allow the camera to be offset vertically from the target, for example giving more view of the scenery and less ground.")]
-    private Vector3 centerOffset = Vector3.up * 3.6f;
+    private float height = 3.0f;
 
     [Tooltip("Set this as false if a component of a prefab being instantiated by Photon Network. Manually call OnStartFollowing() if needed.")]
     [SerializeField]
     private bool followOnStart = false;
 
-    // cached transform of the target
+    // cached transform of the camera gameobject
     Transform cameraTransform;
 
     // maintain a flag internally to reconnect if target is lost or camera is switched
     bool isFollowing;
 
-    // cache for camera offset
-    Vector3 cameraOffset = Vector3.zero;
-
+    Vector2 cameraTurn;
     #endregion
 
     #region Monobehaviour Callbacks
@@ -41,6 +36,9 @@ public class CameraWork : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Make cursor disappear
+        Cursor.lockState = CursorLockMode.Locked;
+
         if (followOnStart)
         {
             OnStartFollowing();
@@ -77,6 +75,14 @@ public class CameraWork : MonoBehaviour
         isFollowing = true;
     }
 
+    /// <summary>
+    /// Returns the main camera's current transform component.
+    /// </summary>
+    public Transform GetCameraTransform()
+    {
+        return cameraTransform;
+    }
+
     #endregion
 
     #region Private Methods
@@ -86,13 +92,19 @@ public class CameraWork : MonoBehaviour
     /// </summary>
     void Follow()
     {
-        cameraOffset.z = -distance;
-        cameraOffset.y = height;
+        // Calculate which way the camera is facing using mouse.
+        cameraTurn.x += Input.GetAxis("Mouse X") * 12.0f;
+        cameraTurn.y += Input.GetAxis("Mouse Y") * 1.0f;
+        cameraTransform.localRotation = Quaternion.Euler(8.0f - cameraTurn.y, cameraTurn.x, 0);
 
-        Vector3 newPosition = this.transform.position + new Vector3(distance, height, -distance);
+        // Start calculating camera position from the character's position
+        Vector3 newPosition = this.transform.position;
+        // Add some height
+        newPosition += Vector3.up * height;
+        // Now shift it back some distance, so it's behind the player and looking at them.
+        newPosition += -1 * cameraTransform.forward * distance;
+        // Set this as the camera's new position
         cameraTransform.position = newPosition;
-
-        cameraTransform.LookAt(this.transform.position + centerOffset);
     }
 
     #endregion
