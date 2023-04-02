@@ -9,23 +9,47 @@ using UnityEngine;
 
 using Photon.Pun;
 
-public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
+public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservable
 {
     #region Private Fields
     private PlayerUI playerUI;
 
     private Animator animator;
+    private PlayerActionCore actionCoreScript;
 
     #region Shield Variables
+     [Header("Shielding GameObjects")]
     [SerializeField]
     private GameObject shieldSmallParticles;
     [SerializeField]
     private GameObject shieldLargeParticles;
+    [SerializeField]
+    private GameObject smallShield;
+    [SerializeField]
+    private GameObject largeShield;
+    private bool smallShieldEnabled = false;
+    private bool largeShieldEnabled = false;
+
+    #endregion
+
+    #region Animation variables
+     [Header("Animation Clips")]
+    // Used to tell how long the secondary/ultimate skills take
+    [SerializeField]
+    private AnimationClip secondarySkillClip;
+    [SerializeField]
+    private AnimationClip ultimateClip;
     #endregion
 
     #endregion
 
     #region Monobehaviour
+
+    private void Update()
+    {
+        smallShield.SetActive(smallShieldEnabled);
+        largeShield.SetActive(largeShieldEnabled);
+    }
 
     private void Start()
     {
@@ -40,6 +64,15 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
             Debug.LogError("BeserkerSkills is Missing Animator Component", this);
         }
 
+        if (!smallShield || !largeShield)
+        {
+            Debug.LogError("TankSkills is Missing Shield GameObject", this);
+        }
+        else {
+            smallShieldEnabled = false;
+            largeShieldEnabled = false;
+        }
+
         if (!shieldSmallParticles || !shieldLargeParticles)
         {
             Debug.LogError("TankSkills is Missing Shield Particles", this);
@@ -47,6 +80,20 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
         else {
             shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = false;
             shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = false;
+        }
+
+        actionCoreScript = GetComponent<PlayerActionCore>();
+        if (!actionCoreScript)
+        {
+            Debug.LogError("TankSkills is Missing PlayerActionCore.cs");
+        }
+        if (!secondarySkillClip)
+        {
+            Debug.LogError("TankSkills is Missing Secondary Skill Animation Clip");
+        }
+        if (!ultimateClip)
+        {
+            Debug.LogError("TankSkills is Missing Ultimate Animation Clip");
         }
     }
 
@@ -58,12 +105,34 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     {
         Debug.Log("Shield button pressed.");
         animator.SetBool("isSecondarySkilling", true);
+        smallShieldEnabled = true; // enable the small shield, so that it collides with players
+
+        actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClip.length);
+        Invoke("DeactivateSmallShield", secondarySkillClip.length);
     }
 
     public void ActivateUltimate()
     {
         Debug.Log("Large shield button pressed.");
         animator.SetBool("isUltimating", true);
+        largeShieldEnabled = true; // enable the large shield, so that it collides with players
+
+        actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
+        Invoke("DeactivateLargeShield", ultimateClip.length);
+    }
+    #endregion
+
+    #region Invoked Functions
+    /* Functions that deal with additional skill logic that need to be invoked.
+    Usually signals the end of a skill */
+    public void DeactivateSmallShield()
+    {
+        smallShieldEnabled = false;
+    }
+
+    public void DeactivateLargeShield()
+    {
+        largeShieldEnabled = false;
     }
     #endregion
 
@@ -100,6 +169,24 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     public void FinishLargeShieldParticles()
     {
         shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = false;
+    }
+    #endregion
+
+    #region IPunObservable Implementation
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // We own this player: send others our data
+            stream.SendNext(this.smallShieldEnabled);
+            stream.SendNext(this.largeShieldEnabled);
+        }
+        else 
+        {
+            // Network player, receive data
+            this.smallShieldEnabled = (bool)stream.ReceiveNext();
+            this.largeShieldEnabled = (bool)stream.ReceiveNext();
+        }
     }
     #endregion
 
