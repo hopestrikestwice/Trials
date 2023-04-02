@@ -72,14 +72,15 @@ public class BossActionCore : MonoBehaviourPun
     #region Private Methods
     private void RandomAttack()
     {
-        int randNum = Random.Range(0, 2);
+        int randNum = Random.Range(0, 3);
 
         switch (randNum)
         {
             case 0:
+            case 1:
                 this.skills.ActivateRandomBasicAttack();
                 break;
-            case 1:
+            case 2:
                 this.skills.ActivateRandomSpecialAttack();
                 break;
         }

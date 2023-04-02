@@ -15,7 +15,6 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
     private PlayerUI playerUI;
 
     private Animator animator;
-    private PlayerActionCore actionCoreScript;
 
     #region Shield Variables
      [Header("Shielding GameObjects")]
@@ -80,20 +79,6 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
         else {
             shieldSmallParticles.GetComponent<ParticleSystem>().enableEmission = false;
             shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = false;
-        }
-
-        actionCoreScript = GetComponent<PlayerActionCore>();
-        if (!actionCoreScript)
-        {
-            Debug.LogError("TankSkills is Missing PlayerActionCore.cs");
-        }
-        if (!secondarySkillClip)
-        {
-            Debug.LogError("TankSkills is Missing Secondary Skill Animation Clip");
-        }
-        if (!ultimateClip)
-        {
-            Debug.LogError("TankSkills is Missing Ultimate Animation Clip");
         }
     }
 

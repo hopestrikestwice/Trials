@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.LogFormat("Instantiating Kraken from {0}", Application.loadedLevelName);
 
             PhotonNetwork.Instantiate(this.krakenPrefab.name,
-                                        new Vector3(0f, 0f, 20f),
+                                        new Vector3(0f, 0f, 0f),
                                         Quaternion.Euler(0, -90, 0),
                                         0);
         }

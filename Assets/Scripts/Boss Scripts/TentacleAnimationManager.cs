@@ -41,7 +41,7 @@ public class TentacleAnimationManager : MonoBehaviourPun
             }
             if (animator.GetBool("chainslam"))
             {
-                this.transform.rotation = Quaternion.Euler(0, 270, 0);
+                this.transform.LookAt(Vector3.zero);
             }
         }
     }
@@ -160,7 +160,6 @@ public class TentacleAnimationManager : MonoBehaviourPun
         }
 
         this.transform.LookAt(closestPlayer.transform);
-        this.transform.Rotate(0, 90, 0);
     }
 
     #endregion
