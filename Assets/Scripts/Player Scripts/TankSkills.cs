@@ -9,7 +9,7 @@ using UnityEngine;
 
 using Photon.Pun;
 
-public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
+public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservable
 {
     #region Private Fields
     private PlayerUI playerUI;
@@ -27,6 +27,9 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     private GameObject smallShield;
     [SerializeField]
     private GameObject largeShield;
+    private bool smallShieldEnabled = false;
+    private bool largeShieldEnabled = false;
+
     #endregion
 
     #region Animation variables
@@ -41,6 +44,12 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     #endregion
 
     #region Monobehaviour
+
+    private void Update()
+    {
+        smallShield.SetActive(smallShieldEnabled);
+        largeShield.SetActive(largeShieldEnabled);
+    }
 
     private void Start()
     {
@@ -60,8 +69,8 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
             Debug.LogError("TankSkills is Missing Shield GameObject", this);
         }
         else {
-            smallShield.SetActive(false);
-            largeShield.SetActive(false);
+            smallShieldEnabled = false;
+            largeShieldEnabled = false;
         }
 
         if (!shieldSmallParticles || !shieldLargeParticles)
@@ -96,7 +105,7 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     {
         Debug.Log("Shield button pressed.");
         animator.SetBool("isSecondarySkilling", true);
-        smallShield.SetActive(true); // enable the small shield, so that it collides with players
+        smallShieldEnabled = true; // enable the small shield, so that it collides with players
 
         actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClip.length);
         Invoke("DeactivateSmallShield", secondarySkillClip.length);
@@ -106,10 +115,10 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     {
         Debug.Log("Large shield button pressed.");
         animator.SetBool("isUltimating", true);
-        largeShield.SetActive(true); // enable the large shield, so that it collides with players
+        largeShieldEnabled = true; // enable the large shield, so that it collides with players
 
-        actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
-        Invoke("DeactivateLargeShield", ultimateClip.length);
+        actionCoreScript.Invoke("FinishUltimateLogic", 20);
+        Invoke("DeactivateLargeShield", 20);
     }
     #endregion
 
@@ -118,12 +127,12 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     Usually signals the end of a skill */
     public void DeactivateSmallShield()
     {
-        smallShield.SetActive(false);
+        smallShieldEnabled = false;
     }
 
     public void DeactivateLargeShield()
     {
-        largeShield.SetActive(false);
+        largeShieldEnabled = false;
     }
     #endregion
 
@@ -160,6 +169,24 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills
     public void FinishLargeShieldParticles()
     {
         shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = false;
+    }
+    #endregion
+
+    #region IPunObservable Implementation
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // We own this player: send others our data
+            stream.SendNext(this.smallShieldEnabled);
+            stream.SendNext(this.largeShieldEnabled);
+        }
+        else 
+        {
+            // Network player, receive data
+            this.smallShieldEnabled = (bool)stream.ReceiveNext();
+            this.largeShieldEnabled = (bool)stream.ReceiveNext();
+        }
     }
     #endregion
 
