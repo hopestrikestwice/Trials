@@ -30,11 +30,15 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
         krakenUI.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
     }
 
+    private void Update()
+    {
+        PhaseCheck();
+    }
+
     public void Hit()
     {
         Debug.Log("Boss Hit!");
         Health -= 0.25f;
-        PhaseCheck();
     }
 
     public float GetHealth()
