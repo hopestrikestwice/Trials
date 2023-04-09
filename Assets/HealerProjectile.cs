@@ -61,6 +61,18 @@ public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
         }
     }
 
+    void LateUpdate()
+    {
+        if (playerHealed)
+        {
+            playerHealed = false;
+            if (photonView.IsMine)
+            {
+                PhotonNetwork.Destroy(this.gameObject);
+            }
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("BossProjectile"))
@@ -78,15 +90,12 @@ public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
             {
                 //Heals healer
                 this.playerSource.GetComponent<PlayerManagerCore>().HealPlayer((float)(this.sigCharge/5.0));
+                playerHealed = true;
 
                 //Heals player
                 // other.gameObject.GetComponent<PlayerManagerCore>().HealPlayer((float)(this.sigCharge/5.0));
 
                 //Ideally, should destory the projectile after collision with player
-                if (photonView.IsMine && other.gameObject.GetComponent<PlayerManagerCore>().getIsHealed())
-                {
-                    PhotonNetwork.Destroy(this.gameObject);
-                }
             }
         }
     }
