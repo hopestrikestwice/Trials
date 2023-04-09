@@ -83,7 +83,7 @@ public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
                 // other.gameObject.GetComponent<PlayerManagerCore>().HealPlayer((float)(this.sigCharge/5.0));
 
                 //Ideally, should destory the projectile after collision with player
-                if (photonView.IsMine)
+                if (photonView.IsMine && other.gameObject.GetComponent<PlayerManagerCore>().getIsHealed())
                 {
                     PhotonNetwork.Destroy(this.gameObject);
                 }
