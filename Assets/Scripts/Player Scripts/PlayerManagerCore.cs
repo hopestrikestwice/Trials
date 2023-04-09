@@ -30,6 +30,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     private float Health = 1f;
 
     private bool isShielded = false;
+    private bool isProtected = false;
     private Element currentElement = Element.None;
 
     #endregion
@@ -100,7 +101,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         //If object is a boss projectile, decrement health
-        if (other.CompareTag("BossProjectile") && !isShielded)
+        if (other.CompareTag("BossProjectile") && !(isShielded || isProtected))
         {
             Debug.Log("player hit!");
             this.Health -= 0.25f;
@@ -109,7 +110,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         if (other.CompareTag("Shield"))
         {
             Debug.Log("Player is now shielded");
-            this.isShielded = true;
+            this.isProtected = true;
         }
 
         if (other.CompareTag("Heal"))
@@ -139,7 +140,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         if (other.CompareTag("Shield"))
         {
             Debug.Log("Player no longer shielded");
-            this.isShielded = false;
+            this.isProtected = false;
         }
 
         //Removes element buff?
@@ -183,6 +184,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             // We own this player: send others our data
             stream.SendNext(this.Health);
             stream.SendNext(this.isShielded);
+            stream.SendNext(this.isProtected);
             stream.SendNext(this.currentElement);
         }
         else
@@ -190,6 +192,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             //Network player, receive data
             this.Health = (float)stream.ReceiveNext();
             this.isShielded = (bool)stream.ReceiveNext();
+            this.isProtected = (bool)stream.ReceiveNext();
             
             // if ((bool)stream.ReceiveNext())
             this.currentElement = (Element)stream.ReceiveNext();
@@ -223,6 +226,12 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     public PlayerUI getPlayerUI()
     {
         return playerUI.GetComponent<PlayerUI>();
+    }
+
+    public void SetShielded(bool shielded)
+    {
+        this.isShielded = shielded;
+        Debug.Log("Shielded value set to: "+shielded);
     }
 
     #endregion

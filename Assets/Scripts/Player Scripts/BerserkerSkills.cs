@@ -116,7 +116,7 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         Debug.Log("Berserker Shield");
         animator.SetBool("isSecondarySkilling", true);
 
-        actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClip.length);
+        StartCoroutine(SecondarySkill());
     }
 
     public void ActivateUltimate()
@@ -135,6 +135,17 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     #endregion
 
     #region Private Methods
+
+    IEnumerator SecondarySkill() {
+        // Start skill
+        GetComponent<PlayerManagerCore>().SetShielded(true);
+        
+        // Wait until skill is over
+        yield return new WaitForSeconds(secondarySkillClip.length);
+        // End skill
+        GetComponent<PlayerManagerCore>().SetShielded(false);
+        actionCoreScript.FinishSecondarySkill();
+    }
 
     /* not properly named, but this is for the ultimate (charged) attack */
     private void HandleAttack()
