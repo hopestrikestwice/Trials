@@ -13,9 +13,16 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 {
     #region Private Fields
     private PlayerUI playerUI;
-
-    private Animator animator;    
+    private Animator animator;
+    private PlayerActionCore actionCoreScript;
     private GameObject healer;
+
+    #region Animation variables
+    // Used to tell how long the secondary/ultimate skills take
+    [SerializeField]
+    private AnimationClip[] secondarySkillClips;
+    [SerializeField]
+    private AnimationClip ultimateClip;
 
     #region Attack Variables
     [SerializeField]
@@ -27,7 +34,6 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     private float bulletLifetime = 1f;
     private int sigCharge = 0;
     private bool isBlocked = false;
-
     #endregion
 
     #endregion
@@ -45,6 +51,20 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         if (!animator)
         {
             Debug.LogError("HealerSkills is Missing Animator Component", this);
+        }
+
+        actionCoreScript = GetComponent<PlayerActionCore>();
+        if (!actionCoreScript)
+        {
+            Debug.LogError("HealerSkills is Missing PlayerActionCore.cs");
+        }
+        if (secondarySkillClips.Length == 0)
+        {
+            Debug.LogError("HealerSkills is Missing Secondary Skill Animation Clip");
+        }
+        if (!ultimateClip)
+        {
+            Debug.LogError("HealerSkills is Missing Ultimate Animation Clip");
         }
     }
 
@@ -69,6 +89,13 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         Debug.Log("Healer secondary skill activated");
         animator.SetBool("isSecondarySkilling", true);
         isBlocked = true;
+
+        // Calculate total length of secondary skill
+        float secondarySkillClipLength = 0;
+        foreach (AnimationClip secondarySkillClip in secondarySkillClips) {
+            secondarySkillClipLength += secondarySkillClip.length;
+        }
+        actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClipLength);
     }
 
     public void ActivateUltimate()
@@ -78,6 +105,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
             animator.SetBool("isUltimating", true);
             DoSignature();
             ResetCharge();
+            actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
         }
         else {
             this.GetComponent<PlayerActionCore>().setImmobile(false);

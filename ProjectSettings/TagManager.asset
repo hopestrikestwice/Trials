@@ -9,6 +9,7 @@ TagManager:
   - ElementBuff
   - BossProjectile
   - Heal
+  - Boss
   layers:
   - Default
   - TransparentFX

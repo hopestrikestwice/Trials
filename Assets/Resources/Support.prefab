@@ -1652,7 +1652,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 581982328727969401}
-  m_LocalRotation: {x: -0.011129071, y: -0.09573345, z: -0.02431777, w: 0.9950477}
+  m_LocalRotation: {x: -0.011129072, y: -0.09573345, z: -0.024317771, w: 0.9950477}
   m_LocalPosition: {x: -0.07146283, y: -3.5527135e-16, z: -4.2632563e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14568,7 +14568,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -26333,6 +26333,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e7698fe6fdb6254a8bf6d70141d940f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  secondarySkillClip: {fileID: 7400000, guid: a6d3c047f8514574aa1845d5b48ed02e, type: 2}
+  ultimateClip: {fileID: 7400000, guid: ccc7e02d0ea585a439f06db51f788917, type: 2}
 --- !u!114 &-1217730770703855096
 MonoBehaviour:
   m_ObjectHideFlags: 0

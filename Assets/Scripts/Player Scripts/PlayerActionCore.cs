@@ -16,6 +16,7 @@ public class PlayerActionCore : MonoBehaviourPun
     private PlayerUI playerUI;
 
     private CharacterController controller;
+    private Vector3 cameraForward; // character's "forward" direction is where camera is facing
     private float walkSpeed = 7f;
     private float gravity = 9.8f;
     private bool immobile = false;
@@ -121,6 +122,7 @@ public class PlayerActionCore : MonoBehaviourPun
     }
     #endregion
 
+    #region Public Functions
     /* TODO: more clear method to manipulate moveability? */
     public void setImmobile(bool m)
     {
@@ -132,6 +134,23 @@ public class PlayerActionCore : MonoBehaviourPun
         this.currentElement = element;
         Debug.Log("Changing Element (action): "+element);
     }
+
+    public void FinishSecondarySkillLogic() {
+        if (photonView.IsMine) {
+            playerUI.UnshadeIcon(SkillUI.SECONDARY);
+        }
+
+        this.immobile = false;
+    }
+
+    public void FinishUltimateLogic() {
+        if (photonView.IsMine) {
+            playerUI.UnshadeIcon(SkillUI.ULTIMATE);
+        }
+
+        this.immobile = false;
+    }
+    #endregion
 
     #region Private Functions
     private void ActivateBasicAttack()
@@ -169,13 +188,15 @@ public class PlayerActionCore : MonoBehaviourPun
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        // Calculate the Direction to Move based on the tranform of the Player
-        Vector3 moveDirectionForward = Vector3.forward * verticalInput;
-        Vector3 moveDirectionSide = Vector3.right * horizontalInput;
+        // Get the camera's forward direction on x-z plane
+        this.cameraForward = this.gameObject.GetComponent<CameraWork>().GetCameraTransform().forward;
+        this.cameraForward.y = 0;
 
-        //find the direction
+        // Calculate the Direction to Move based on the tranform of the Player
+        Vector3 moveDirectionForward = this.cameraForward * verticalInput;
+        Vector3 moveDirectionSide = -1 * Vector3.Cross(this.cameraForward, Vector3.up) * horizontalInput;
+        // Normalize the direction
         Vector3 direction = (moveDirectionForward + moveDirectionSide).normalized;
-        direction = Quaternion.Euler(0, -45, 0) * direction;
 
         //cue animator bools for walking
         if (direction != Vector3.zero)
@@ -190,12 +211,10 @@ public class PlayerActionCore : MonoBehaviourPun
 
         //find the distance
         Vector3 distance = this.transform.forward * direction.magnitude * walkSpeed * Time.deltaTime;
-        
         if (immobile)
         {
             distance = Vector3.zero;
         }
-
         //Apply gravity to distance
         distance.y -= gravity * Time.deltaTime;
 
@@ -216,7 +235,16 @@ public class PlayerActionCore : MonoBehaviourPun
 
     #region Animation Events
 
-    public void FinishBasicAttack()
+    public void FinishSecondarySkillAnimation()
+    {
+        animator.SetBool("isSecondarySkilling", false);
+    }
+    public void FinishUltimateAnimation() 
+    {
+        animator.SetBool("isUltimating", false);
+    }
+
+    public void FinishBasicAttack() // TODO: Eventually refactor so that this only finishes the animation?
     {
         animator.SetBool("isBasicAttacking", false);
 
@@ -228,7 +256,7 @@ public class PlayerActionCore : MonoBehaviourPun
         this.immobile = false;
     }
 
-    public void FinishSecondarySkill() {
+    public void FinishSecondarySkill() { // TODO: Delete function after all characters using FinishAnimation & FinishLogic
         animator.SetBool("isSecondarySkilling", false);
 
         if (photonView.IsMine) {
@@ -238,7 +266,7 @@ public class PlayerActionCore : MonoBehaviourPun
         this.immobile = false;
     }
 
-    public void FinishUltimate() {
+    public void FinishUltimate() { // TODO: Delete function after all characters using FinishAnimation & FinishLogic
         animator.SetBool("isUltimating", false);
 
         if (photonView.IsMine) {

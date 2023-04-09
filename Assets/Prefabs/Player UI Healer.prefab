@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4100136559270405661, guid: 59e742994bac0374a90d4fc778eaf993, type: 3}
       propertyPath: m_Name
-      value: Player UI Tank
+      value: Player UI Healer
       objectReference: {fileID: 0}
     - target: {fileID: 4688564025219500833, guid: 59e742994bac0374a90d4fc778eaf993, type: 3}
       propertyPath: m_Pivot.x
