@@ -65,7 +65,10 @@ public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
     {
         if (other.CompareTag("BossProjectile"))
         {
-            PhotonNetwork.Destroy(this.gameObject);
+            if (photonView.IsMine)
+            {
+                PhotonNetwork.Destroy(this.gameObject);
+            }
         }
         if (other.CompareTag("Player") && other.gameObject.GetComponent<HealerSkills>() == null)
         {
@@ -80,10 +83,10 @@ public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
                 // other.gameObject.GetComponent<PlayerManagerCore>().HealPlayer((float)(this.sigCharge/5.0));
 
                 //Ideally, should destory the projectile after collision with player
-                // if (photonView.IsMine)
-                // {
-                //     PhotonNetwork.Destroy(this.gameObject);
-                // }
+                if (photonView.IsMine)
+                {
+                    PhotonNetwork.Destroy(this.gameObject);
+                }
             }
         }
     }

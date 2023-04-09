@@ -102,6 +102,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         {
             Debug.Log("Player hit!");
             this.Health -= 0.2f;
+            // this.Health -= 0.02f;
         }
 
         if (other.CompareTag("Shield"))
@@ -248,6 +249,10 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         this.isHealed = true;
         Debug.Log("Healing "+this.gameObject+"by "+amount);
         this.Health += amount;
+        if (this.Health > 1f)
+        {
+            this.Health = 1f;
+        }
     }
 
     public void UnhealPlayer(float amount)

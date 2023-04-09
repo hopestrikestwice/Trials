@@ -23,6 +23,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     private AnimationClip[] secondarySkillClips;
     [SerializeField]
     private AnimationClip ultimateClip;
+    #endregion
 
     #region Attack Variables
     [SerializeField]
@@ -112,6 +113,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
             playerUI.UnshadeIcon(SkillUI.ULTIMATE);
         }
     }
+
     #endregion
 
     #region Public Methods
@@ -119,6 +121,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     {
         //Calculate direction for attack by intersecting mouse ray with selectable objects on raycastable layer.
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // Ray mouseRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         int mainRaycastMask = 1 << 6; // Mask to just the main Raycast layer, so we only find hits to objects in that layer.
 
         RaycastHit hitInfo;
@@ -126,6 +129,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, mainRaycastMask))
         {
             this.transform.LookAt(new Vector3(hitInfo.point.x, 1, hitInfo.point.z));
+            Debug.Log("Hit: "+hitInfo.collider.name);
         }
 
         object[] myCustomInitData = new object[]
