@@ -63,6 +63,7 @@ public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     void LateUpdate()
     {
+        //Destroys projectile after healing other player
         if (playerHealed)
         {
             playerHealed = false;
@@ -91,11 +92,6 @@ public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
                 //Heals healer
                 this.playerSource.GetComponent<PlayerManagerCore>().HealPlayer((float)(this.sigCharge/5.0));
                 playerHealed = true;
-
-                //Heals player
-                // other.gameObject.GetComponent<PlayerManagerCore>().HealPlayer((float)(this.sigCharge/5.0));
-
-                //Ideally, should destory the projectile after collision with player
             }
         }
     }
