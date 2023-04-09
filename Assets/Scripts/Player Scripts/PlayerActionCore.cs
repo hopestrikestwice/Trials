@@ -20,7 +20,6 @@ public class PlayerActionCore : MonoBehaviourPun
     private float gravity = 9.8f;
     private bool immobile = false;
     
-
     private Animator animator;
     private IPlayerSkills skills;
 
@@ -107,18 +106,14 @@ public class PlayerActionCore : MonoBehaviourPun
 
             if (Input.GetButtonDown("Fire3"))
             {
-                PlayerType playerType = this.GetComponent<PlayerManagerCore>().GetPlayerType();
-                Debug.Log("PlayerType "+playerType);
-                if (playerType != PlayerType.Healer || (playerType == PlayerType.Healer && this.GetComponent<HealerSkills>().GetCharge() > 0))
+                immobile = true;
+
+                if (photonView.IsMine)
                 {
-                    immobile = true;
-                    if (photonView.IsMine)
-                    {
-                        playerUI.ShadeIcon(SkillUI.ULTIMATE);
-                    }
-                    skills.ActivateUltimate();
-                    if (playerType == PlayerType.Healer) this.GetComponent<HealerSkills>().ResetCharge();
+                    playerUI.ShadeIcon(SkillUI.ULTIMATE);
                 }
+
+                skills.ActivateUltimate();
             }
         }
 
@@ -210,6 +205,15 @@ public class PlayerActionCore : MonoBehaviourPun
 
     #endregion
 
+    #region Public Getters/Setters
+
+    public bool SetImmobile(bool immobile)
+    {
+        return immobile;
+    }
+
+    #endregion
+
     #region Animation Events
 
     public void FinishBasicAttack()
@@ -232,10 +236,6 @@ public class PlayerActionCore : MonoBehaviourPun
         }
 
         this.immobile = false;
-        if (this.GetComponent<PlayerManagerCore>().GetPlayerType() == PlayerType.Healer)
-        {
-            this.GetComponent<HealerSkills>().Block(false);
-        }
     }
 
     public void FinishUltimate() {

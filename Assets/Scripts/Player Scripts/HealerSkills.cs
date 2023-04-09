@@ -55,6 +55,10 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         {
             return;
         }
+        if (!animator.GetBool("isSecondarySkilling"))
+        {
+            this.isBlocked = false;
+        }
     }
 
     #endregion
@@ -64,14 +68,21 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     {
         Debug.Log("Healer secondary skill activated");
         animator.SetBool("isSecondarySkilling", true);
-        Block(true);
+        isBlocked = true;
     }
 
     public void ActivateUltimate()
     {
-        Debug.Log("AOE heal ability pressed");
-        animator.SetBool("isUltimating", true);
-        DoSignature();
+        if (GetCharge() > 0) {
+            Debug.Log("AOE heal ability pressed");
+            animator.SetBool("isUltimating", true);
+            DoSignature();
+            ResetCharge();
+        }
+        else {
+            this.GetComponent<PlayerActionCore>().setImmobile(false);
+            playerUI.UnshadeIcon(SkillUI.ULTIMATE);
+        }
     }
     #endregion
 
@@ -116,31 +127,26 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         return this.sigCharge;
     }
 
-    public bool IsBlocked()
-    {
-        return this.isBlocked;
-    }
-
-    public void Block(bool blocked)
-    {
-        this.isBlocked = blocked;
-    }
-
     #endregion
 
     #region Private Methods
 
     private void OnTriggerEnter(Collider other)
     {
-        // if (other.CompareTag("BossProjectile") && (this.playerType == PlayerType.Healer && this.gameObject.GetComponent<HealerSkills>().IsBlocked()))
-        // {
-        //     Debug.Log("Boss atk blocked by healer");
-        //     this.gameObject.GetComponent<HealerSkills>().AddCharge();
-        // }
-        if (other.CompareTag("BossProjectile") && IsBlocked())
+        if (other.CompareTag("BossProjectile") && isBlocked)
         {
             Debug.Log("Boss atk blocked by healer");
             AddCharge();
+            //Negates damage from atk
+            this.GetComponent<PlayerManagerCore>().HealPlayer(0.2f);
+        }
+        //Undos the heal from initial collision with its own particle
+        if (other.CompareTag("Heal") && this.GetComponent<PlayerManagerCore>().getIsHealed())
+        {
+            Debug.Log("Undoing Heal");
+            int charge = other.GetComponent<HealerProjectile>().GetCharge();
+            double scale = charge/5.0;
+            this.GetComponent<PlayerManagerCore>().UnhealPlayer((float)scale);
         }
     }
 

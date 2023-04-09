@@ -30,8 +30,8 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     private float Health = 1f;
 
     private bool isShielded = false; //Used for tank's abilities
+    private bool isHealed = false;
     private Element currentElement = Element.None;
-    private PlayerType playerType;
 
     #endregion
 
@@ -44,7 +44,6 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         if (photonView.IsMine)
         {
             PlayerManagerCore.LocalPlayerInstance = this.gameObject;
-            SetPlayerType(this.gameObject.name);
         }
         // #Critical
         //  we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
@@ -112,12 +111,11 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         //If player is not the healer and hit by healer projectile, heal itself
-        if (playerType != PlayerType.Healer && other.CompareTag("Heal"))
+        if (other.CompareTag("Heal"))
         {
-            Debug.Log("Player got healed. Playertype: "+playerType);
-            this.gameObject.GetComponent<PlayerActionCore>().setImmobile(true);
-            //Note: should be out of 5 but need to fix UI (only shows in quarters)
-            HealPlayer(other.GetComponent<HealerProjectile>().GetCharge());
+            Debug.Log("Player got healed");
+            this.gameObject.GetComponent<PlayerActionCore>().SetImmobile(true);
+            HealPlayer((float)(other.GetComponent<HealerProjectile>().GetCharge()/5.0));
         }
 
         if (other.CompareTag("ElementBuff"))
@@ -147,7 +145,8 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
 
         if (other.CompareTag("Heal"))
         {
-            this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);
+            this.gameObject.GetComponent<PlayerActionCore>().SetImmobile(false);
+            this.isHealed = false;
         }
 
         //Removes element buff?
@@ -191,6 +190,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             // We own this player: send others our data
             stream.SendNext(this.Health);
             stream.SendNext(this.isShielded);
+            stream.SendNext(this.isHealed);
             stream.SendNext(this.currentElement);
         }
         else
@@ -198,6 +198,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             //Network player, receive data
             this.Health = (float)stream.ReceiveNext();
             this.isShielded = (bool)stream.ReceiveNext();
+            this.isHealed = (bool)stream.ReceiveNext();
             
             // if ((bool)stream.ReceiveNext())
             this.currentElement = (Element)stream.ReceiveNext();
@@ -233,25 +234,28 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         return playerUI.GetComponent<PlayerUI>();
     }
 
-    public void SetPlayerType(string player)
+    public bool getIsHealed()
     {
-        if (player == "Healer" || player == "Healer(Clone)") playerType = PlayerType.Healer;
-        else if (player == "Berserker" || player == "Berserker(Clone)") playerType = PlayerType.Berserker;
-        else if (player == "Tank" || player == "Tank(Clone)") playerType = PlayerType.Tank;
-        else if (player == "Support" || player == "Support(Clone)") playerType = PlayerType.Support;
-        else playerType = PlayerType.None;
+        return this.isHealed;
     }
 
-    public PlayerType GetPlayerType()
+    #endregion
+
+    #region Public Methods
+
+    public void HealPlayer(float amount)
     {
-        return this.playerType;
+        this.isHealed = true;
+        Debug.Log("Healing "+this.gameObject+"by "+amount);
+        this.Health += amount;
     }
 
-    public void HealPlayer(int charge)
+    public void UnhealPlayer(float amount)
     {
-        double scale = charge/5.0;
-        Debug.Log("Healing "+this.gameObject+"by "+(float)scale);
-        this.Health += (float)scale;
+        if (amount <= this.Health)
+        {
+            this.Health -= amount;
+        }
     }
 
     #endregion
