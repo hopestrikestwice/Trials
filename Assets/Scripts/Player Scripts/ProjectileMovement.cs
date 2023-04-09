@@ -10,7 +10,7 @@ using UnityEngine;
 
 using Photon.Pun;
 
-public class ProjectileMovement : MonoBehaviour
+public class ProjectileMovement : MonoBehaviourPun
 {
     private float speed = 10f;
 
@@ -54,12 +54,14 @@ public class ProjectileMovement : MonoBehaviour
         if (other.CompareTag("BossProjectile"))
         {
             Debug.Log("Proj hit Boss");
-            // Debug.Log("PlayerSource "+playerSource+" PlayerType "+playerSource.GetComponent<PlayerManagerCore>().GetPlayerType());
-            if (playerSource != null && playerSource.GetComponent<PlayerManagerCore>().GetPlayerType() == PlayerType.Healer)
+            if (playerSource != null && playerSource.GetComponent<HealerSkills>() != null)
             {
                 playerSource.GetComponent<HealerSkills>().AddCharge();
             }
-            PhotonNetwork.Destroy(this.gameObject);
+            if (photonView.IsMine)
+            {
+                PhotonNetwork.Destroy(this.gameObject);
+            }
         }
     }
 

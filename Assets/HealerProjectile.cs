@@ -14,7 +14,7 @@ public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
     private float lifetime = float.MaxValue;
     private float aliveTime = 0f;
 
-    private bool isMine;
+    private bool playerHealed = false;
 
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
@@ -67,20 +67,24 @@ public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
         {
             PhotonNetwork.Destroy(this.gameObject);
         }
-        if (other.CompareTag("Player") && other.gameObject.GetComponent<PlayerManagerCore>().GetPlayerType() != PlayerType.Healer)
+        if (other.CompareTag("Player") && other.gameObject.GetComponent<HealerSkills>() == null)
         {
             Debug.Log("Proj hit Player");
 
             if (playerSource != null)
             {
                 //Heals healer
-                this.playerSource.GetComponent<PlayerManagerCore>().HealPlayer(this.sigCharge);
+                this.playerSource.GetComponent<PlayerManagerCore>().HealPlayer((float)(this.sigCharge/5.0));
+
+                //Heals player
+                // other.gameObject.GetComponent<PlayerManagerCore>().HealPlayer((float)(this.sigCharge/5.0));
+
+                //Ideally, should destory the projectile after collision with player
+                // if (photonView.IsMine)
+                // {
+                //     PhotonNetwork.Destroy(this.gameObject);
+                // }
             }
-            if (photonView.IsMine)
-            {
-                PhotonNetwork.Destroy(this.gameObject);
-            }
-            
         }
     }
 }
