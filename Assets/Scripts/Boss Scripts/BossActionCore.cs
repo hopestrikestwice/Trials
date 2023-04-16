@@ -72,7 +72,7 @@ public class BossActionCore : MonoBehaviourPun
     #region Private Methods
     private void RandomAttack()
     {
-        int randNum = Random.Range(0, 3);
+        int randNum = Random.Range(2, 3);
 
         switch (randNum)
         {

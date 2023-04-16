@@ -145,6 +145,28 @@ public class TentacleAnimationManager : MonoBehaviourPun
             Debug.LogError("Invalid input to SetReadyChainslam!");
         }
     }
+
+    public void SetProjectileThrow(int val)
+    {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        if (val == 1)
+        {
+            animator.SetBool("throwing", true);
+        }
+        else if (val == 0)
+        {
+            animator.SetBool("throwing", false);
+            parentKrakenSkills.ReportProjectileThrow();
+        }
+        else
+        {
+            Debug.LogError("Invalid input to SetProjectilThrow!");
+        }
+    }
     #endregion
 
     #region Private Methods
