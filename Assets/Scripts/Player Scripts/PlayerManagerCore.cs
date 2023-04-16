@@ -86,8 +86,6 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             {
                 Debug.Log("Player Died");
             }
-            // Debug.Log("Shielded? "+this.isShielded);
-            // Debug.Log("Player's element "+this.currentElement);
         }
 
     }

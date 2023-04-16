@@ -124,17 +124,15 @@ public class PlayerUI : MonoBehaviour
         icon.GetComponent<Image>().color = icon.GetComponent<Image>().color * new Color(2f, 2f, 2f);
     }
 
-    //timeLeft is a float from 0 to 1 of how much cooldown time has passed
+    //timePassed is a float from 0 to 1 of how much cooldown time has passed
     public void SkillCooldown(SkillUI skill, float timePassed)
     {
-        // timePassed = Mathf.Round(timePassed * 10.0f) * 0.1f;
         Slider icon = skillUI[(int)skill].GetComponent<Slider>();
         if (icon != null)
         {
             if (timePassed <= 1)
             {
                 icon.value = timePassed;
-                Debug.Log("Slider val: "+icon.value);
             }
             if (timePassed > 1)
             {

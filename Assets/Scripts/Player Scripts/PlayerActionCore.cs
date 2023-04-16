@@ -97,7 +97,8 @@ public class PlayerActionCore : MonoBehaviourPun
                     playerUI.ShadeIcon(SkillUI.PRIMARY);
                 }
                 isPrimaryCooldown = true;
-                primaryCooldown = new CooldownData(Time.time);
+                //Second parameter is the cooldown time for the ability
+                primaryCooldown = new CooldownData(Time.time, 5);
                 this.ActivateBasicAttack();
             }
 
@@ -111,7 +112,7 @@ public class PlayerActionCore : MonoBehaviourPun
                 }
 
                 isSecondaryCooldown = true;
-                secondaryCooldown = new CooldownData(Time.time);
+                secondaryCooldown = new CooldownData(Time.time, 5);
                 skills.ActivateSkill();
             }
 
@@ -125,10 +126,12 @@ public class PlayerActionCore : MonoBehaviourPun
                 }
 
                 isUltimateCooldown = true;
-                ultimateCooldown = new CooldownData(Time.time);
+                ultimateCooldown = new CooldownData(Time.time, 5);
                 skills.ActivateUltimate();
             }
         }        
+
+        //Shows cooldown bar on UI
         if (isPrimaryCooldown)
         {
             primaryCooldown.calculateTimePassed(Time.time);

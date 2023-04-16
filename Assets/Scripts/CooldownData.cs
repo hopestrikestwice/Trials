@@ -15,10 +15,10 @@ public class CooldownData
     private float endTime;
     private float timePassed;
 
-    public CooldownData(float startTime)
+    public CooldownData(float startTime, float cooldownTime)
     {
         this.startTime = startTime;
-        this.cooldownTime = 5; //same cooldown time for each ability
+        this.cooldownTime = cooldownTime;
         this.endTime = startTime + cooldownTime;
     }
 
