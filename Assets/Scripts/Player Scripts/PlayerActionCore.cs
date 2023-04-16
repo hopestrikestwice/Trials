@@ -77,6 +77,12 @@ public class PlayerActionCore : MonoBehaviourPun
         }
 
         this.skills = this.GetComponent<IPlayerSkills>();
+        if (photonView.IsMine)
+        {
+            playerUI.ResetCooldown(SkillUI.PRIMARY);
+            playerUI.ResetCooldown(SkillUI.SECONDARY);
+            playerUI.ResetCooldown(SkillUI.ULTIMATE);
+        }
     }
     // Update is called once per frame
     void Update()
@@ -97,8 +103,7 @@ public class PlayerActionCore : MonoBehaviourPun
                     playerUI.ShadeIcon(SkillUI.PRIMARY);
                 }
                 isPrimaryCooldown = true;
-                //Second parameter is the cooldown time for the ability
-                primaryCooldown = new CooldownData(Time.time, 5);
+                primaryCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[0]);
                 this.ActivateBasicAttack();
             }
 
@@ -112,7 +117,7 @@ public class PlayerActionCore : MonoBehaviourPun
                 }
 
                 isSecondaryCooldown = true;
-                secondaryCooldown = new CooldownData(Time.time, 5);
+                secondaryCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[1]);
                 skills.ActivateSkill();
             }
 
@@ -126,7 +131,7 @@ public class PlayerActionCore : MonoBehaviourPun
                 }
 
                 isUltimateCooldown = true;
-                ultimateCooldown = new CooldownData(Time.time, 5);
+                ultimateCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[2]);
                 skills.ActivateUltimate();
             }
         }        

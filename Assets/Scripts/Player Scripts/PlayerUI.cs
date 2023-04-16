@@ -144,7 +144,7 @@ public class PlayerUI : MonoBehaviour
     public void ResetCooldown(SkillUI skill)
     {
         Slider icon = skillUI[(int)skill].GetComponent<Slider>();
-        icon.value = 0;
+        icon.value = 1f;
     }
 
     public void UpdateElement()

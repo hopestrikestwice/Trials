@@ -45,8 +45,6 @@ public class CooldownData
     public void calculateTimePassed(float time)
     {
         this.timePassed = (time-this.startTime)/this.cooldownTime;
-        Debug.Log("time "+(time-this.startTime));
-        Debug.Log("time passed "+this.timePassed);
     }
 
     public void reset()

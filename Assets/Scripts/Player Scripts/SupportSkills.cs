@@ -27,6 +27,9 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
     private float dashTimeMax = 0.1f;
     // Current amount of time spent dashing.
     private float dashTimeCurrent = 0f;
+
+    private float[] cooldown = {5, 5, 5};
+
     #endregion
 
     #region Animation variables
@@ -130,6 +133,12 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         // this.GetComponent<PlayerManagerCore>().SetElement(mostRecentElement);
         // isUltimatingSup = true;
     }
+
+    public float[] GetCooldown()
+    {
+        return cooldown;
+    }
+
     #endregion
 
     #region Animation Events

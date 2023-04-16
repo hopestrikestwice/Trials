@@ -30,6 +30,8 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
     private bool smallShieldEnabled = false;
     private bool largeShieldEnabled = false;
 
+    private float[] cooldown = {5, 5, 5};
+
     #endregion
 
     #region Animation variables
@@ -120,6 +122,12 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
         actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
         Invoke("DeactivateLargeShield", ultimateClip.length);
     }
+
+    public float[] GetCooldown()
+    {
+        return cooldown;
+    }
+
     #endregion
 
     #region Invoked Functions
