@@ -38,6 +38,15 @@ public class PlayerActionCore : MonoBehaviourPun
 
     private float attackProjectileOffset = 1f;
     private float attackProjectileLifetime = 1f;
+
+    private bool isPrimaryCooldown = false;
+    private bool isSecondaryCooldown = false;
+    private bool isUltimateCooldown = false;
+    
+    [SerializeField] private CooldownData primaryCooldown;
+    [SerializeField] private CooldownData secondaryCooldown;
+    [SerializeField] private CooldownData ultimateCooldown;
+
     #endregion
 
     #endregion
@@ -79,7 +88,7 @@ public class PlayerActionCore : MonoBehaviourPun
 
         if (!immobile)
         {
-            if (Input.GetButtonDown("Fire1") && currentAttackProjectile == null)
+            if (Input.GetButtonDown("Fire1") && currentAttackProjectile == null && !isPrimaryCooldown)
             {
                 immobile = true;
 
@@ -87,11 +96,12 @@ public class PlayerActionCore : MonoBehaviourPun
                 {
                     playerUI.ShadeIcon(SkillUI.PRIMARY);
                 }
-
+                isPrimaryCooldown = true;
+                primaryCooldown = new CooldownData(Time.time);
                 this.ActivateBasicAttack();
             }
 
-            if (Input.GetButtonDown("Fire2"))
+            if (Input.GetButtonDown("Fire2") && !isSecondaryCooldown)
             {
                 immobile = true;
 
@@ -100,10 +110,12 @@ public class PlayerActionCore : MonoBehaviourPun
                     playerUI.ShadeIcon(SkillUI.SECONDARY);
                 }
 
+                isSecondaryCooldown = true;
+                secondaryCooldown = new CooldownData(Time.time);
                 skills.ActivateSkill();
             }
 
-            if (Input.GetButtonDown("Fire3"))
+            if (Input.GetButtonDown("Fire3") && !isUltimateCooldown)
             {
                 immobile = true;
 
@@ -112,8 +124,63 @@ public class PlayerActionCore : MonoBehaviourPun
                     playerUI.ShadeIcon(SkillUI.ULTIMATE);
                 }
 
+                isUltimateCooldown = true;
+                ultimateCooldown = new CooldownData(Time.time);
                 skills.ActivateUltimate();
             }
+        }        
+        if (isPrimaryCooldown)
+        {
+            primaryCooldown.calculateTimePassed(Time.time);
+            if (photonView.IsMine)
+            {
+                playerUI.SkillCooldown(SkillUI.PRIMARY, primaryCooldown.getTimePassed());
+            }
+        }
+        if (isSecondaryCooldown)
+        {
+            secondaryCooldown.calculateTimePassed(Time.time);
+            if (photonView.IsMine)
+            {
+                playerUI.SkillCooldown(SkillUI.SECONDARY, secondaryCooldown.getTimePassed());
+            }
+        }
+        if (isUltimateCooldown)
+        {
+            ultimateCooldown.calculateTimePassed(Time.time);
+            if (photonView.IsMine)
+            {
+                playerUI.SkillCooldown(SkillUI.ULTIMATE, ultimateCooldown.getTimePassed());
+            }
+        }
+
+        //resets the cooldowns
+        if (isPrimaryCooldown && primaryCooldown.getEndTime() < Time.time)
+        {
+            isPrimaryCooldown = false;
+            if (photonView.IsMine)
+            {
+                playerUI.ResetCooldown(SkillUI.PRIMARY);
+            }
+            primaryCooldown.reset();
+        }
+        if (isSecondaryCooldown && secondaryCooldown.getEndTime() < Time.time)
+        {
+            isSecondaryCooldown = false;
+            if (photonView.IsMine)
+            {
+                playerUI.ResetCooldown(SkillUI.SECONDARY);
+            }
+            secondaryCooldown.reset();
+        }
+        if (isUltimateCooldown && ultimateCooldown.getEndTime() < Time.time)
+        {
+            isUltimateCooldown = false;
+            if (photonView.IsMine)
+            {
+                playerUI.ResetCooldown(SkillUI.ULTIMATE);
+            }
+            ultimateCooldown.reset();
         }
 
         MoveCharacter();
