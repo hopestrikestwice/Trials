@@ -27,8 +27,14 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
     private GameObject smallShield;
     [SerializeField]
     private GameObject largeShield;
+    // Keep track of moving shield colliders up / down when enabled / disabled
+    private const float shieldEnableTime = 0.1f;
     private bool smallShieldEnabled = false;
+    private const float smallShieldStartPosY = -1.5f;
+    private const float smallShieldEndPosY = 0.58f;
     private bool largeShieldEnabled = false;
+    private const float largeShieldStartPosY = -3.6f;
+    private const float largeShieldEndPosY = 0f;
 
     #endregion
 
@@ -47,8 +53,33 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
 
     private void Update()
     {
-        smallShield.SetActive(smallShieldEnabled);
-        largeShield.SetActive(largeShieldEnabled);
+        // Handle moving shield collider up / down
+        Vector3 smallShieldPos = smallShield.transform.position;
+        if (smallShieldEnabled && smallShieldPos.y < this.transform.position.y + smallShieldEndPosY) {
+            float up_dist = smallShieldEndPosY - smallShieldStartPosY;
+            float up_increment = up_dist / shieldEnableTime;
+            smallShieldPos.y += up_increment * Time.deltaTime;         
+        }
+        else if (!smallShieldEnabled && smallShieldPos.y > this.transform.position.y + smallShieldStartPosY) {
+            float down_dist = smallShieldEndPosY - smallShieldStartPosY;
+            float down_increment = down_dist / shieldEnableTime;
+            smallShieldPos.y -= down_increment * Time.deltaTime;
+        }
+        smallShield.transform.position = smallShieldPos;
+        
+
+        Vector3 largeShieldPos = largeShield.transform.position;
+        if (largeShieldEnabled && largeShield.transform.position.y < this.transform.position.y + largeShieldEndPosY) {
+            float up_dist = largeShieldEndPosY - largeShieldStartPosY;
+            float up_increment = up_dist / shieldEnableTime;
+            largeShieldPos.y += up_increment * Time.deltaTime;
+        }
+        else if (!largeShieldEnabled && largeShield.transform.position.y > this.transform.position.y + largeShieldStartPosY) {
+            float down_dist = largeShieldEndPosY - largeShieldStartPosY;
+            float down_increment = down_dist / shieldEnableTime;
+            largeShieldPos.y -= down_increment * Time.deltaTime;
+        }
+        largeShield.transform.position = largeShieldPos;
     }
 
     private void Start()
