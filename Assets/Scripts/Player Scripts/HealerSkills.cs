@@ -13,9 +13,9 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 {
     #region Private Fields
     private PlayerUI playerUI;
-
     private Animator animator;
     private PlayerActionCore actionCoreScript;
+    private GameObject healer;
 
     #region Animation variables
     // Used to tell how long the secondary/ultimate skills take
@@ -23,6 +23,18 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     private AnimationClip[] secondarySkillClips;
     [SerializeField]
     private AnimationClip ultimateClip;
+    #endregion
+
+    #region Attack Variables
+    [SerializeField]
+    private GameObject defaultBulletPrefab;
+    [SerializeField]
+    private GameObject bullet;
+
+    private float bulletOffset = 1f;
+    private float bulletLifetime = 1f;
+    private int sigCharge = 0;
+    private bool isBlocked = false;
     #endregion
 
     #endregion
@@ -64,6 +76,10 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         {
             return;
         }
+        if (!animator.GetBool("isSecondarySkilling"))
+        {
+            this.isBlocked = false;
+        }
     }
 
     #endregion
@@ -73,6 +89,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     {
         Debug.Log("Healer secondary skill activated");
         animator.SetBool("isSecondarySkilling", true);
+        isBlocked = true;
 
         // Calculate total length of secondary skill
         float secondarySkillClipLength = 0;
@@ -84,11 +101,87 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 
     public void ActivateUltimate()
     {
-        Debug.Log("AOE heal ability pressed");
-        animator.SetBool("isUltimating", true);
-
-        actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
+        if (GetCharge() > 0) {
+            Debug.Log("AOE heal ability pressed");
+            animator.SetBool("isUltimating", true);
+            DoSignature();
+            ResetCharge();
+            actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
+        }
+        else {
+            this.GetComponent<PlayerActionCore>().setImmobile(false);
+            playerUI.UnshadeIcon(SkillUI.ULTIMATE);
+        }
     }
+
+    #endregion
+
+    #region Public Methods
+    public void DoSignature()
+    {
+        //Calculate direction for attack by intersecting mouse ray with selectable objects on raycastable layer.
+        Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // Ray mouseRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        int mainRaycastMask = 1 << 6; // Mask to just the main Raycast layer, so we only find hits to objects in that layer.
+
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, mainRaycastMask))
+        {
+            this.transform.LookAt(new Vector3(hitInfo.point.x, 1, hitInfo.point.z));
+            Debug.Log("Hit: "+hitInfo.collider.name);
+        }
+
+        object[] myCustomInitData = new object[]
+        {
+            GetCharge()
+        };
+
+        bullet = PhotonNetwork.Instantiate(this.defaultBulletPrefab.name, this.transform.position + Vector3.up * bulletOffset, this.transform.rotation, 0, myCustomInitData);
+        bullet.GetComponent<HealerProjectile>().SetLifetime(bulletLifetime);
+        bullet.GetComponent<HealerProjectile>().SetPlayer(this.gameObject);
+    }
+
+    //Increments signature charge
+    public void AddCharge()
+    {
+        if (this.sigCharge < 5) this.sigCharge++;
+        Debug.Log("Added charge - total charge: "+this.sigCharge);
+    }
+
+    public void ResetCharge()
+    {
+        this.sigCharge = 0;
+    }
+
+    public int GetCharge()
+    {
+        return this.sigCharge;
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("BossProjectile") && isBlocked)
+        {
+            Debug.Log("Boss atk blocked by healer");
+            AddCharge();
+            //Negates damage from atk
+            this.GetComponent<PlayerManagerCore>().HealPlayer(0.2f);
+        }
+        //Undos the heal from initial collision with its own particle
+        if (other.CompareTag("Heal") && this.GetComponent<PlayerManagerCore>().getIsHealed())
+        {
+            Debug.Log("Undoing Heal");
+            int charge = other.GetComponent<HealerProjectile>().GetCharge();
+            double scale = charge/5.0;
+            this.GetComponent<PlayerManagerCore>().UnhealPlayer((float)scale);
+        }
+    }
+
     #endregion
 
     #region Animation Events

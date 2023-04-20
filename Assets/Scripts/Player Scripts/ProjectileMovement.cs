@@ -10,16 +10,29 @@ using UnityEngine;
 
 using Photon.Pun;
 
-public class ProjectileMovement : MonoBehaviour
+public class ProjectileMovement : MonoBehaviourPun
 {
     private float speed = 10f;
 
     private float lifetime = float.MaxValue;
     private float aliveTime = 0f;
 
+    private GameObject playerSource;
+
     public void SetLifetime(float l)
     {
         this.lifetime = l;
+    }
+
+    public void SetPlayer(GameObject player)
+    {
+        this.playerSource = player;
+        Debug.Log("This player: "+player);
+    }
+
+    public GameObject GetPlayer()
+    {
+        return this.playerSource;
     }
 
     // Update is called once per frame
@@ -40,7 +53,16 @@ public class ProjectileMovement : MonoBehaviour
     {
         if (other.CompareTag("BossProjectile"))
         {
-            PhotonNetwork.Destroy(this.gameObject);
+            Debug.Log("Proj hit Boss");
+            if (playerSource != null && playerSource.GetComponent<HealerSkills>() != null)
+            {
+                playerSource.GetComponent<HealerSkills>().AddCharge();
+            }
+            if (photonView.IsMine)
+            {
+                PhotonNetwork.Destroy(this.gameObject);
+            }
         }
     }
+
 }

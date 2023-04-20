@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Photon.Pun;
+using FMODUnity;
 
 public class BossManagerCore : MonoBehaviourPun, IPunObservable
 {
@@ -16,15 +17,22 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
     public GameObject KrakenUiPrefab;
 
     private GameObject krakenUI;
+    private int bossPhase = 1;
 
     [Tooltip("The current Health of the boss")]
     private float Health = 1f;
 
+    private const float phase1Cutoff = 0.75f;
 
     private void Start()
     {
         krakenUI = Instantiate(KrakenUiPrefab);
         krakenUI.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+    }
+
+    private void Update()
+    {
+        PhaseCheck();
     }
 
     public void Hit()
@@ -33,9 +41,24 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
         Health -= 0.25f;
     }
 
+    public void SignatureHit(float scale)
+    {
+        Debug.Log("Boss Hit (by signature)! scale:"+scale);
+        Health -= scale;
+    }
+
     public float GetHealth()
     {
         return this.Health;
+    }
+
+    public void PhaseCheck()
+    {
+        if (Health < phase1Cutoff && bossPhase == 1)
+        {
+            bossPhase = 2;
+            RuntimeManager.StudioSystem.setParameterByName("boss_phase", 1);
+        }
     }
 
     #region IPunObservable Implementation

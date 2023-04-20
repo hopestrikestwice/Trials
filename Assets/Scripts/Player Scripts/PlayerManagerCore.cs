@@ -29,8 +29,9 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     [Tooltip("The current Health of our player")]
     private float Health = 1f;
 
-    private bool isShielded = false;
-    private bool isProtected = false;
+    private bool isProtected = false; //Used for tank's abilities
+    private bool isShielded = false; //Used for berserker's ability
+    private bool isHealed = false;
     private Element currentElement = Element.None;
 
     #endregion
@@ -87,10 +88,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             {
                 Debug.Log("Player Died");
             }
-            // Debug.Log("Shielded? "+this.isShielded);
-            // Debug.Log("Player's element "+this.currentElement);
         }
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -103,8 +101,9 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         //If object is a boss projectile, decrement health
         if (other.CompareTag("BossProjectile") && !(isShielded || isProtected))
         {
-            Debug.Log("player hit!");
-            this.Health -= 0.25f;
+            Debug.Log("Player hit!");
+            this.Health -= 0.2f;
+            // this.Health -= 0.02f;
         }
 
         if (other.CompareTag("Shield"))
@@ -113,10 +112,12 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             this.isProtected = true;
         }
 
+        //If player is not the healer and hit by healer projectile, heal itself
         if (other.CompareTag("Heal"))
         {
             Debug.Log("Player got healed");
-            this.Health += 0.25f;
+            this.gameObject.GetComponent<PlayerActionCore>().SetImmobile(true);
+            HealPlayer((float)(other.GetComponent<HealerProjectile>().GetCharge()/5.0));
         }
 
         if (other.CompareTag("ElementBuff"))
@@ -128,6 +129,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             Debug.Log("Player's element is now "+this.currentElement);
             other.GetComponent<GiveElement>().changeElement();
         }
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -141,6 +143,12 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         {
             Debug.Log("Player no longer shielded");
             this.isProtected = false;
+        }
+
+        if (other.CompareTag("Heal"))
+        {
+            this.gameObject.GetComponent<PlayerActionCore>().SetImmobile(false);
+            this.isHealed = false;
         }
 
         //Removes element buff?
@@ -185,6 +193,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(this.Health);
             stream.SendNext(this.isShielded);
             stream.SendNext(this.isProtected);
+            stream.SendNext(this.isHealed);
             stream.SendNext(this.currentElement);
         }
         else
@@ -193,6 +202,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             this.Health = (float)stream.ReceiveNext();
             this.isShielded = (bool)stream.ReceiveNext();
             this.isProtected = (bool)stream.ReceiveNext();
+            this.isHealed = (bool)stream.ReceiveNext();
             
             // if ((bool)stream.ReceiveNext())
             this.currentElement = (Element)stream.ReceiveNext();
@@ -232,6 +242,34 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     {
         this.isShielded = shielded;
         Debug.Log("Shielded value set to: "+shielded);
+    }
+    
+    public bool getIsHealed()
+    {
+        return this.isHealed;
+    }
+
+    #endregion
+
+    #region Public Methods
+
+    public void HealPlayer(float amount)
+    {
+        this.isHealed = true;
+        Debug.Log("Healing "+this.gameObject+"by "+amount);
+        this.Health += amount;
+        if (this.Health > 1f)
+        {
+            this.Health = 1f;
+        }
+    }
+
+    public void UnhealPlayer(float amount)
+    {
+        if (amount <= this.Health)
+        {
+            this.Health -= amount;
+        }
     }
 
     #endregion

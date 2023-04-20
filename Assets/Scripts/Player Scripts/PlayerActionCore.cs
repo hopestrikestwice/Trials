@@ -20,7 +20,7 @@ public class PlayerActionCore : MonoBehaviourPun
     private float walkSpeed = 7f;
     private float gravity = 9.8f;
     private bool immobile = false;
-
+    
     private Animator animator;
     private IPlayerSkills skills;
 
@@ -38,6 +38,7 @@ public class PlayerActionCore : MonoBehaviourPun
 
     private float attackProjectileOffset = 1f;
     private float attackProjectileLifetime = 1f;
+
     #endregion
 
     #endregion
@@ -68,6 +69,7 @@ public class PlayerActionCore : MonoBehaviourPun
         }
 
         this.skills = this.GetComponent<IPlayerSkills>();
+
     }
     // Update is called once per frame
     void Update()
@@ -177,6 +179,7 @@ public class PlayerActionCore : MonoBehaviourPun
             this.currentAttackProjectile = PhotonNetwork.Instantiate(this.elementalAttackPrefabs[(int)currentElement].name, this.transform.position + Vector3.up * this.attackProjectileOffset, this.transform.rotation);
             this.currentAttackProjectile.GetComponent<ProjectileMovement>().SetLifetime(attackProjectileLifetime);
         }
+        this.currentAttackProjectile.GetComponent<ProjectileMovement>().SetPlayer(this.gameObject);
     }
 
     private void MoveCharacter()
@@ -217,6 +220,15 @@ public class PlayerActionCore : MonoBehaviourPun
 
         // Apply Movement to Player
         controller.Move(distance);
+    }
+
+    #endregion
+
+    #region Public Getters/Setters
+
+    public bool SetImmobile(bool immobile)
+    {
+        return immobile;
     }
 
     #endregion
