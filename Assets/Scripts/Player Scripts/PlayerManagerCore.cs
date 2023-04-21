@@ -126,17 +126,19 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             Debug.Log("Player entered fog");
             this.isFogged = true;
         }
+    }
 
-        if (other.CompareTag("ElementBuff"))
+    private void OnTriggerStay(Collider other)
+    {
+        if (!photonView.IsMine)
         {
-            Element newElement = other.GetComponent<GiveElement>().getElement();
-            Debug.Log("New Element "+newElement);
-            // this.gameObject.GetComponent<PlayerActionCore>().setElement(newElement);
-            this.gameObject.GetComponent<PlayerManagerCore>().SetElement(newElement);
-            Debug.Log("Player's element is now "+this.currentElement);
-            other.GetComponent<GiveElement>().changeElement();
+            return;
         }
 
+        if (other.CompareTag("Fog"))
+        {
+            SetElement(other.GetComponent<GiveElement>().getElement());
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -163,12 +165,6 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             Debug.Log("Player left fog");
             this.isFogged = false;
         }
-
-        //Removes element buff?
-        // if (other.CompareTag("ElementBuff"))
-        // {
-        //     this.gameObject.GetComponent<PlayerActionCore>().setElement(Element.None);
-        // }
     }
 
     void OnLevelWasLoaded(int level)
@@ -242,7 +238,6 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     {
         this.currentElement = newElement;
         playerUI.GetComponent<PlayerUI>().UpdateElement();
-        Debug.Log("Changing Element (manager): "+newElement);
     }
 
     /* Gets the script PlayerUI attached to the playerUI for this player */

@@ -19,6 +19,7 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
     private PlayerManagerCore managerCoreScript;
 
     #region Ultimate Variables
+    private Element currentElement = Element.Fire;
     private const float fogDuration = 5f;
     #endregion
 
@@ -29,9 +30,6 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
     [SerializeField]
     private AnimationClip ultimateClip;
     #endregion
-
-    private Element mostRecentElement = Element.Fire;
-    // private bool isUltimatingSup = false;
 
     #endregion
 
@@ -131,6 +129,10 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         // Create fog
         Vector3 fogLocation = new Vector3(this.transform.position.x, 0, this.transform.position.z);
         GameObject fogObject = PhotonNetwork.Instantiate("Fog", fogLocation, Quaternion.identity, 0);
+        // Set the fog's element
+        GiveElement fogElement = fogObject.GetComponent<GiveElement>();
+        if (!fogElement) Debug.LogError("Fog object does not have GiveElement script");
+        else fogElement.setElement(currentElement);
 
         yield return new WaitForSeconds(fogDuration);
 
@@ -138,6 +140,8 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         fogObject.transform.position += new Vector3 (0, -20, 0); // Janky way to ensure players leave the trigger before destroy
         yield return new WaitForSeconds(0.2f);
         PhotonNetwork.Destroy(fogObject);
+        // Change element for next fog
+        currentElement = ElementFunctions.NextElement(currentElement);
     }
     #endregion
 
