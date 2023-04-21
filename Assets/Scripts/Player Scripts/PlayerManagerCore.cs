@@ -29,7 +29,11 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     [Tooltip("The current Health of our player")]
     private float Health = 1f;
 
-    private bool isShielded = false;
+    private bool isProtected = false; //Used for tank's abilities
+    private bool isShielded = false; //Used for berserker's ability
+    private bool isHealed = false;
+    private bool isFogged = false; //Used for support's ability
+    
     private Element currentElement = Element.None;
 
     #endregion
@@ -87,7 +91,6 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
                 Debug.Log("Player Died");
             }
         }
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -98,32 +101,44 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         //If object is a boss projectile, decrement health
-        if (other.CompareTag("BossProjectile") && !isShielded)
+        if (other.CompareTag("BossProjectile") && !(isShielded || isProtected))
         {
-            Debug.Log("player hit!");
-            this.Health -= 0.25f;
+            Debug.Log("Player hit!");
+            this.Health -= 0.2f;
+            // this.Health -= 0.02f;
         }
 
         if (other.CompareTag("Shield"))
         {
             Debug.Log("Player is now shielded");
-            this.isShielded = true;
+            this.isProtected = true;
         }
 
+        //If player is not the healer and hit by healer projectile, heal itself
         if (other.CompareTag("Heal"))
         {
             Debug.Log("Player got healed");
-            this.Health += 0.25f;
+            this.gameObject.GetComponent<PlayerActionCore>().SetImmobile(true);
+            HealPlayer((float)(other.GetComponent<HealerProjectile>().GetCharge()/5.0));
         }
 
-        if (other.CompareTag("ElementBuff"))
+        if (other.CompareTag("Fog"))
         {
-            Element newElement = other.GetComponent<GiveElement>().getElement();
-            Debug.Log("New Element "+newElement);
-            // this.gameObject.GetComponent<PlayerActionCore>().setElement(newElement);
-            this.gameObject.GetComponent<PlayerManagerCore>().SetElement(newElement);
-            Debug.Log("Player's element is now "+this.currentElement);
-            other.GetComponent<GiveElement>().changeElement();
+            Debug.Log("Player entered fog");
+            this.isFogged = true;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        if (other.CompareTag("Fog"))
+        {
+            SetElement(other.GetComponent<GiveElement>().getElement());
         }
     }
 
@@ -137,14 +152,20 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         if (other.CompareTag("Shield"))
         {
             Debug.Log("Player no longer shielded");
-            this.isShielded = false;
+            this.isProtected = false;
         }
 
-        //Removes element buff?
-        // if (other.CompareTag("ElementBuff"))
-        // {
-        //     this.gameObject.GetComponent<PlayerActionCore>().setElement(Element.None);
-        // }
+        if (other.CompareTag("Heal"))
+        {
+            this.gameObject.GetComponent<PlayerActionCore>().SetImmobile(false);
+            this.isHealed = false;
+        }
+
+        if (other.CompareTag("Fog"))
+        {
+            Debug.Log("Player left fog");
+            this.isFogged = false;
+        }
     }
 
     void OnLevelWasLoaded(int level)
@@ -181,6 +202,9 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             // We own this player: send others our data
             stream.SendNext(this.Health);
             stream.SendNext(this.isShielded);
+            stream.SendNext(this.isProtected);
+            stream.SendNext(this.isHealed);
+            stream.SendNext(this.isFogged);
             stream.SendNext(this.currentElement);
         }
         else
@@ -188,6 +212,9 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             //Network player, receive data
             this.Health = (float)stream.ReceiveNext();
             this.isShielded = (bool)stream.ReceiveNext();
+            this.isProtected = (bool)stream.ReceiveNext();
+            this.isHealed = (bool)stream.ReceiveNext();
+            this.isFogged = (bool)stream.ReceiveNext();
             
             // if ((bool)stream.ReceiveNext())
             this.currentElement = (Element)stream.ReceiveNext();
@@ -214,13 +241,51 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     {
         this.currentElement = newElement;
         playerUI.GetComponent<PlayerUI>().UpdateElement();
-        Debug.Log("Changing Element (manager): "+newElement);
     }
 
     /* Gets the script PlayerUI attached to the playerUI for this player */
     public PlayerUI getPlayerUI()
     {
         return playerUI.GetComponent<PlayerUI>();
+    }
+
+    public void SetShielded(bool shielded)
+    {
+        this.isShielded = shielded;
+        Debug.Log("Shielded value set to: "+shielded);
+    }
+    
+    public bool getIsHealed()
+    {
+        return this.isHealed;
+    }
+
+    public bool getIsFogged()
+    {
+        return this.isFogged;
+    }
+
+    #endregion
+
+    #region Public Methods
+
+    public void HealPlayer(float amount)
+    {
+        this.isHealed = true;
+        Debug.Log("Healing "+this.gameObject+"by "+amount);
+        this.Health += amount;
+        if (this.Health > 1f)
+        {
+            this.Health = 1f;
+        }
+    }
+
+    public void UnhealPlayer(float amount)
+    {
+        if (amount <= this.Health)
+        {
+            this.Health -= amount;
+        }
     }
 
     #endregion

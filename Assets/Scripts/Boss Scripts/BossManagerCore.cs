@@ -41,6 +41,12 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
         Health -= 0.25f;
     }
 
+    public void SignatureHit(float scale)
+    {
+        Debug.Log("Boss Hit (by signature)! scale:"+scale);
+        Health -= scale;
+    }
+
     public float GetHealth()
     {
         return this.Health;

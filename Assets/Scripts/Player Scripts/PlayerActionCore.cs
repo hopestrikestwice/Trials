@@ -20,7 +20,7 @@ public class PlayerActionCore : MonoBehaviourPun
     private float walkSpeed = 7f;
     private float gravity = 9.8f;
     private bool immobile = false;
-
+    
     private Animator animator;
     private IPlayerSkills skills;
 
@@ -38,7 +38,9 @@ public class PlayerActionCore : MonoBehaviourPun
 
     private float attackProjectileOffset = 1f;
     private float attackProjectileLifetime = 1f;
-
+    #endregion
+    
+    #region Cooldown Variables
     private bool isPrimaryCooldown = false;
     private bool isSecondaryCooldown = false;
     private bool isUltimateCooldown = false;
@@ -46,7 +48,16 @@ public class PlayerActionCore : MonoBehaviourPun
     [SerializeField] private CooldownData primaryCooldown;
     [SerializeField] private CooldownData secondaryCooldown;
     [SerializeField] private CooldownData ultimateCooldown;
+    #endregion
 
+    #region Dash Variables
+    // Dash direction, is not null when in middle of dash
+    private Vector3 dashDirection = Vector3.zero;
+    private float dashSpeed = 50f;
+    // Maximum dash time in seconds
+    private float dashTimeMax = 0.1f;
+    // Current amount of time spent dashing.
+    private float dashTimeCurrent = 0f;
     #endregion
 
     #endregion
@@ -62,6 +73,10 @@ public class PlayerActionCore : MonoBehaviourPun
             {
                 Debug.LogError("PlayerActionCore is missing PlayerUI component", this);
             }
+            
+            playerUI.ResetCooldown(SkillUI.PRIMARY);
+            playerUI.ResetCooldown(SkillUI.SECONDARY);
+            playerUI.ResetCooldown(SkillUI.ULTIMATE);
         }
 
         this.animator = this.GetComponent<Animator>();
@@ -77,12 +92,6 @@ public class PlayerActionCore : MonoBehaviourPun
         }
 
         this.skills = this.GetComponent<IPlayerSkills>();
-        if (photonView.IsMine)
-        {
-            playerUI.ResetCooldown(SkillUI.PRIMARY);
-            playerUI.ResetCooldown(SkillUI.SECONDARY);
-            playerUI.ResetCooldown(SkillUI.ULTIMATE);
-        }
     }
     // Update is called once per frame
     void Update()
@@ -191,6 +200,17 @@ public class PlayerActionCore : MonoBehaviourPun
             ultimateCooldown.reset();
         }
 
+        if (!dashDirection.Equals(Vector3.zero))
+        {
+            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
+            dashTimeCurrent += Time.deltaTime;
+            if (dashTimeCurrent >= dashTimeMax)
+            {
+                dashTimeCurrent = 0;
+                dashDirection = Vector3.zero;
+            }
+        }
+
         MoveCharacter();
     }
     #endregion
@@ -252,6 +272,7 @@ public class PlayerActionCore : MonoBehaviourPun
             this.currentAttackProjectile = PhotonNetwork.Instantiate(this.elementalAttackPrefabs[(int)currentElement].name, this.transform.position + Vector3.up * this.attackProjectileOffset, this.transform.rotation);
             this.currentAttackProjectile.GetComponent<ProjectileMovement>().SetLifetime(attackProjectileLifetime);
         }
+        this.currentAttackProjectile.GetComponent<ProjectileMovement>().SetPlayer(this.gameObject);
     }
 
     private void MoveCharacter()
@@ -292,6 +313,20 @@ public class PlayerActionCore : MonoBehaviourPun
 
         // Apply Movement to Player
         controller.Move(distance);
+    }
+
+    #endregion
+
+    #region Public Getters/Setters
+
+    public bool SetImmobile(bool immobile)
+    {
+        return immobile;
+    }
+
+    public void SetDashDirection(Vector3 direction)
+    {
+        this.dashDirection = direction;
     }
 
     #endregion

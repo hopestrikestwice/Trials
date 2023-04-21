@@ -24,11 +24,24 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
     [SerializeField]
     private GameObject shieldLargeParticles;
     [SerializeField]
-    private GameObject smallShield;
+    private GameObject smallShieldCollider;
     [SerializeField]
-    private GameObject largeShield;
+    private GameObject largeShieldCollider;
+    [SerializeField]
+    private GameObject smallShieldVfx;
+    [SerializeField]
+    private GameObject largeShieldVfx;
+    // Keep track of moving shield colliders up / down when enabled / disabled
+    private const float smallShieldEnableTime = 0.1f;
+    private const float largeShieldEnableTime = 0.5f;
     private bool smallShieldEnabled = false;
+    private float smallShieldStartPosY;
+    private float smallShieldEndPosY;
     private bool largeShieldEnabled = false;
+    private float largeShieldStartPosY;
+    private float largeShieldEndPosY;
+    private const float startVfxDisolve = 0.8f;
+    private const float endVfxDisolve = 0.2f;
 
     private float[] cooldown = {5, 5, 5};
 
@@ -49,8 +62,58 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
 
     private void Update()
     {
-        smallShield.SetActive(smallShieldEnabled);
-        largeShield.SetActive(largeShieldEnabled);
+        // Handle moving shield collider up / down
+        Vector3 smallShieldPos = smallShieldCollider.transform.position;
+        if (smallShieldEnabled && smallShieldPos.y < this.transform.position.y + smallShieldEndPosY) {
+            float up_dist = smallShieldEndPosY - smallShieldStartPosY;
+            float up_increment = up_dist / smallShieldEnableTime;
+            smallShieldPos.y += up_increment * Time.deltaTime;         
+        }
+        else if (!smallShieldEnabled && smallShieldPos.y > this.transform.position.y + smallShieldStartPosY) {
+            float down_dist = smallShieldEndPosY - smallShieldStartPosY;
+            float down_increment = down_dist / smallShieldEnableTime;
+            smallShieldPos.y -= down_increment * Time.deltaTime;
+        }
+        smallShieldCollider.transform.position = smallShieldPos;
+        
+
+        Vector3 largeShieldPos = largeShieldCollider.transform.position;
+        if (largeShieldEnabled && largeShieldPos.y < this.transform.position.y + largeShieldEndPosY) {
+            float up_dist = largeShieldEndPosY - largeShieldStartPosY;
+            float up_increment = up_dist / largeShieldEnableTime;
+            largeShieldPos.y += up_increment * Time.deltaTime;
+        }
+        else if (!largeShieldEnabled && largeShieldPos.y > this.transform.position.y + largeShieldStartPosY) {
+            float down_dist = largeShieldEndPosY - largeShieldStartPosY;
+            float down_increment = down_dist / largeShieldEnableTime;
+            largeShieldPos.y -= down_increment * Time.deltaTime;
+        }
+        largeShieldCollider.transform.position = largeShieldPos;
+
+        // Handle vfx for shield
+        float disolve_increment = (endVfxDisolve - startVfxDisolve) /  smallShieldEnableTime;
+        Material smallShieldMaterial = smallShieldVfx.GetComponent<Renderer>().material;
+        float smallShieldDisolve = smallShieldMaterial.GetFloat("_Disolve");
+        if (smallShieldEnabled && smallShieldDisolve > endVfxDisolve) {
+            float newDisolve = smallShieldDisolve + disolve_increment * Time.deltaTime;
+            smallShieldMaterial.SetFloat("_Disolve", newDisolve);
+        }
+        else if (!smallShieldEnabled && smallShieldDisolve < startVfxDisolve) {
+            float newDisolve = smallShieldDisolve - disolve_increment * Time.deltaTime;
+            smallShieldMaterial.SetFloat("_Disolve", newDisolve);
+        }
+
+        disolve_increment = (endVfxDisolve - startVfxDisolve) /  largeShieldEnableTime;
+        Material largeShieldMaterial = largeShieldVfx.GetComponent<Renderer>().material;
+        float largeShieldDisolve = largeShieldMaterial.GetFloat("_Disolve");
+        if (largeShieldEnabled && largeShieldDisolve > endVfxDisolve) {
+            float newDisolve = largeShieldDisolve + disolve_increment * Time.deltaTime;
+            largeShieldMaterial.SetFloat("_Disolve", newDisolve);
+        }
+        else if (!largeShieldEnabled && largeShieldDisolve < startVfxDisolve) {
+            float newDisolve = largeShieldDisolve - disolve_increment * Time.deltaTime;
+            largeShieldMaterial.SetFloat("_Disolve", newDisolve);
+        }
     }
 
     private void Start()
@@ -66,15 +129,19 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
             Debug.LogError("BeserkerSkills is Missing Animator Component", this);
         }
 
-        if (!smallShield || !largeShield)
+        if (!smallShieldCollider || !largeShieldCollider || !smallShieldVfx || !largeShieldVfx)
         {
             Debug.LogError("TankSkills is Missing Shield GameObject", this);
         }
         else {
             smallShieldEnabled = false;
             largeShieldEnabled = false;
+            smallShieldStartPosY = smallShieldCollider.transform.localPosition.y;
+            largeShieldStartPosY = largeShieldCollider.transform.localPosition.y;
+            smallShieldEndPosY = smallShieldVfx.transform.localPosition.y;
+            largeShieldEndPosY = largeShieldVfx.transform.localPosition.y;
+            Debug.Log("smallShieldStart: " + smallShieldStartPosY + ", smallShieldEnd: " + smallShieldEndPosY);
         }
-
         if (!shieldSmallParticles || !shieldLargeParticles)
         {
             Debug.LogError("TankSkills is Missing Shield Particles", this);
