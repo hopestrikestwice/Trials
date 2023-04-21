@@ -31,6 +31,8 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
 
     private bool isShielded = false; //Used for tank's abilities
     private bool isHealed = false;
+    private bool isFogged = false; //Used for support's ability
+    
     private Element currentElement = Element.None;
 
     #endregion
@@ -119,6 +121,12 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             HealPlayer((float)(other.GetComponent<HealerProjectile>().GetCharge()/5.0));
         }
 
+        if (other.CompareTag("Fog"))
+        {
+            Debug.Log("Player entered fog");
+            this.isFogged = true;
+        }
+
         if (other.CompareTag("ElementBuff"))
         {
             Element newElement = other.GetComponent<GiveElement>().getElement();
@@ -148,6 +156,12 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         {
             this.gameObject.GetComponent<PlayerActionCore>().SetImmobile(false);
             this.isHealed = false;
+        }
+
+        if (other.CompareTag("Fog"))
+        {
+            Debug.Log("Player left fog");
+            this.isFogged = false;
         }
 
         //Removes element buff?
@@ -192,6 +206,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(this.Health);
             stream.SendNext(this.isShielded);
             stream.SendNext(this.isHealed);
+            stream.SendNext(this.isFogged);
             stream.SendNext(this.currentElement);
         }
         else
@@ -200,6 +215,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             this.Health = (float)stream.ReceiveNext();
             this.isShielded = (bool)stream.ReceiveNext();
             this.isHealed = (bool)stream.ReceiveNext();
+            this.isFogged = (bool)stream.ReceiveNext();
             
             // if ((bool)stream.ReceiveNext())
             this.currentElement = (Element)stream.ReceiveNext();
@@ -238,6 +254,11 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     public bool getIsHealed()
     {
         return this.isHealed;
+    }
+
+    public bool getIsFogged()
+    {
+        return this.isFogged;
     }
 
     #endregion

@@ -41,6 +41,16 @@ public class PlayerActionCore : MonoBehaviourPun
 
     #endregion
 
+    #region Dash Variables
+    // Dash direction, is not null when in middle of dash
+    private Vector3 dashDirection = Vector3.zero;
+    private float dashSpeed = 50f;
+    // Maximum dash time in seconds
+    private float dashTimeMax = 0.1f;
+    // Current amount of time spent dashing.
+    private float dashTimeCurrent = 0f;
+    #endregion
+
     #endregion
 
     #region Monobehaviour Callbacks
@@ -115,6 +125,17 @@ public class PlayerActionCore : MonoBehaviourPun
                 }
 
                 skills.ActivateUltimate();
+            }
+        }
+
+        if (!dashDirection.Equals(Vector3.zero))
+        {
+            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
+            dashTimeCurrent += Time.deltaTime;
+            if (dashTimeCurrent >= dashTimeMax)
+            {
+                dashTimeCurrent = 0;
+                dashDirection = Vector3.zero;
             }
         }
 
@@ -229,6 +250,11 @@ public class PlayerActionCore : MonoBehaviourPun
     public bool SetImmobile(bool immobile)
     {
         return immobile;
+    }
+
+    public void SetDashDirection(Vector3 direction)
+    {
+        this.dashDirection = direction;
     }
 
     #endregion
