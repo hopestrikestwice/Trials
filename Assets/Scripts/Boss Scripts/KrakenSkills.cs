@@ -12,6 +12,9 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
     [SerializeField]
     private AnimationClip tentacleProjectileThrowClip;
 
+    [SerializeField]
+    private GameObject laserTentacles;
+
     private Animator animator;
 
     private int activeTentacles = 4;
@@ -174,7 +177,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
 
     public void ActivateRandomSpecialAttack()
     {
-        int randNum = Random.Range(1, 2);
+        int randNum = Random.Range(0, 3);
 
         switch (randNum)
         {
@@ -183,6 +186,9 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
                 break;
             case 1:
                 this.SetProjectileThrow(1);
+                break;
+            case 2:
+                this.BeginLaser();
                 break;
         }
     }
@@ -267,6 +273,11 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
         {
             PhotonNetwork.Instantiate(this.projectile.name, player.transform.position + Vector3.up * 10, Quaternion.Euler(90, 0, 0));
         }
+    }
+
+    private void BeginLaser()
+    {
+        this.laserTentacles.SetActive(true);
     }
     #endregion
 }
