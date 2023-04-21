@@ -11,4 +11,5 @@ public interface IPlayerSkills
 {
     void ActivateSkill();
     void ActivateUltimate();
+    float[] GetCooldown(); //0 - primary, 1 - secondary, 2 - ultimate
 }

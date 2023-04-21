@@ -121,6 +121,12 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         // this.GetComponent<PlayerManagerCore>().SetElement(mostRecentElement);
         // isUltimatingSup = true;
     }
+
+    public float[] GetCooldown()
+    {
+        return cooldown;
+    }
+
     #endregion
 
     #region Coroutines

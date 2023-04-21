@@ -17,6 +17,8 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     private PlayerActionCore actionCoreScript;
     private GameObject healer;
 
+    private float[] cooldown = {5, 5, 5};
+
     #region Animation variables
     // Used to tell how long the secondary/ultimate skills take
     [SerializeField]
@@ -183,6 +185,11 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     }
 
     #endregion
+    
+    public float[] GetCooldown()
+    {
+        return cooldown;
+    }
 
     #region Animation Events
     /*  Each ability animation dispatches an event named

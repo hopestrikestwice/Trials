@@ -114,14 +114,37 @@ public class PlayerUI : MonoBehaviour
     /* Darken the attack icon for feedback while attacking. */
     public void ShadeIcon(SkillUI skill) {
          /* Get the "Outer ring" object, which represents the attack icon */
-        GameObject icon = skillUI[(int)skill].transform.GetChild(0).gameObject;
+        GameObject icon = skillUI[(int)skill].transform.GetChild(1).gameObject;
         icon.GetComponent<Image>().color = icon.GetComponent<Image>().color * new Color(0.5f, 0.5f, 0.5f);
     }
 
     public void UnshadeIcon(SkillUI skill) {
          /* Get the "Outer ring" object, which represents the attack icon */
-        GameObject icon = skillUI[(int)skill].transform.GetChild(0).gameObject;
+        GameObject icon = skillUI[(int)skill].transform.GetChild(1).gameObject;
         icon.GetComponent<Image>().color = icon.GetComponent<Image>().color * new Color(2f, 2f, 2f);
+    }
+
+    //timePassed is a float from 0 to 1 of how much cooldown time has passed
+    public void SkillCooldown(SkillUI skill, float timePassed)
+    {
+        Slider icon = skillUI[(int)skill].GetComponent<Slider>();
+        if (icon != null)
+        {
+            if (timePassed <= 1)
+            {
+                icon.value = timePassed;
+            }
+            if (timePassed > 1)
+            {
+                icon.value = 0;
+            }
+        }
+    }
+
+    public void ResetCooldown(SkillUI skill)
+    {
+        Slider icon = skillUI[(int)skill].GetComponent<Slider>();
+        icon.value = 1f;
     }
 
     public void UpdateElement()
