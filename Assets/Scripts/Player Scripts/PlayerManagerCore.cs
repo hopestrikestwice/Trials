@@ -32,6 +32,8 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     private bool isProtected = false; //Used for tank's abilities
     private bool isShielded = false; //Used for berserker's ability
     private bool isHealed = false;
+    private bool isFogged = false; //Used for support's ability
+    
     private Element currentElement = Element.None;
 
     #endregion
@@ -120,16 +122,24 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             HealPlayer((float)(other.GetComponent<HealerProjectile>().GetCharge()/5.0));
         }
 
-        if (other.CompareTag("ElementBuff"))
+        if (other.CompareTag("Fog"))
         {
-            Element newElement = other.GetComponent<GiveElement>().getElement();
-            Debug.Log("New Element "+newElement);
-            // this.gameObject.GetComponent<PlayerActionCore>().setElement(newElement);
-            this.gameObject.GetComponent<PlayerManagerCore>().SetElement(newElement);
-            Debug.Log("Player's element is now "+this.currentElement);
-            other.GetComponent<GiveElement>().changeElement();
+            Debug.Log("Player entered fog");
+            this.isFogged = true;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!photonView.IsMine)
+        {
+            return;
         }
 
+        if (other.CompareTag("Fog"))
+        {
+            SetElement(other.GetComponent<GiveElement>().getElement());
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -151,11 +161,11 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             this.isHealed = false;
         }
 
-        //Removes element buff?
-        // if (other.CompareTag("ElementBuff"))
-        // {
-        //     this.gameObject.GetComponent<PlayerActionCore>().setElement(Element.None);
-        // }
+        if (other.CompareTag("Fog"))
+        {
+            Debug.Log("Player left fog");
+            this.isFogged = false;
+        }
     }
 
     void OnLevelWasLoaded(int level)
@@ -194,6 +204,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(this.isShielded);
             stream.SendNext(this.isProtected);
             stream.SendNext(this.isHealed);
+            stream.SendNext(this.isFogged);
             stream.SendNext(this.currentElement);
         }
         else
@@ -203,6 +214,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             this.isShielded = (bool)stream.ReceiveNext();
             this.isProtected = (bool)stream.ReceiveNext();
             this.isHealed = (bool)stream.ReceiveNext();
+            this.isFogged = (bool)stream.ReceiveNext();
             
             // if ((bool)stream.ReceiveNext())
             this.currentElement = (Element)stream.ReceiveNext();
@@ -229,7 +241,6 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     {
         this.currentElement = newElement;
         playerUI.GetComponent<PlayerUI>().UpdateElement();
-        Debug.Log("Changing Element (manager): "+newElement);
     }
 
     /* Gets the script PlayerUI attached to the playerUI for this player */
@@ -247,6 +258,11 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     public bool getIsHealed()
     {
         return this.isHealed;
+    }
+
+    public bool getIsFogged()
+    {
+        return this.isFogged;
     }
 
     #endregion

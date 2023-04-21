@@ -16,17 +16,11 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
 
     private Animator animator;
     private PlayerActionCore actionCoreScript;
+    private PlayerManagerCore managerCoreScript;
 
-    #region Dash Variables
-    private CharacterController controller;
-
-    // Dash direction, is not null when in middle of dash
-    private Vector3 dashDirection = Vector3.zero;
-    private float dashSpeed = 50f;
-    // Maximum dash time in seconds
-    private float dashTimeMax = 0.1f;
-    // Current amount of time spent dashing.
-    private float dashTimeCurrent = 0f;
+    #region Ultimate Variables
+    private Element currentElement = Element.Fire;
+    private const float fogDuration = 5f;
     #endregion
 
     #region Animation variables
@@ -37,9 +31,6 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
     private AnimationClip ultimateClip;
     #endregion
 
-    private Element mostRecentElement = Element.Fire;
-    // private bool isUltimatingSup = false;
-
     #endregion
 
     #region Monobehaviour Callbacks
@@ -49,12 +40,6 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         if (photonView.IsMine)
         {
             this.playerUI = this.GetComponent<PlayerManagerCore>().getPlayerUI();
-        }
-
-        this.controller = this.GetComponent<CharacterController>();
-        if (!controller)
-        {
-            Debug.LogError("PlayerMovement is Missing CharacterController Component", this);
         }
 
         animator = GetComponent<Animator>();
@@ -68,6 +53,13 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         {
             Debug.LogError("SupportSkills is Missing PlayerActionCore.cs");
         }
+
+        managerCoreScript = GetComponent<PlayerManagerCore>();
+        if (!managerCoreScript)
+        {
+            Debug.LogError("SupportSkills is Missing PlayerManagerCore.cs");
+        }
+
         if (!secondarySkillClip)
         {
             Debug.LogError("SupportSkills is Missing Secondary Skill Animation Clip");
@@ -84,17 +76,6 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         if (photonView.IsMine == false && PhotonNetwork.IsConnected == true)
         {
             return;
-        }
-
-        if (!dashDirection.Equals(Vector3.zero))
-        {
-            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
-            dashTimeCurrent += Time.deltaTime;
-            if (dashTimeCurrent >= dashTimeMax)
-            {
-                dashTimeCurrent = 0;
-                dashDirection = Vector3.zero;
-            }
         }
         
         // if (isUltimatingSup)
@@ -113,8 +94,17 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         Debug.Log("Dash button pressed.");
         animator.SetBool("isSecondarySkilling", true);
 
-        dashDirection = this.transform.forward;
-
+        // Handle dashing logic
+        Vector3 dashDirection = this.transform.forward;
+        if (managerCoreScript.getIsFogged()) {
+            GetComponent<PhotonView>().RPC("DashAll", RpcTarget.All, new object [] { dashDirection });
+        }
+        else 
+        {
+            // Dash only the support
+            actionCoreScript.SetDashDirection(dashDirection);
+        }
+        
         actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClip.length);
     }
 
@@ -122,6 +112,7 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
     {
         Debug.Log("Change element button pressed");
         animator.SetBool("isUltimating", true);
+        StartCoroutine(CreateFog());
 
         actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
         Invoke("FinishChannelingElement", ultimateClip.length);
@@ -129,6 +120,28 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         // mostRecentElement = ElementFunctions.NextElement(mostRecentElement);
         // this.GetComponent<PlayerManagerCore>().SetElement(mostRecentElement);
         // isUltimatingSup = true;
+    }
+    #endregion
+
+    #region Coroutines
+    IEnumerator CreateFog() 
+    {
+        // Create fog
+        Vector3 fogLocation = new Vector3(this.transform.position.x, 0, this.transform.position.z);
+        GameObject fogObject = PhotonNetwork.Instantiate("Fog", fogLocation, Quaternion.identity, 0);
+        // Set the fog's element
+        GiveElement fogElement = fogObject.GetComponent<GiveElement>();
+        if (!fogElement) Debug.LogError("Fog object does not have GiveElement script");
+        else fogElement.setElement(currentElement);
+
+        yield return new WaitForSeconds(fogDuration);
+
+        // End fog
+        fogObject.transform.position += new Vector3 (0, -20, 0); // Janky way to ensure players leave the trigger before destroy
+        yield return new WaitForSeconds(0.2f);
+        PhotonNetwork.Destroy(fogObject);
+        // Change element for next fog
+        currentElement = ElementFunctions.NextElement(currentElement);
     }
     #endregion
 
@@ -154,5 +167,19 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         Debug.Log("Finish Attack");
     }
 
+    #endregion
+
+    #region PUN RPC
+    [PunRPC]
+    public void DashAll(Vector3 direction)
+    {
+        Debug.Log("Dash all players");
+        // Dash all characters in fog
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players) {
+            bool playerFogged = player.GetComponent<PlayerManagerCore>().getIsFogged();
+            if (playerFogged) player.GetComponent<PlayerActionCore>().SetDashDirection(direction);
+        }
+    }
     #endregion
 }
