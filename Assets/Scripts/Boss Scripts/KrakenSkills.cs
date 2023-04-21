@@ -204,6 +204,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
         projectileWait--;
         if (projectileWait == 0)
         {
+            Debug.Log("Successful throw");
             this.SetProjectileThrow(0);
         }
     }

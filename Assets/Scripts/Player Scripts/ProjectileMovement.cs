@@ -38,6 +38,11 @@ public class ProjectileMovement : MonoBehaviourPun
     // Update is called once per frame
     void Update()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         aliveTime += Time.deltaTime;
 
         if (aliveTime >= lifetime)

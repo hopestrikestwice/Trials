@@ -10,19 +10,31 @@ using UnityEngine;
 
 using Photon.Pun;
 
-public class KrakenProjectile : MonoBehaviour
+public class KrakenProjectile : MonoBehaviourPun
 {
     private float speed = 10f;
+
+    private bool markedForDestroy = false;
 
     // Update is called once per frame
     void Update()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         this.transform.position += this.transform.forward * this.speed * Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("BossProjectile"))
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        if (this.transform.position.y < 0)
         {
             PhotonNetwork.Destroy(this.gameObject);
         }
