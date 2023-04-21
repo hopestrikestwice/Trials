@@ -1,14 +1,31 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 using Photon.Pun;
 
-public class KrakenSkills : MonoBehaviourPun, IBossSkills
+public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
 {
+    [SerializeField]
+    private GameObject projectile;
+    [SerializeField]
+    private AnimationClip tentacleProjectileThrowClip;
+
+    [SerializeField]
+    private GameObject laserTentacles;
+    private bool lasersActive = false;
+    private float laserTime = 10; // How long lasers are up in seconds.
+
+    private bool rotateLasers = false;
+    private float rotateLasersSpeed = 15; // degrees per second
+
     private Animator animator;
 
+    private int activeTentacles = 4;
+
     private int chainslamWait;
+    private int projectileWait;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +34,28 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
         if (!animator)
         {
             Debug.LogError("Kraken is Missing Animator Component", this);
+        }
+    }
+
+    private void Update()
+    {
+        if (lasersActive && !laserTentacles.activeSelf)
+        {
+            laserTentacles.SetActive(true);
+        }
+        else if (!lasersActive && laserTentacles.activeSelf)
+        {
+            laserTentacles.SetActive(false);
+        }
+
+        /* PhotonView isMine only after this point */
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        if (rotateLasers) {
+            laserTentacles.transform.Rotate(rotateLasersSpeed * Vector3.up * Time.deltaTime);
         }
     }
 
@@ -76,7 +115,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
 
         if (val == 1)
         {
-            chainslamWait = 4;
+            chainslamWait = activeTentacles;
             animator.SetBool("chainslam", true);
         }
         else if (val == 0)
@@ -93,6 +132,36 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
         else
         {
             Debug.LogError("Invalid input to Kraken SetChainslam!");
+        }
+    }
+
+    public void SetProjectileThrow(int val)
+    {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        if (val == 1)
+        {
+            projectileWait = activeTentacles;
+            animator.SetBool("throwing", true);
+
+            //start throwing animation on every tentacle
+            for (int i = 0; i < 4; i++)
+            {
+                ProjectileThrowTentacle(i);
+            }
+
+            Invoke("DropProjectiles", tentacleProjectileThrowClip.length / 2);
+        }
+        else if (val == 0)
+        {
+            animator.SetBool("throwing", false);
+        }
+        else
+        {
+            Debug.LogError("Invalid input to Kraken SetProjectileThrow!");
         }
     }
 
@@ -135,12 +204,22 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
 
     public void ActivateRandomSpecialAttack()
     {
-        int randNum = Random.Range(0, 1);
+
+        int randNum = Random.Range(3, 4);
 
         switch (randNum)
         {
             case 0:
                 this.SetChainslam(1);
+                break;
+            case 1:
+                this.SetProjectileThrow(1);
+                break;
+            case 2:
+                this.BeginLaser();
+                break;
+            case 3:
+                this.BeginRotateLaser();
                 break;
         }
     }
@@ -154,6 +233,32 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
         if (chainslamWait == 0)
         {
             this.SetChainslam(0);
+        }
+    }
+
+    public void ReportProjectileThrow()
+    {
+        projectileWait--;
+        if (projectileWait == 0)
+        {
+            Debug.Log("Successful throw");
+            this.SetProjectileThrow(0);
+        }
+    }
+    #endregion
+
+    #region IPunObservable Implementation
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // We own the kraken: send other clients our data
+            stream.SendNext(this.lasersActive);
+        }
+        else
+        {
+            // Network kraken, receive data
+            this.lasersActive = (bool)stream.ReceiveNext();
         }
     }
     #endregion
@@ -199,6 +304,48 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
         Transform tentacle = this.transform.GetChild(tentacleIndex);
         tentacle.GetComponent<TentacleAnimationManager>().SetReadyChainslam(1);
         //TODO: error handling
+    }
+
+    private void ProjectileThrowTentacle(int tentacleIndex)
+    {
+        Transform tentacle = this.transform.GetChild(tentacleIndex);
+        tentacle.GetComponent<TentacleAnimationManager>().SetProjectileThrow(1);
+    }
+
+    private void DropProjectiles()
+    {
+        /* Create a rock above every player and drop it */
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            PhotonNetwork.Instantiate(this.projectile.name, player.transform.position + Vector3.up * 10, Quaternion.Euler(90, 0, 0));
+        }
+    }
+
+    private void BeginLaser()
+    {
+        if (!this.laserTentacles.activeSelf)
+        {
+            this.lasersActive = true;
+            this.Invoke("EndLaser", laserTime);
+        }
+    }
+
+    private void BeginRotateLaser()
+    {
+        if (!this.laserTentacles.activeSelf)
+        {
+            this.lasersActive = true;
+            this.Invoke("EndLaser", laserTime);
+        }
+
+        this.rotateLasers = true;
+    }
+
+    private void EndLaser()
+    {
+        this.rotateLasers = false;
+        this.lasersActive = false;
     }
     #endregion
 }
