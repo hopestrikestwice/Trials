@@ -14,6 +14,10 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
 
     [SerializeField]
     private GameObject laserTentacles;
+    private float laserTime = 10; // How long lasers are up in seconds.
+
+    private bool rotateLasers = false;
+    private float rotateLasersSpeed = 5; // degrees per second
 
     private Animator animator;
 
@@ -29,6 +33,18 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
         if (!animator)
         {
             Debug.LogError("Kraken is Missing Animator Component", this);
+        }
+    }
+
+    private void Update()
+    {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        if (rotateLasers) {
+            laserTentacles.transform.Rotate(45 * Vector3.up * Time.deltaTime);
         }
     }
 
@@ -177,7 +193,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
 
     public void ActivateRandomSpecialAttack()
     {
-        int randNum = Random.Range(0, 3);
+        int randNum = Random.Range(0, 4);
 
         switch (randNum)
         {
@@ -189,6 +205,9 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
                 break;
             case 2:
                 this.BeginLaser();
+                break;
+            case 3:
+                this.BeginRotateLaser();
                 break;
         }
     }
@@ -277,7 +296,28 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills
 
     private void BeginLaser()
     {
-        this.laserTentacles.SetActive(true);
+        if (!this.laserTentacles.activeSelf)
+        {
+            this.laserTentacles.SetActive(true);
+            this.Invoke("EndLaser", laserTime);
+        }
+    }
+
+    private void BeginRotateLaser()
+    {
+        if (!this.laserTentacles.activeSelf)
+        {
+            this.laserTentacles.SetActive(true);
+            this.Invoke("EndLaser", laserTime);
+        }
+
+        this.rotateLasers = true;
+    }
+
+    private void EndLaser()
+    {
+        this.rotateLasers = false;
+        this.laserTentacles.SetActive(false);
     }
     #endregion
 }
