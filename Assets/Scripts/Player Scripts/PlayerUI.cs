@@ -155,16 +155,16 @@ public class PlayerUI : MonoBehaviour
                 switch (target.GetElement())
                 {
                     case Element.Fire:
-                        icon.transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.red;
+                        icon.transform.GetChild(1).gameObject.GetComponent<Image>().color = Color.red;
                         break;
                     case Element.Water:
-                        icon.transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.blue;
+                        icon.transform.GetChild(1).gameObject.GetComponent<Image>().color = Color.blue;
                         break;
                     case Element.Earth:
-                        icon.transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.yellow;
+                        icon.transform.GetChild(1).gameObject.GetComponent<Image>().color = Color.yellow;
                         break;
                     default:
-                        icon.transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.white;
+                        icon.transform.GetChild(1).gameObject.GetComponent<Image>().color = Color.white;
                         break;
                 }
             }

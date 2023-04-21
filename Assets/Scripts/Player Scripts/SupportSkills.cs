@@ -31,6 +31,8 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
     private AnimationClip ultimateClip;
     #endregion
 
+    private float[] cooldown = { 5, 5, 5 };
+
     #endregion
 
     #region Monobehaviour Callbacks
