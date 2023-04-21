@@ -63,10 +63,6 @@ public class ProjectileMovement : MonoBehaviourPun
             {
                 playerSource.GetComponent<HealerSkills>().AddCharge();
             }
-            if (photonView.IsMine)
-            {
-                PhotonNetwork.Destroy(this.gameObject);
-            }
         }
     }
 

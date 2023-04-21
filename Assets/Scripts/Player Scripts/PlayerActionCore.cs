@@ -38,7 +38,26 @@ public class PlayerActionCore : MonoBehaviourPun
 
     private float attackProjectileOffset = 1f;
     private float attackProjectileLifetime = 1f;
+    #endregion
+    
+    #region Cooldown Variables
+    private bool isPrimaryCooldown = false;
+    private bool isSecondaryCooldown = false;
+    private bool isUltimateCooldown = false;
+    
+    [SerializeField] private CooldownData primaryCooldown;
+    [SerializeField] private CooldownData secondaryCooldown;
+    [SerializeField] private CooldownData ultimateCooldown;
+    #endregion
 
+    #region Dash Variables
+    // Dash direction, is not null when in middle of dash
+    private Vector3 dashDirection = Vector3.zero;
+    private float dashSpeed = 50f;
+    // Maximum dash time in seconds
+    private float dashTimeMax = 0.1f;
+    // Current amount of time spent dashing.
+    private float dashTimeCurrent = 0f;
     #endregion
 
     #endregion
@@ -54,6 +73,10 @@ public class PlayerActionCore : MonoBehaviourPun
             {
                 Debug.LogError("PlayerActionCore is missing PlayerUI component", this);
             }
+            
+            playerUI.ResetCooldown(SkillUI.PRIMARY);
+            playerUI.ResetCooldown(SkillUI.SECONDARY);
+            playerUI.ResetCooldown(SkillUI.ULTIMATE);
         }
 
         this.animator = this.GetComponent<Animator>();
@@ -69,7 +92,6 @@ public class PlayerActionCore : MonoBehaviourPun
         }
 
         this.skills = this.GetComponent<IPlayerSkills>();
-
     }
     // Update is called once per frame
     void Update()
@@ -81,7 +103,7 @@ public class PlayerActionCore : MonoBehaviourPun
 
         if (!immobile)
         {
-            if (Input.GetButtonDown("Fire1") && currentAttackProjectile == null)
+            if (Input.GetButtonDown("Fire1") && currentAttackProjectile == null && !isPrimaryCooldown)
             {
                 immobile = true;
 
@@ -89,11 +111,12 @@ public class PlayerActionCore : MonoBehaviourPun
                 {
                     playerUI.ShadeIcon(SkillUI.PRIMARY);
                 }
-
+                isPrimaryCooldown = true;
+                primaryCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[0]);
                 this.ActivateBasicAttack();
             }
 
-            if (Input.GetButtonDown("Fire2"))
+            if (Input.GetButtonDown("Fire2") && !isSecondaryCooldown)
             {
                 immobile = true;
 
@@ -102,10 +125,12 @@ public class PlayerActionCore : MonoBehaviourPun
                     playerUI.ShadeIcon(SkillUI.SECONDARY);
                 }
 
+                isSecondaryCooldown = true;
+                secondaryCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[1]);
                 skills.ActivateSkill();
             }
 
-            if (Input.GetButtonDown("Fire3"))
+            if (Input.GetButtonDown("Fire3") && !isUltimateCooldown)
             {
                 immobile = true;
 
@@ -114,7 +139,75 @@ public class PlayerActionCore : MonoBehaviourPun
                     playerUI.ShadeIcon(SkillUI.ULTIMATE);
                 }
 
+                isUltimateCooldown = true;
+                ultimateCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[2]);
                 skills.ActivateUltimate();
+            }
+        }        
+
+        //Shows cooldown bar on UI
+        if (isPrimaryCooldown)
+        {
+            primaryCooldown.calculateTimePassed(Time.time);
+            if (photonView.IsMine)
+            {
+                playerUI.SkillCooldown(SkillUI.PRIMARY, primaryCooldown.getTimePassed());
+            }
+        }
+        if (isSecondaryCooldown)
+        {
+            secondaryCooldown.calculateTimePassed(Time.time);
+            if (photonView.IsMine)
+            {
+                playerUI.SkillCooldown(SkillUI.SECONDARY, secondaryCooldown.getTimePassed());
+            }
+        }
+        if (isUltimateCooldown)
+        {
+            ultimateCooldown.calculateTimePassed(Time.time);
+            if (photonView.IsMine)
+            {
+                playerUI.SkillCooldown(SkillUI.ULTIMATE, ultimateCooldown.getTimePassed());
+            }
+        }
+
+        //resets the cooldowns
+        if (isPrimaryCooldown && primaryCooldown.getEndTime() < Time.time)
+        {
+            isPrimaryCooldown = false;
+            if (photonView.IsMine)
+            {
+                playerUI.ResetCooldown(SkillUI.PRIMARY);
+            }
+            primaryCooldown.reset();
+        }
+        if (isSecondaryCooldown && secondaryCooldown.getEndTime() < Time.time)
+        {
+            isSecondaryCooldown = false;
+            if (photonView.IsMine)
+            {
+                playerUI.ResetCooldown(SkillUI.SECONDARY);
+            }
+            secondaryCooldown.reset();
+        }
+        if (isUltimateCooldown && ultimateCooldown.getEndTime() < Time.time)
+        {
+            isUltimateCooldown = false;
+            if (photonView.IsMine)
+            {
+                playerUI.ResetCooldown(SkillUI.ULTIMATE);
+            }
+            ultimateCooldown.reset();
+        }
+
+        if (!dashDirection.Equals(Vector3.zero))
+        {
+            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
+            dashTimeCurrent += Time.deltaTime;
+            if (dashTimeCurrent >= dashTimeMax)
+            {
+                dashTimeCurrent = 0;
+                dashDirection = Vector3.zero;
             }
         }
 
@@ -229,6 +322,11 @@ public class PlayerActionCore : MonoBehaviourPun
     public bool SetImmobile(bool immobile)
     {
         return immobile;
+    }
+
+    public void SetDashDirection(Vector3 direction)
+    {
+        this.dashDirection = direction;
     }
 
     #endregion

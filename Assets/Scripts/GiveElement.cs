@@ -2,29 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GiveElement : MonoBehaviour
+using Photon.Pun;
+
+public class GiveElement : MonoBehaviour, IPunObservable
 {
-    public Element mostRecentElement = Element.Fire;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private Element mostRecentElement = Element.Fire;
 
     public Element getElement()
     {
-        return mostRecentElement;
+        return this.mostRecentElement;
     }
 
-    public void changeElement()
+    public void setElement(Element nextElement)
     {
-        mostRecentElement = ElementFunctions.NextElement(mostRecentElement);
+        this.mostRecentElement = nextElement;
+        Debug.Log("Element set to: " + this.mostRecentElement);
     }
+
+    #region IPunObservable Implementation
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // We own this player: send others our data
+            stream.SendNext(this.mostRecentElement);
+        }
+        else 
+        {
+            // Network player, receive data
+            mostRecentElement = (Element)stream.ReceiveNext();
+            Debug.Log("Element sent through stream: " + this.mostRecentElement);
+        }
+    }
+    #endregion
 }

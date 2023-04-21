@@ -40,6 +40,8 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     private CharacterController controller;
     private float slamForwardSpeed = 10f;
     private bool isUltimatingMoveForward = false;
+
+    private float[] cooldown = {5, 5, 5};
     #endregion
 
     #region Animation variables
@@ -116,7 +118,7 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         Debug.Log("Berserker Shield");
         animator.SetBool("isSecondarySkilling", true);
 
-        actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClip.length);
+        StartCoroutine(SecondarySkill());
     }
 
     public void ActivateUltimate()
@@ -132,9 +134,26 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
             this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);
         }
     }
+
+    public float[] GetCooldown()
+    {
+        return cooldown;
+    }
+
     #endregion
 
     #region Private Methods
+
+    IEnumerator SecondarySkill() {
+        // Start skill
+        GetComponent<PlayerManagerCore>().SetShielded(true);
+        
+        // Wait until skill is over
+        yield return new WaitForSeconds(secondarySkillClip.length);
+        // End skill
+        GetComponent<PlayerManagerCore>().SetShielded(false);
+        actionCoreScript.FinishSecondarySkill();
+    }
 
     /* not properly named, but this is for the ultimate (charged) attack */
     private void HandleAttack()
