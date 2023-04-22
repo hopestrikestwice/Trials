@@ -103,6 +103,8 @@ public class PlayerActionCore : MonoBehaviourPun
 
         if (!immobile)
         {
+            MoveCharacter();
+
             if (Input.GetButtonDown("Fire1") && currentAttackProjectile == null && !isPrimaryCooldown)
             {
                 immobile = true;
@@ -143,7 +145,7 @@ public class PlayerActionCore : MonoBehaviourPun
                 ultimateCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[2]);
                 skills.ActivateUltimate();
             }
-        }        
+        }
 
         //Shows cooldown bar on UI
         if (isPrimaryCooldown)
@@ -210,8 +212,6 @@ public class PlayerActionCore : MonoBehaviourPun
                 dashDirection = Vector3.zero;
             }
         }
-
-        MoveCharacter();
     }
     #endregion
 
@@ -304,10 +304,6 @@ public class PlayerActionCore : MonoBehaviourPun
 
         //find the distance
         Vector3 distance = this.transform.forward * direction.magnitude * walkSpeed * Time.deltaTime;
-        if (immobile)
-        {
-            distance = Vector3.zero;
-        }
         //Apply gravity to distance
         distance.y -= gravity * Time.deltaTime;
 

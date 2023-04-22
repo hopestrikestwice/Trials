@@ -118,17 +118,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                bool playerStillAlive = false;
-
-                foreach (GameObject player in players)
-                {
-                    if (player.GetComponent<PlayerManagerCore>().GetHealth() > 0)
-                    {
-                        playerStillAlive = true;
-                    }
-                }
-
-                if (!playerStillAlive)
+                if (players.Length == 0)
                 {
                     gameFinished = true;
 
