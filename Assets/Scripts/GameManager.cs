@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #endregion
 
+    private bool gameFinished = false;
+
     #region Photon Callbacks
 
     /// <summary>
@@ -93,6 +95,52 @@ public class GameManager : MonoBehaviourPunCallbacks
                                         new Vector3(0f, 0f, 0f),
                                         Quaternion.Euler(0, -90, 0),
                                         0);
+        }
+    }
+
+    private void Update()
+    {
+        if (PhotonNetwork.IsMasterClient && !gameFinished)
+        {
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+            if (GameObject.FindGameObjectWithTag("Boss").GetComponent<BossManagerCore>().GetHealth() <= 0)
+            {
+                gameFinished = true;
+
+                // Destroy all players
+                foreach (GameObject player in players)
+                {
+                    PhotonNetwork.DestroyAll();
+                }
+
+                PhotonNetwork.LoadLevel("WinScene");
+            }
+            else
+            {
+                bool playerStillAlive = false;
+
+                foreach (GameObject player in players)
+                {
+                    if (player.GetComponent<PlayerManagerCore>().GetHealth() > 0)
+                    {
+                        playerStillAlive = true;
+                    }
+                }
+
+                if (!playerStillAlive)
+                {
+                    gameFinished = true;
+
+                    // Destroy all players
+                    foreach (GameObject player in players)
+                    {
+                        PhotonNetwork.DestroyAll();
+                    }
+
+                    PhotonNetwork.LoadLevel("LoseScene");
+                }
+            }
         }
     }
 
