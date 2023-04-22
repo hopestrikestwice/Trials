@@ -90,6 +90,11 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     public void ActivateSkill()
     {
         Debug.Log("Healer secondary skill activated");
+
+        Vector3 cameraDirection = this.gameObject.GetComponent<CameraWork>().GetCameraForward();
+        cameraDirection.y = 0;
+        this.transform.forward = cameraDirection;
+
         animator.SetBool("isSecondarySkilling", true);
         isBlocked = true;
 
@@ -105,12 +110,18 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     {
         if (GetCharge() > 0) {
             Debug.Log("AOE heal ability pressed");
+
+            Vector3 cameraDirection = this.gameObject.GetComponent<CameraWork>().GetCameraForward();
+            cameraDirection.y = 0;
+            this.transform.forward = cameraDirection;
+
             animator.SetBool("isUltimating", true);
             DoSignature();
             ResetCharge();
             actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
         }
         else {
+            Debug.Log("Healer not enough charges");
             this.GetComponent<PlayerActionCore>().setImmobile(false);
             playerUI.UnshadeIcon(SkillUI.ULTIMATE);
         }

@@ -113,6 +113,7 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
     public void ActivateUltimate()
     {
         Debug.Log("Change element button pressed");
+
         animator.SetBool("isUltimating", true);
         StartCoroutine(CreateFog());
 

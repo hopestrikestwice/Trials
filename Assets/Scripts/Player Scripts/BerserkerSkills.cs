@@ -116,6 +116,12 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     public void ActivateSkill()
     {
         Debug.Log("Berserker Shield");
+
+        /* Block in camera direction, not where character is currently facing */
+        Vector3 cameraDirection = this.gameObject.GetComponent<CameraWork>().GetCameraForward();
+        cameraDirection.y = 0;
+        this.transform.forward = cameraDirection;
+
         animator.SetBool("isSecondarySkilling", true);
 
         StartCoroutine(SecondarySkill());
@@ -170,18 +176,9 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
             
             if (Input.GetButtonUp("Fire3")) // Does GetButtonUp imply Getbuttondown was called? And vice versa?
             {
-                //Calculate direction for attack by intersecting mouse ray with selectable objects on raycastable layer.
-                Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                int mainRaycastMask = 1 << 6; // Mask to just the main Raycast layer, so we only find hits to objects in that layer.
-
-                RaycastHit hitInfo;
-
-                if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, mainRaycastMask))
-                {
-                    Debug.Log("Hit object is: " + hitInfo.collider.name);
-                    //TODO: when looking at a point too close to the character, it faces downward. Maybe need a fixed, higher y value.
-                    this.transform.LookAt(new Vector3(hitInfo.point.x, 0, hitInfo.point.z));
-                }
+                Vector3 cameraDirection = this.gameObject.GetComponent<CameraWork>().GetCameraForward();
+                cameraDirection.y = 0;
+                this.transform.forward = cameraDirection;
 
                 //Animations and fire attack
                 animator.SetBool("isUltimating", true);
