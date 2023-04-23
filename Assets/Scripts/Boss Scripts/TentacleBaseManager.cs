@@ -13,10 +13,26 @@ public class TentacleBaseManager : MonoBehaviourPun
 {
     private BossManagerCore krakenManager; 
 
+    /* Kraken hit feedback. */
+    private Color originalTint;
+    private Color hitTint = Color.red;
+    private float timeSinceHit = 1;
+
+    #region Monobehavipur
     private void Start()
     {
         this.krakenManager = transform.parent.GetComponent<BossManagerCore>();
+
+        this.originalTint = this.transform.Find("Cone").GetComponent<Renderer>().material.GetColor("Toon_Ramp_Tint");
     }
+
+    private void Update()
+    {
+        this.transform.Find("Cone").GetComponent<Renderer>().material.SetColor("Toon_Ramp_Tint", Color.Lerp(hitTint, originalTint, timeSinceHit));
+        
+        timeSinceHit = Mathf.Min(timeSinceHit + Time.deltaTime, 1);
+    }
+    #endregion
 
     private void OnTriggerEnter(Collider other)
     {
@@ -28,6 +44,7 @@ public class TentacleBaseManager : MonoBehaviourPun
         //If object is a player projectile, decrement health
         if (other.CompareTag("PlayerProjectile"))
         {
+            photonView.RPC("HitTint", RpcTarget.All);
             this.krakenManager.Hit();
         }
 
@@ -38,4 +55,12 @@ public class TentacleBaseManager : MonoBehaviourPun
             this.krakenManager.SignatureHit(scale);
         }
     }
+
+    #region RPC
+    [PunRPC]
+    void HitTint()
+    {
+        this.timeSinceHit = 0;
+    }
+    #endregion
 }
