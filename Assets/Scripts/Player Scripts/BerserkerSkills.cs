@@ -105,8 +105,11 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         {
             Vector3 distance = this.transform.forward * slamForwardSpeed * Time.deltaTime;
 
-            // Apply Movement to Player
-            controller.Move(distance);
+            /* Only move character if within bounds */
+            if ((this.transform.position + distance - Vector3.zero).magnitude < 42.5)
+            {
+                controller.Move(distance);
+            }
         }
     }
     #endregion

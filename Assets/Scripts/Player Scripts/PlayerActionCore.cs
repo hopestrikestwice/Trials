@@ -207,7 +207,14 @@ public class PlayerActionCore : MonoBehaviourPun
 
         if (!dashDirection.Equals(Vector3.zero))
         {
-            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
+            Vector3 dashVector = dashDirection * dashSpeed * Time.deltaTime;
+
+            /* Only move character if within bounds */
+            if ((this.transform.position + dashVector - Vector3.zero).magnitude < 42.5)
+            {
+                controller.Move(dashVector);
+            }
+
             dashTimeCurrent += Time.deltaTime;
             if (dashTimeCurrent >= dashTimeMax)
             {
@@ -298,8 +305,11 @@ public class PlayerActionCore : MonoBehaviourPun
         //Apply gravity to distance
         distance.y -= gravity * Time.deltaTime;
 
-        // Apply Movement to Player
-        controller.Move(distance);
+        /* Only move character if within bounds */
+        if ((this.transform.position + distance - Vector3.zero).magnitude < 42.5)
+        {
+            controller.Move(distance);
+        }
     }
 
     #endregion
