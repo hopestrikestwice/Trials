@@ -79,7 +79,12 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         progressLabel.SetActive(true);
         controlPanel.SetActive(false);
+        this.GetComponent<Animator>().SetBool("start", true);
+    }
 
+    // Called at end of canvas shift animation to perform actual connection logic.
+    public void AnimationEndConnect()
+    {
         //Check if connected. Join room if connected, otherwise initiate connection to server.
         if (PhotonNetwork.IsConnected)
         {
@@ -141,11 +146,11 @@ public class Launcher : MonoBehaviourPunCallbacks
         // First player is always the master.
         if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
-            Debug.Log("We load the 'Main Game'");
+            Debug.Log("Loading 'Waiting Room'");
 
             // #Critical
             // Load the room level.
-            PhotonNetwork.LoadLevel("Main Game");
+            PhotonNetwork.LoadLevel("Waiting Room");
         }
     }
     #endregion
