@@ -173,6 +173,11 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
     public void ActivateSkill()
     {
         Debug.Log("Shield button pressed.");
+
+        Vector3 cameraDirection = this.gameObject.GetComponent<CameraWork>().GetCameraForward();
+        cameraDirection.y = 0;
+        this.transform.forward = cameraDirection;
+
         animator.SetBool("isSecondarySkilling", true);
         smallShieldEnabled = true; // enable the small shield, so that it collides with players
 
@@ -183,6 +188,11 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
     public void ActivateUltimate()
     {
         Debug.Log("Large shield button pressed.");
+
+        Vector3 cameraDirection = this.gameObject.GetComponent<CameraWork>().GetCameraForward();
+        cameraDirection.y = 0;
+        this.transform.forward = cameraDirection;
+
         animator.SetBool("isUltimating", true);
         largeShieldEnabled = true; // enable the large shield, so that it collides with players
 

@@ -78,9 +78,9 @@ public class CameraWork : MonoBehaviour
     /// <summary>
     /// Returns the main camera's current transform component.
     /// </summary>
-    public Transform GetCameraTransform()
+    public Vector3 GetCameraForward()
     {
-        return cameraTransform;
+        return cameraTransform.forward;
     }
 
     #endregion

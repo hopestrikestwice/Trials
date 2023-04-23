@@ -16,7 +16,9 @@ public class PlayerActionCore : MonoBehaviourPun
     private PlayerUI playerUI;
 
     private CharacterController controller;
-    private Vector3 cameraForward; // character's "forward" direction is where camera is facing
+    // Store camera direction along x-z plane to calculate movement and ability direction
+    private Vector3 cameraDirection;
+
     private float walkSpeed = 7f;
     private float gravity = 9.8f;
     private bool immobile = false;
@@ -103,9 +105,13 @@ public class PlayerActionCore : MonoBehaviourPun
 
         if (!immobile)
         {
+            this.cameraDirection = this.gameObject.GetComponent<CameraWork>().GetCameraForward();
+            this.cameraDirection.y = 0;
+
             if (Input.GetButtonDown("Fire1") && currentAttackProjectile == null && !isPrimaryCooldown)
             {
                 immobile = true;
+                this.transform.forward = this.cameraDirection;
 
                 if (photonView.IsMine)
                 {
@@ -114,9 +120,7 @@ public class PlayerActionCore : MonoBehaviourPun
                 isPrimaryCooldown = true;
                 primaryCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[0]);
                 this.ActivateBasicAttack();
-            }
-
-            if (Input.GetButtonDown("Fire2") && !isSecondaryCooldown)
+            } else if (Input.GetButtonDown("Fire2") && !isSecondaryCooldown)
             {
                 immobile = true;
 
@@ -128,9 +132,7 @@ public class PlayerActionCore : MonoBehaviourPun
                 isSecondaryCooldown = true;
                 secondaryCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[1]);
                 skills.ActivateSkill();
-            }
-
-            if (Input.GetButtonDown("Fire3") && !isUltimateCooldown)
+            } else if (Input.GetButtonDown("Fire3") && !isUltimateCooldown)
             {
                 immobile = true;
 
@@ -142,6 +144,9 @@ public class PlayerActionCore : MonoBehaviourPun
                 isUltimateCooldown = true;
                 ultimateCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[2]);
                 skills.ActivateUltimate();
+            } else
+            {
+                MoveCharacter();
             }
         }        
 
@@ -210,8 +215,6 @@ public class PlayerActionCore : MonoBehaviourPun
                 dashDirection = Vector3.zero;
             }
         }
-
-        MoveCharacter();
     }
     #endregion
 
@@ -250,18 +253,6 @@ public class PlayerActionCore : MonoBehaviourPun
     {
         animator.SetBool("isBasicAttacking", true);
 
-        //Calculate direction for attack by intersecting mouse ray with selectable objects on raycastable layer.
-        Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        int mainRaycastMask = 1 << 6; // Mask to just the main Raycast layer, so we only find hits to objects in that layer.
-
-        RaycastHit hitInfo;
-
-        if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, mainRaycastMask))
-        {
-            Debug.Log("Hit object is: " + hitInfo.collider.name);
-            this.transform.LookAt(new Vector3(hitInfo.point.x, 1, hitInfo.point.z));
-        }
-
         if (currentElement == Element.None)
         {
             this.currentAttackProjectile = PhotonNetwork.Instantiate(this.defaultAttackPrefab.name, this.transform.position + Vector3.up * this.attackProjectileOffset, this.transform.rotation);
@@ -281,13 +272,9 @@ public class PlayerActionCore : MonoBehaviourPun
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        // Get the camera's forward direction on x-z plane
-        this.cameraForward = this.gameObject.GetComponent<CameraWork>().GetCameraTransform().forward;
-        this.cameraForward.y = 0;
-
         // Calculate the Direction to Move based on the tranform of the Player
-        Vector3 moveDirectionForward = this.cameraForward * verticalInput;
-        Vector3 moveDirectionSide = -1 * Vector3.Cross(this.cameraForward, Vector3.up) * horizontalInput;
+        Vector3 moveDirectionForward = this.cameraDirection * verticalInput;
+        Vector3 moveDirectionSide = -1 * Vector3.Cross(this.cameraDirection, Vector3.up) * horizontalInput;
         // Normalize the direction
         Vector3 direction = (moveDirectionForward + moveDirectionSide).normalized;
 
