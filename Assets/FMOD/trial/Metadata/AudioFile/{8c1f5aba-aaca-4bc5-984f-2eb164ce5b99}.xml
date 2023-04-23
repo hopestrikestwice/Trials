@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{8c1f5aba-aaca-4bc5-984f-2eb164ce5b99}">
+		<property name="assetPath">
+			<value>phase2-3transition.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>19.226122448979591</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{d709295b-6e0d-48f1-92ed-15cc1e76f3ec}</destination>
+		</relationship>
+	</object>
+</objects>
