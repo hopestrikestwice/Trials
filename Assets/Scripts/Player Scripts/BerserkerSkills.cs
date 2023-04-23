@@ -50,6 +50,7 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     private AnimationClip secondarySkillClip;
     [SerializeField]
     private AnimationClip ultimateClip;
+    private ShootSlash shootSlashScript;
     #endregion
 
     #endregion
@@ -66,6 +67,12 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         if (!animator)
         {
             Debug.LogError("BeserkerSkills is Missing Animator Component", this);
+        }
+
+        shootSlashScript = GetComponent<ShootSlash>();
+        if (!shootSlashScript)
+        {
+            Debug.LogError("BerserkerSkills is Missing ShootSlash.cs", this);
         }
 
         actionCoreScript = GetComponent<PlayerActionCore>();
@@ -231,5 +238,8 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         long before/after), we can dispatch a separate event instead of handling
         the same-named event.
     */
+    public void BeginUltimateSlash() {
+        shootSlashScript.InstantiateProjectile();
+    }
     #endregion
 }
