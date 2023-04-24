@@ -54,7 +54,7 @@ public class PlayerUI : MonoBehaviour
         // Reflect the Player Health
         if (playerHealthSlider != null)
         {
-            playerHealthSlider.value = target.GetHealth();
+            playerHealthSlider.value = ((float) target.GetHealth()) / ((float)target.GetMaxHealth());
         }
 
         // Destroy itself i the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network

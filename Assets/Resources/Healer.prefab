@@ -391,6 +391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerUiPrefab: {fileID: 2950267314463264838, guid: e8ee6122e13ea4248b6e6294b9c90007, type: 3}
+  maxHealth: 100
 --- !u!114 &3626766268478892361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2631,7 +2632,7 @@ GameObject:
   - component: {fileID: 4819550535159232274}
   - component: {fileID: 7945494049435604665}
   m_Layer: 0
-  m_Name: Cylinder.001
+  m_Name: Character Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

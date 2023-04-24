@@ -34,31 +34,24 @@ public class TentacleBaseManager : MonoBehaviourPun
     }
     #endregion
 
-    private void OnTriggerEnter(Collider other)
+    #region RPC
+
+    [PunRPC]
+    public void TakeDamage(int damage)
     {
-        if (!photonView.IsMine)
+        /* We only want the MasterClient to be performing boss functions. */
+        if (!PhotonNetwork.IsMasterClient)
         {
             return;
         }
 
-        //If object is a player projectile, decrement health
-        if (other.CompareTag("PlayerProjectile"))
-        {
-            photonView.RPC("HitTint", RpcTarget.All);
-            this.krakenManager.Hit();
-        }
+        this.krakenManager.Hit(damage);
 
-        //If object is a healer projectile (signature), decrement health more
-        if (other.CompareTag("Heal"))
-        {
-            float scale = (float)((other.GetComponent<HealerProjectile>().GetCharge())/5.0);
-            this.krakenManager.SignatureHit(scale);
-        }
+        photonView.RPC("BeginHitTint", RpcTarget.All);
     }
 
-    #region RPC
     [PunRPC]
-    void HitTint()
+    void BeginHitTint()
     {
         this.timeSinceHit = 0;
     }

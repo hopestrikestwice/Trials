@@ -16,16 +16,21 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
     [SerializeField]
     public GameObject KrakenUiPrefab;
 
-    private GameObject krakenUI;
-    private int bossPhase = 1;
+    [SerializeField]
+    private int maxHealth;
 
     [Tooltip("The current Health of the boss")]
-    private float Health = 1f;
+    private float health;
+
+    private GameObject krakenUI;
+    private int bossPhase = 1;
 
     private const float phase1Cutoff = 0.75f;
 
     private void Start()
     {
+        health = maxHealth;
+
         krakenUI = Instantiate(KrakenUiPrefab);
         krakenUI.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
     }
@@ -35,26 +40,37 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
         PhaseCheck();
     }
 
-    public void Hit()
+    public void Hit(int damage)
     {
+        /* Only want MasterClient to handle boss logic */
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            return;
+        }
+
         Debug.Log("Boss Hit!");
-        Health -= 0.25f;
+        health -= damage;
     }
 
     public void SignatureHit(float scale)
     {
         Debug.Log("Boss Hit (by signature)! scale:"+scale);
-        Health -= scale;
+        health -= scale;
+    }
+
+    public float GetMaxHealth()
+    {
+        return this.maxHealth;
     }
 
     public float GetHealth()
     {
-        return this.Health;
+        return this.health;
     }
 
     public void PhaseCheck()
     {
-        if (Health < phase1Cutoff && bossPhase == 1)
+        if (health < phase1Cutoff * maxHealth && bossPhase == 1)
         {
             bossPhase = 2;
             RuntimeManager.StudioSystem.setParameterByName("boss_phase", 1);
@@ -68,12 +84,12 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
         if (stream.IsWriting)
         {
             // We own this player: send others our data
-            stream.SendNext(this.Health);
+            stream.SendNext(this.health);
         }
         else
         {
             //Network player, receive data
-            this.Health = (float)stream.ReceiveNext();
+            this.health = (float)stream.ReceiveNext();
         }
     }
 

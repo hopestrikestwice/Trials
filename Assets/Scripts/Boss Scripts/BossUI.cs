@@ -33,7 +33,7 @@ public class BossUI : MonoBehaviour
             // Reflect the Boss Health
             if (bossHealthSlider != null)
             {
-                bossHealthSlider.value = boss.GetHealth();
+                bossHealthSlider.value = boss.GetHealth() / boss.GetMaxHealth();
             }
         }
         // else

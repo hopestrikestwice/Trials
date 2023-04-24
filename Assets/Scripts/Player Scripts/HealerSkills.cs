@@ -178,20 +178,12 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("BossProjectile") && isBlocked)
+        if ((other.CompareTag("BossTentacle") || other.CompareTag("BossProjectile")) && isBlocked)
         {
             Debug.Log("Boss atk blocked by healer");
             AddCharge();
             //Negates damage from atk
-            this.GetComponent<PlayerManagerCore>().HealPlayer(0.2f);
-        }
-        //Undos the heal from initial collision with its own particle
-        if (other.CompareTag("Heal") && this.GetComponent<PlayerManagerCore>().getIsHealed())
-        {
-            Debug.Log("Undoing Heal");
-            int charge = other.GetComponent<HealerProjectile>().GetCharge();
-            double scale = charge/5.0;
-            this.GetComponent<PlayerManagerCore>().UnhealPlayer((float)scale);
+            this.GetComponent<PlayerManagerCore>().HealPlayer(20);
         }
     }
 

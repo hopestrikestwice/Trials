@@ -16393,7 +16393,7 @@ GameObject:
   - component: {fileID: 907235148485127773}
   - component: {fileID: 5624279831291127746}
   m_Layer: 0
-  m_Name: body:pCube1
+  m_Name: Character Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26170,6 +26170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerUiPrefab: {fileID: 3438631249754424805, guid: f2fe0f2b95f553d49bcfed4dbd8188c5, type: 3}
+  maxHealth: 100
 --- !u!114 &1710331807755535099
 MonoBehaviour:
   m_ObjectHideFlags: 0

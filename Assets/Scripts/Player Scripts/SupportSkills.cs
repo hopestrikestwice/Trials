@@ -101,7 +101,7 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
         if (managerCoreScript.getIsFogged()) {
             GetComponent<PhotonView>().RPC("DashAll", RpcTarget.All, new object [] { dashDirection });
         }
-        else 
+        else
         {
             // Dash only the support
             actionCoreScript.SetDashDirection(dashDirection);

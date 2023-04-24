@@ -6189,6 +6189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerUiPrefab: {fileID: 2950267314463264838, guid: 3f27595ae9372824dac65b32e3b3eaae, type: 3}
+  maxHealth: 100
 --- !u!114 &-196070068597410634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12159,7 +12160,7 @@ GameObject:
   - component: {fileID: 3182832480362297965}
   - component: {fileID: 2349430826022637750}
   m_Layer: 0
-  m_Name: coat
+  m_Name: Character Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

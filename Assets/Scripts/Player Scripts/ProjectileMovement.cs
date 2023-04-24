@@ -19,6 +19,8 @@ public class ProjectileMovement : MonoBehaviourPun
 
     private GameObject playerSource;
 
+    private int projectileDamage = 25;
+
     public void SetLifetime(float l)
     {
         this.lifetime = l;
@@ -56,13 +58,24 @@ public class ProjectileMovement : MonoBehaviourPun
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("BossProjectile"))
+        /* We let localclients handle hit collision, to be more accurate for the local player */
+        if (!photonView.IsMine)
         {
-            Debug.Log("Proj hit Boss");
+            return;
+        }
+
+        if (other.CompareTag("BossTentacle"))
+        {
+            Debug.Log("Player Projectile hit Boss");
+            other.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, projectileDamage);
+
             if (playerSource != null && playerSource.GetComponent<HealerSkills>() != null)
             {
                 playerSource.GetComponent<HealerSkills>().AddCharge();
             }
+
+            /* Destroy projectile on hit */
+            PhotonNetwork.Destroy(this.gameObject);
         }
     }
 

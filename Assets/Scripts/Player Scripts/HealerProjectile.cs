@@ -16,6 +16,11 @@ public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     private bool playerHealed = false;
 
+    [SerializeField]
+    private int maxDamageValue = 50;
+    [SerializeField]
+    private int maxHealValue = 50;
+
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] instantiationData = info.photonView.InstantiationData;
@@ -76,23 +81,36 @@ public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("BossProjectile"))
+        /* We let localclients handle hit collision, to be more accurate for the local player */
+        if (!photonView.IsMine)
         {
-            if (photonView.IsMine)
-            {
-                PhotonNetwork.Destroy(this.gameObject);
-            }
+            return;
         }
+
+        if (other.CompareTag("BossTentacle"))
+        {
+            Debug.Log("Healer Projectile hit Boss");
+            other.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, this.maxDamageValue * this.sigCharge / 5.0);
+
+            PhotonNetwork.Destroy(this.gameObject);
+        }
+        /* Need to make sure doesn't have HealerSkills component so healer doesn't autoheal self on cast */
         if (other.CompareTag("Player") && other.gameObject.GetComponent<HealerSkills>() == null)
         {
-            Debug.Log("Proj hit Player");
+            Debug.Log("Healer Projectile hit Player");
+
+            PhotonView otherPhotonView = other.GetComponent<PhotonView>();
+
+            otherPhotonView.RPC("HealPlayer", otherPhotonView.Owner, (int)(this.maxHealValue * this.sigCharge / 5.0));
 
             if (playerSource != null)
             {
-                //Heals healer
-                this.playerSource.GetComponent<PlayerManagerCore>().HealPlayer((float)(this.sigCharge/5.0));
+                //Heals healer (self) if still alive
+                this.playerSource.GetComponent<PlayerManagerCore>().HealPlayer((int)(this.maxHealValue * this.sigCharge / 5.0));
                 playerHealed = true;
             }
+
+            PhotonNetwork.Destroy(this.gameObject);
         }
     }
 }

@@ -25,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1043504497595704658}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
   m_LocalPosition: {x: 0, y: -11, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 1759549383891305507}
   m_Father: {fileID: 2672458537188543841}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
 --- !u!114 &5893662941385772563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   KrakenUiPrefab: {fileID: 6649751427905233598, guid: 19e3cd41f43de2b43aa2a8740c08c42b, type: 3}
+  maxHealth: 100
 --- !u!114 &6234844265434215157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,6 +251,7 @@ MonoBehaviour:
   projectile: {fileID: 8087487053105947311, guid: 91478e79a1e674d4d84cbfe31daf7946, type: 3}
   tentacleProjectileThrowClip: {fileID: 7400000, guid: 6f63c2db308836b4399618121c8c33a8, type: 2}
   laserTentacles: {fileID: 1043504497595704658}
+  lasers: {fileID: 7829643754184833883}
 --- !u!1 &7829643754184833883
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,7 +374,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 797169526682292037, guid: 7a4cb201fb3ca8442bacbeca5852947e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 55
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 797169526682292037, guid: 7a4cb201fb3ca8442bacbeca5852947e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -496,7 +498,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 797169526682292037, guid: 7a4cb201fb3ca8442bacbeca5852947e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -55
+      value: -45
       objectReference: {fileID: 0}
     - target: {fileID: 797169526682292037, guid: 7a4cb201fb3ca8442bacbeca5852947e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -938,7 +940,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 797169526682292037, guid: 7a4cb201fb3ca8442bacbeca5852947e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 55
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 797169526682292037, guid: 7a4cb201fb3ca8442bacbeca5852947e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1000,7 +1002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f43d6b2c054e954eaf34eec6563e709, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -45
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f43d6b2c054e954eaf34eec6563e709, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1176,7 +1178,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f43d6b2c054e954eaf34eec6563e709, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 45
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6f43d6b2c054e954eaf34eec6563e709, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1290,7 +1292,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 797169526682292037, guid: 7a4cb201fb3ca8442bacbeca5852947e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -55
+      value: -45
       objectReference: {fileID: 0}
     - target: {fileID: 797169526682292037, guid: 7a4cb201fb3ca8442bacbeca5852947e, type: 3}
       propertyPath: m_LocalRotation.w

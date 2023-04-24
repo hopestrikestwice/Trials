@@ -14,11 +14,14 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
 
     [SerializeField]
     private GameObject laserTentacles;
+    [SerializeField]
+    private GameObject lasers;
+    private bool laserTentaclesActive = false;
     private bool lasersActive = false;
     private float laserTime = 10; // How long lasers are up in seconds.
 
     private bool rotateLasers = false;
-    private float rotateLasersSpeed = 15; // degrees per second
+    private float rotateLasersSpeed = 10; // degrees per second
 
     private Animator animator;
 
@@ -39,13 +42,22 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
 
     private void Update()
     {
-        if (lasersActive && !laserTentacles.activeSelf)
+        if (laserTentaclesActive && !laserTentacles.activeSelf)
         {
             laserTentacles.SetActive(true);
         }
-        else if (!lasersActive && laserTentacles.activeSelf)
+        else if (!laserTentaclesActive && laserTentacles.activeSelf)
         {
             laserTentacles.SetActive(false);
+        }
+
+        if (lasersActive && !lasers.activeSelf)
+        {
+            lasers.SetActive(true);
+        }
+        else if (!lasersActive && lasers.activeSelf)
+        {
+            lasers.SetActive(false);
         }
 
         /* PhotonView isMine only after this point */
@@ -55,6 +67,16 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
         }
 
         if (rotateLasers) {
+            float laserRotation = laserTentacles.transform.rotation.eulerAngles.y;
+            Debug.Log("laserRotation: " + laserRotation);
+            if (345 <= laserRotation || laserRotation <= 15 || BetweenTwoValues(laserRotation, 75, 105) || BetweenTwoValues(laserRotation, 165, 195) || BetweenTwoValues(laserRotation, 265, 285))
+            {
+                lasersActive = false;
+            } else
+            {
+                lasersActive = true;
+            }
+
             laserTentacles.transform.Rotate(rotateLasersSpeed * Vector3.up * Time.deltaTime);
         }
     }
@@ -253,11 +275,13 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
         if (stream.IsWriting)
         {
             // We own the kraken: send other clients our data
+            stream.SendNext(this.laserTentaclesActive);
             stream.SendNext(this.lasersActive);
         }
         else
         {
             // Network kraken, receive data
+            this.laserTentaclesActive = (bool)stream.ReceiveNext();
             this.lasersActive = (bool)stream.ReceiveNext();
         }
     }
@@ -326,7 +350,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     {
         if (!this.laserTentacles.activeSelf)
         {
-            this.lasersActive = true;
+            this.laserTentaclesActive = true;
             this.Invoke("EndLaser", laserTime);
         }
     }
@@ -335,7 +359,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     {
         if (!this.laserTentacles.activeSelf)
         {
-            this.lasersActive = true;
+            this.laserTentaclesActive = true;
             this.Invoke("EndLaser", laserTime);
         }
 
@@ -345,7 +369,15 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     private void EndLaser()
     {
         this.rotateLasers = false;
-        this.lasersActive = false;
+        this.laserTentaclesActive = false;
+    }
+    #endregion
+
+    #region Simple Private Helpers
+    // Returns if left <= toCheck <= right
+    private bool BetweenTwoValues(float toCheck, float left, float right)
+    {
+        return left <= toCheck && toCheck <= right;
     }
     #endregion
 }
