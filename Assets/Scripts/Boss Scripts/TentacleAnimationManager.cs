@@ -164,7 +164,7 @@ public class TentacleAnimationManager : MonoBehaviourPun
         }
         else
         {
-            Debug.LogError("Invalid input to SetProjectilThrow!");
+            Debug.LogError("Invalid input to SetProjectileThrow!");
         }
     }
     #endregion

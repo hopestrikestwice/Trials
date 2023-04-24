@@ -27,6 +27,8 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
 
     private int activeTentacles = 4;
 
+    private int chainslamTentacles = 16;
+
     private int chainslamWait;
     private int projectileWait;
 
@@ -38,6 +40,8 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
         {
             Debug.LogError("Kraken is Missing Animator Component", this);
         }
+
+        animator.SetBool("rising", true);
     }
 
     private void Update()
@@ -82,6 +86,12 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     }
 
     #region Animation Events
+
+    public void FinishRising()
+    {
+        animator.SetBool("rising", false);
+    }
+
     /// <summary>
     /// val = 1 to set to true, val = 0 for false.
     /// </summary>
@@ -137,14 +147,14 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
 
         if (val == 1)
         {
-            chainslamWait = activeTentacles;
+            chainslamWait = chainslamTentacles;
             animator.SetBool("chainslam", true);
         }
         else if (val == 0)
         {
             animator.SetBool("chainslam", false);
 
-            //iterate through tentacles, finishing the chainslam on each.
+            //iterate through main tentacles, finishing the chainslam on each.
             for (int i = 0; i < 4; i++)
             {
                 Transform tentacle = this.transform.GetChild(i);
@@ -227,7 +237,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     public void ActivateRandomSpecialAttack()
     {
 
-        int randNum = Random.Range(3, 4);
+        int randNum = Random.Range(0, 1);
 
         switch (randNum)
         {

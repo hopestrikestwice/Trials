@@ -130,8 +130,11 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: readyChainslam
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: throwing
+  - Type: 4
+    SynchronizeType: 1
+    Name: rising
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0

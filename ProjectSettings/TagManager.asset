@@ -11,6 +11,8 @@ TagManager:
   - Heal
   - Boss
   - Fog
+  - UIButton
+  - BossTentacle
   layers:
   - Default
   - TransparentFX
