@@ -413,11 +413,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2108815985929939280}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61529db7e5766874e8d29695fb61a38a, type: 3}
+  m_Script: {fileID: 11500000, guid: beb948aa50642ab4c8af6d145e93526d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 3585866832007448296, guid: 296e492c396291f49a420edcbdd0bf0d, type: 3}
-  fireRate: 4
 --- !u!1 &2197877263895431691
 GameObject:
   m_ObjectHideFlags: 0

@@ -50,7 +50,7 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     private AnimationClip secondarySkillClip;
     [SerializeField]
     private AnimationClip ultimateClip;
-    private ShootSlash shootSlashScript;
+    private BerserkerShootSlash shootSlashScript;
     #endregion
 
     #endregion
@@ -69,10 +69,10 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
             Debug.LogError("BeserkerSkills is Missing Animator Component", this);
         }
 
-        shootSlashScript = GetComponent<ShootSlash>();
+        shootSlashScript = GetComponent<BerserkerShootSlash>();
         if (!shootSlashScript)
         {
-            Debug.LogError("BerserkerSkills is Missing ShootSlash.cs", this);
+            Debug.LogError("BerserkerSkills is Missing BerserkerShootSlash.cs", this);
         }
 
         actionCoreScript = GetComponent<PlayerActionCore>();
@@ -198,20 +198,6 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
 
                 actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
                 this.Invoke("FinishUltimateMoveForward", ultimateClip.length / 3); // The berserker doesn't actually jump the full length of the ultimateClip animation.
-
-                if (charge >= maxCharge)
-                {
-                    Debug.Log("Berserker MaxCharge Fire!");
-                    bullet = PhotonNetwork.Instantiate(this.chargedBulletPrefab.name, this.transform.position + Vector3.up * bulletOffset, this.transform.rotation);
-                    bullet.GetComponent<ProjectileMovement>().SetLifetime(bulletLifetime * 2);
-                }
-                else
-                {
-                    bullet = PhotonNetwork.Instantiate(this.defaultBulletPrefab.name, this.transform.position + Vector3.up * bulletOffset, this.transform.rotation);
-                    bullet.GetComponent<ProjectileMovement>().SetLifetime(bulletLifetime);
-                }
-
-                charge = 0f;
             }
         }
     }
@@ -219,6 +205,18 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     private void FinishUltimateMoveForward()
     {
         isUltimatingMoveForward = false;
+
+        if (charge >= maxCharge)
+        {
+            Debug.Log("Berserker MaxCharge Fire!");
+            shootSlashScript.InstantiateProjectile(bulletLifetime * 2);
+        }
+        else
+        {
+            shootSlashScript.InstantiateProjectile(bulletLifetime);
+        }
+
+        charge = 0f;
     }
     #endregion
 
@@ -238,8 +236,5 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         long before/after), we can dispatch a separate event instead of handling
         the same-named event.
     */
-    public void BeginUltimateSlash() {
-        shootSlashScript.InstantiateProjectile();
-    }
     #endregion
 }
