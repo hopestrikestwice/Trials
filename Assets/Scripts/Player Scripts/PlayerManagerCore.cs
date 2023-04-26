@@ -89,6 +89,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             if (this.Health <= 0f)
             {
                 Debug.Log("Player Died");
+                PhotonNetwork.Destroy(this.gameObject);
             }
         }
     }
