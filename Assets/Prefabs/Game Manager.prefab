@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefabs:
-  - {fileID: 2108815985929939280, guid: 92f385a1ed018f540b21cf7f39c8ffe6, type: 3}
   - {fileID: 1414371114692696210, guid: 0e7d2cddc1f8ce04a976f4ffc09618d7, type: 3}
   - {fileID: 3153378627678651538, guid: 48cf652f42749e547a64ca402b6ab046, type: 3}
+  - {fileID: 2108815985929939280, guid: 92f385a1ed018f540b21cf7f39c8ffe6, type: 3}
   - {fileID: 7826115962664729443, guid: 3d69e998b0250ed4ebbb6b1588c1a585, type: 3}
   krakenPrefab: {fileID: 5268694362983497266, guid: 35ad7e5bba81ac943878f5d8d7406bd0, type: 3}
