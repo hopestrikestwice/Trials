@@ -259,7 +259,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     public void ActivateRandomSpecialAttack()
     {
 
-        int randNum = Random.Range(4, 5);
+        int randNum = Random.Range(0, 1);
 
         switch (randNum)
         {
