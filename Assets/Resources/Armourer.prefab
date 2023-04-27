@@ -6242,7 +6242,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slashObj: {fileID: 8087487053105947311, guid: e415ab0890f67b94f90baf8deedc0212, type: 3}
-  slashVfx: {fileID: 8087487053105947311, guid: e415ab0890f67b94f90baf8deedc0212, type: 3}
   shieldSmallParticles: {fileID: 6441000187545742215}
   shieldLargeParticles: {fileID: 2098910370814701101}
   smallShieldCollider: {fileID: 3426888929677911150}
