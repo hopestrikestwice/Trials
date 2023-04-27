@@ -87,6 +87,11 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     #endregion
 
     #region IPlayerSkills Implementation
+    public void ActivateBasicAttack()
+    {
+        actionCoreScript.ActivateBasicAttack();
+    }
+    
     public void ActivateSkill()
     {
         Debug.Log("Healer secondary skill activated");
