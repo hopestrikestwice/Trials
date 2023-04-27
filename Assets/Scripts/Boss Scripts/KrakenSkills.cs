@@ -228,7 +228,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     #region IBossSkills Implementation
     public void ActivateRandomBasicAttack()
     {
-        int randNum = Random.Range(0, 2);
+        int randNum = Random.Range(0, 1);
 
         switch (randNum)
         {
@@ -244,7 +244,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     public void ActivateRandomSpecialAttack()
     {
 
-        int randNum = Random.Range(4, 5);
+        int randNum = Random.Range(0, 5);
 
         switch (randNum)
         {

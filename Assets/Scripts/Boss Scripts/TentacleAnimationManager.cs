@@ -17,6 +17,11 @@ public class TentacleAnimationManager : MonoBehaviourPun
     private BossActionCore parentActionCore;
     private KrakenSkills parentKrakenSkills;
 
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip slamSFX;
+
     #region Monobehaviour
     private void Start()
     {
@@ -24,6 +29,12 @@ public class TentacleAnimationManager : MonoBehaviourPun
         if (!animator)
         {
             Debug.LogError("Tentacle is Missing Animator Component", this);
+        }
+
+        audioSource = this.GetComponent<AudioSource>();
+        if (!animator)
+        {
+            Debug.LogError("Tentacle is Missing AudioSource Component", this);
         }
 
         parentActionCore = this.GetComponentInParent<BossActionCore>();
@@ -70,6 +81,11 @@ public class TentacleAnimationManager : MonoBehaviourPun
         {
             Debug.LogError("Invalid input to SetSlam!");
         }
+    }
+
+    public void PlaySlam()
+    {
+        audioSource.PlayOneShot(slamSFX);
     }
 
     public void SetSwipe(int val)

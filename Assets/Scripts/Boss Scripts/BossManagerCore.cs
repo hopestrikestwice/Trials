@@ -33,6 +33,12 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
 
         krakenUI = Instantiate(KrakenUiPrefab);
         krakenUI.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+
+        /* TODO: Background music handling should probably get refactored
+         * out of this file. */
+        /* Turn music lower so we can balance sfx */
+        FMOD.Studio.Bus masterBus = FMODUnity.RuntimeManager.GetBus("bus:/");
+        masterBus.setVolume(0.25f);
     }
 
     private void Update()
