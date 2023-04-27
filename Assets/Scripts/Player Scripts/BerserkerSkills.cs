@@ -17,6 +17,14 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     private Animator animator;
     private PlayerActionCore actionCoreScript;
 
+    #region Basic Attack Variables
+    [SerializeField]
+    private GameObject basicAttackObj;
+    [SerializeField]
+    private GameObject basicAttackVfx;
+    private float basicAttackDelay = 0.3f;
+    #endregion
+
     #region Secondary Skill Variables
     [SerializeField]
     private GameObject secondarySkillShield;
@@ -47,6 +55,8 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     #region Animation variables
     // Used to tell how long the secondary/ultimate skills take
     [SerializeField]
+    private AnimationClip basicAttackClip;
+    [SerializeField]
     private AnimationClip secondarySkillClip;
     [SerializeField]
     private AnimationClip ultimateClip;
@@ -63,22 +73,35 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
             this.playerUI = this.GetComponent<PlayerManagerCore>().getPlayerUI();
         }
 
+        // Animator
         animator = GetComponent<Animator>();
         if (!animator)
         {
             Debug.LogError("BeserkerSkills is Missing Animator Component", this);
         }
 
+        // Basic Attack Objects
+        if (!basicAttackObj || !basicAttackVfx) 
+        {
+            Debug.LogError("BerserkerSkills is Missing Basic Attack Object / VFX");
+        }
+
+        // Scripts 
         shootSlashScript = GetComponent<BerserkerShootSlash>();
         if (!shootSlashScript)
         {
             Debug.LogError("BerserkerSkills is Missing BerserkerShootSlash.cs", this);
         }
-
         actionCoreScript = GetComponent<PlayerActionCore>();
         if (!actionCoreScript)
         {
             Debug.LogError("BeserkerSkills is Missing PlayerActionCore.cs");
+        }
+
+        // Animation clips
+        if (!basicAttackClip)
+        {
+            Debug.LogError("BerserkerSkills is Missing Basic Attack Animation Clip");
         }
         if (!secondarySkillClip)
         {
@@ -121,7 +144,9 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     #region IPlayerSkills Implementation
     public void ActivateBasicAttack()
     {
-        actionCoreScript.ActivateBasicAttack();
+        animator.SetBool("isBasicAttacking", true);
+        StartCoroutine(PunchAttack());
+        actionCoreScript.Invoke("FinishBasicAttackLogic", basicAttackClip.length);
     }
 
     public void ActivateSkill()
@@ -154,6 +179,12 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     #endregion
 
     #region Private Methods
+    IEnumerator PunchAttack() {
+        yield return new WaitForSeconds(basicAttackDelay);
+        GameObject currentPunch = PhotonNetwork.Instantiate(basicAttackObj.name, this.transform.position, this.transform.rotation);
+        yield return new WaitForSeconds(basicAttackClip.length - basicAttackDelay);
+        PhotonNetwork.Destroy(currentPunch);
+    }
 
     IEnumerator SecondarySkill() {
         // Start skill
@@ -240,5 +271,9 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         long before/after), we can dispatch a separate event instead of handling
         the same-named event.
     */
+    public void PlayImpactVfx() {
+        basicAttackVfx.gameObject.SetActive(false);
+        basicAttackVfx.gameObject.SetActive(true);
+    }
     #endregion
 }
