@@ -210,6 +210,7 @@ GameObject:
   - component: {fileID: 7174007818093505352}
   - component: {fileID: 5758182148899678224}
   - component: {fileID: 1958166258940127504}
+  - component: {fileID: 7957593695331453846}
   m_Layer: 0
   m_Name: Berserker
   m_TagString: Player
@@ -403,6 +404,19 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
+--- !u!114 &7957593695331453846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108815985929939280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb948aa50642ab4c8af6d145e93526d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectile: {fileID: 3585866832007448296, guid: 296e492c396291f49a420edcbdd0bf0d, type: 3}
 --- !u!1 &2197877263895431691
 GameObject:
   m_ObjectHideFlags: 0
