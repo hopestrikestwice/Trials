@@ -23,6 +23,9 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     private bool rotateLasers = false;
     private float rotateLasersSpeed = 10; // degrees per second
 
+    [SerializeField]
+    private GameObject krakenHead;
+
     private Animator animator;
 
     private int activeTentacles = 4;
@@ -31,6 +34,10 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
 
     private int chainslamWait;
     private int projectileWait;
+
+    [SerializeField]
+    private GameObject[] elementBuffs;
+    private Element currentElement = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -237,7 +244,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     public void ActivateRandomSpecialAttack()
     {
 
-        int randNum = Random.Range(0, 1);
+        int randNum = Random.Range(4, 5);
 
         switch (randNum)
         {
@@ -252,6 +259,9 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
                 break;
             case 3:
                 this.BeginRotateLaser();
+                break;
+            case 4:
+                this.Screech();
                 break;
         }
     }
@@ -381,6 +391,20 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
         this.rotateLasers = false;
         this.laserTentaclesActive = false;
     }
+
+    /* Screech only affects the head, so we tell it to screech and
+     * do not delay the cooldown of the next attack */
+    private void Screech()
+    {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        this.krakenHead.GetComponent<KrakenHeadAnimationManager>().SetScreech(1);
+
+        photonView.RPC("SetAura", RpcTarget.All, ElementFunctions.RandomElementNotGiven(this.currentElement));
+    }
     #endregion
 
     #region Simple Private Helpers
@@ -389,5 +413,22 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     {
         return left <= toCheck && toCheck <= right;
     }
+    #endregion
+
+    #region RPCs
+    [PunRPC]
+    private void SetAura(Element newAura)
+    {
+        if (this.currentElement != Element.None)
+        {
+            this.elementBuffs[(int)this.currentElement - 1].SetActive(false);
+        }
+        this.currentElement = newAura;
+        if (this.currentElement != Element.None)
+        {
+            this.elementBuffs[(int)this.currentElement - 1].SetActive(true);
+        }
+    }
+
     #endregion
 }
