@@ -21,6 +21,8 @@ public class TentacleAnimationManager : MonoBehaviourPun
 
     [SerializeField]
     private AudioClip slamSFX;
+    [SerializeField]
+    private AudioClip swipeSFX;
 
     #region Monobehaviour
     private void Start()
@@ -86,6 +88,11 @@ public class TentacleAnimationManager : MonoBehaviourPun
     public void PlaySlam()
     {
         audioSource.PlayOneShot(slamSFX);
+    }
+
+    public void PlaySwipe()
+    {
+        audioSource.PlayOneShot(swipeSFX);
     }
 
     public void SetSwipe(int val)

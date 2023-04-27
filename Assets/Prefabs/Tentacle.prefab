@@ -177,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slamSFX: {fileID: 8300000, guid: 947978c9945110e4bbd99b3a12497f02, type: 3}
+  swipeSFX: {fileID: 8300000, guid: 073fc5bcb80aa4e45a23b5f46a12ca5f, type: 3}
 --- !u!136 &8967294745635004668
 CapsuleCollider:
   m_ObjectHideFlags: 0

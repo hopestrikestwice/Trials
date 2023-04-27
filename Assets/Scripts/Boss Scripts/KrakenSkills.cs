@@ -39,6 +39,12 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     private GameObject[] elementBuffs;
     private Element currentElement = 0;
 
+    #region Sound Variables
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip emergeSFX;
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +52,12 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
         if (!animator)
         {
             Debug.LogError("Kraken is Missing Animator Component", this);
+        }
+
+        audioSource = this.GetComponent<AudioSource>();
+        if (!animator)
+        {
+            Debug.LogError("Kraken is Missing AudioSource Component", this);
         }
 
         animator.SetBool("rising", true);
@@ -93,7 +105,10 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     }
 
     #region Animation Events
-
+    public void PlayEmerge()
+    {
+        audioSource.PlayOneShot(emergeSFX);
+    }
     public void FinishRising()
     {
         animator.SetBool("rising", false);
@@ -228,7 +243,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     #region IBossSkills Implementation
     public void ActivateRandomBasicAttack()
     {
-        int randNum = Random.Range(0, 1);
+        int randNum = Random.Range(0, 2);
 
         switch (randNum)
         {
@@ -244,7 +259,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     public void ActivateRandomSpecialAttack()
     {
 
-        int randNum = Random.Range(0, 5);
+        int randNum = Random.Range(4, 5);
 
         switch (randNum)
         {
@@ -269,6 +284,11 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
 
 
     #region Public Methods
+    public Element GetElement()
+    {
+        return this.currentElement;
+    }
+
     public void ReportChainslam()
     {
         chainslamWait--;
@@ -402,8 +422,6 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
         }
 
         this.krakenHead.GetComponent<KrakenHeadAnimationManager>().SetScreech(1);
-
-        photonView.RPC("SetAura", RpcTarget.All, ElementFunctions.RandomElementNotGiven(this.currentElement));
     }
     #endregion
 
@@ -417,7 +435,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
 
     #region RPCs
     [PunRPC]
-    private void SetAura(Element newAura)
+    public void SetAura(Element newAura)
     {
         if (this.currentElement != Element.None)
         {
