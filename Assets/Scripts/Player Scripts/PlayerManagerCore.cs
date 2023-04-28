@@ -163,8 +163,6 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             }
 
             this.health -= damage;
-
-            this.timeSinceHit = 0f;
         }
 
         if (other.CompareTag("Shield"))

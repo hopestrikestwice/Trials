@@ -282,23 +282,26 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         basicAttackVfx.gameObject.SetActive(false);
         basicAttackVfx.gameObject.SetActive(true);
 
-        RaycastHit hitInfo;
-
-        /* Hit range is based on vfx distance */
-        Debug.Log("distance: " + basicAttackVfx.transform.localPosition.z);
-        if (Physics.Raycast(this.transform.position + Vector3.up, this.transform.forward, out hitInfo, basicAttackVfx.transform.localPosition.z))
+        if (photonView.IsMine)
         {
-            if (hitInfo.collider.CompareTag("BossTentacle"))
+            RaycastHit hitInfo;
+
+            /* Hit range is based on vfx distance */
+            Debug.Log("distance: " + basicAttackVfx.transform.localPosition.z);
+            if (Physics.Raycast(this.transform.position + Vector3.up, this.transform.forward, out hitInfo, basicAttackVfx.transform.localPosition.z))
             {
-                /* hit boss here */
-                hitInfo.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, basicAttackDamage, this.GetComponent<PlayerManagerCore>().GetElement());
-                this.AddCharge();
-            }
+                if (hitInfo.collider.CompareTag("BossTentacle"))
+                {
+                    /* hit boss here */
+                    hitInfo.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, basicAttackDamage, this.GetComponent<PlayerManagerCore>().GetElement());
+                    this.AddCharge();
+                }
 
-        }
-        else
-        {
-            /* Hit nothing, do nothing */
+            }
+            else
+            {
+                /* Hit nothing, do nothing */
+            }
         }
     }
 

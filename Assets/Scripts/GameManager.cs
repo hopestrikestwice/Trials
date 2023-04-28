@@ -66,7 +66,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        GameObject.FindGameObjectWithTag("Music").GetComponent<PlayMusic>().StopMusic();
         Instance = this;
 
         if (playerPrefabs.Length <= 0)
@@ -77,7 +76,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Debug.LogFormat("We are Instantiating LocalPlayer from  {0}", Application.loadedLevelName);
             // We're in a room. Spawn a character for the local player. It gets synced by using PhotonNetwork.Instantiate
-            PhotonNetwork.Instantiate(this.playerPrefabs[PhotonNetwork.LocalPlayer.ActorNumber -1].name, new Vector3(0f, 15f, 0f), Quaternion.identity, 0);
+            PhotonNetwork.Instantiate(this.playerPrefabs[PhotonNetwork.LocalPlayer.ActorNumber - 1].name, new Vector3(0f, 15f, 0f), Quaternion.identity, 0);
         }
         else
         {

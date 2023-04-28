@@ -66,5 +66,4 @@ public class TankProjectile : MonoBehaviourPun
             other.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, projectileDamage, playerSource.GetComponent<PlayerManagerCore>().GetElement());
         }
     }
-
 }

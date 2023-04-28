@@ -4,7 +4,7 @@ using UnityEngine;
 
 using Photon.Pun;
 
-public class BerserkerShootSlash : MonoBehaviour
+public class BerserkerShootSlash : MonoBehaviourPun
 {
     [SerializeField]
     private GameObject projectile;

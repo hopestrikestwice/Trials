@@ -12,7 +12,7 @@ public class PlayerReady : MonoBehaviourPun
     public GameObject waitingPanel;
 
     private int numReady;
-    private int maxPlayers = 1;
+    private int maxPlayers = 2;
 
     private void Start()
     {
@@ -36,7 +36,6 @@ public class PlayerReady : MonoBehaviourPun
         /* Only the master can start the game when all players ready. */
         if (PhotonNetwork.IsMasterClient && this.numReady == this.maxPlayers)
         {
-
             PhotonNetwork.LoadLevel("Main Game");
         }
     }

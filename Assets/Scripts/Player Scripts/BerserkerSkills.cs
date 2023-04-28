@@ -255,22 +255,26 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         basicAttackVfx.gameObject.SetActive(false);
         basicAttackVfx.gameObject.SetActive(true);
 
-        RaycastHit hitInfo;
-
-        /* Hit range is based on vfx distance */
-        Debug.Log("distance: " + basicAttackVfx.transform.localPosition.z);
-        if (Physics.Raycast(this.transform.position + Vector3.up, this.transform.forward, out hitInfo, basicAttackVfx.transform.localPosition.z))
+        if (photonView.IsMine)
         {
-            if (hitInfo.collider.CompareTag("BossTentacle"))
+            /* check for hit if we are the owning client */
+            RaycastHit hitInfo;
+
+            /* Hit range is based on vfx distance */
+            Debug.Log("distance: " + basicAttackVfx.transform.localPosition.z);
+            if (Physics.Raycast(this.transform.position + Vector3.up, this.transform.forward, out hitInfo, basicAttackVfx.transform.localPosition.z))
             {
-                /* hit boss here */
-                hitInfo.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, basicAttackDamage, this.GetComponent<PlayerManagerCore>().GetElement());
-            }
+                if (hitInfo.collider.CompareTag("BossTentacle"))
+                {
+                    /* hit boss here */
+                    hitInfo.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, basicAttackDamage, this.GetComponent<PlayerManagerCore>().GetElement());
+                }
 
-        }
-        else
-        {
-            /* Hit nothing, do nothing */
+            }
+            else
+            {
+                /* Hit nothing, do nothing */
+            }
         }
     }
     #endregion
