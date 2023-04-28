@@ -15,6 +15,20 @@ public class GiveElement : MonoBehaviour, IPunObservable
     [SerializeField]
     private GameObject earthVfx;
 
+    [SerializeField]
+    private bool checkElementInUpdate = false;
+
+    void Update() {
+        if (checkElementInUpdate) {
+            Element parentElement = this.GetComponentInParent<PlayerManagerCore>().GetElement();
+            
+            if (parentElement != this.mostRecentElement) {
+                Debug.Log("parent element was updated");
+                setElement(parentElement);
+            }
+        }
+    }
+
     public Element getElement()
     {
         return this.mostRecentElement;
