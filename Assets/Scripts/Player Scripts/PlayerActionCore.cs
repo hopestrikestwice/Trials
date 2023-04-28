@@ -19,7 +19,9 @@ public class PlayerActionCore : MonoBehaviourPun
     // Store camera direction along x-z plane to calculate movement and ability direction
     private Vector3 cameraDirection;
 
+    [SerializeField]
     private float walkSpeed = 7f;
+
     private float gravity = 9.8f;
     private bool immobile = false;
     

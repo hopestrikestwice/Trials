@@ -91,7 +91,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
 
         if (rotateLasers) {
             float laserRotation = laserTentacles.transform.rotation.eulerAngles.y;
-            Debug.Log("laserRotation: " + laserRotation);
+
             if (345 <= laserRotation || laserRotation <= 15 || BetweenTwoValues(laserRotation, 75, 105) || BetweenTwoValues(laserRotation, 165, 195) || BetweenTwoValues(laserRotation, 265, 285))
             {
                 lasersActive = false;
@@ -259,7 +259,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     public void ActivateRandomSpecialAttack()
     {
 
-        int randNum = Random.Range(2, 3);
+        int randNum = Random.Range(3, 4);
 
         switch (randNum)
         {

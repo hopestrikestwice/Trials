@@ -19,37 +19,27 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
 
     #region Basic Attack Variables
     [SerializeField]
-    private GameObject basicAttackObj;
-    [SerializeField]
     private GameObject basicAttackVfx;
-    private float basicAttackDelay = 0.8f;
-    #endregion
-
-    #region Secondary Skill Variables
-    [SerializeField]
-    private GameObject secondarySkillShield;
     #endregion
 
     #region Attack Variables
     [SerializeField]
-    private GameObject defaultBulletPrefab;
+    private int basicAttackDamage;
+    private float chargedBulletLifetime = 0.5f;
+
     [SerializeField]
-    private GameObject chargedBulletPrefab;
-    private GameObject bullet;
-
-    private float bulletOffset = 1f;
-    private float bulletLifetime = 1f;
-
+    private int chargedAttackMaxDamage;
+    private int unchargedPenalty = 5;
     private float charge = 0f;
-    private float maxCharge = 1f;
+    private float maxCharge = 3f; // how long it takes to max charge in seconds
 
     private bool isCharging = false;
 
     private CharacterController controller;
-    private float slamForwardSpeed = 10f;
+    private float slamForwardSpeed = 16f;
     private bool isUltimatingMoveForward = false;
 
-    private float[] cooldown = {5, 5, 5};
+    private float[] cooldown = {1, 2, 15};
     #endregion
 
     #region Animation variables
@@ -62,6 +52,8 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     private AnimationClip ultimateClip;
     private BerserkerShootSlash shootSlashScript;
     #endregion
+
+    private Color originalBaseColor;
 
     #endregion
 
@@ -81,9 +73,9 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         }
 
         // Basic Attack Objects
-        if (!basicAttackObj || !basicAttackVfx) 
+        if (!basicAttackVfx) 
         {
-            Debug.LogError("BerserkerSkills is Missing Basic Attack Object / VFX");
+            Debug.LogError("BerserkerSkills is Missing Basic Attack VFX");
         }
 
         // Scripts 
@@ -117,6 +109,8 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         {
             Debug.LogError("PlayerActionCore is missing CharacterController Component", this);
         }
+
+        originalBaseColor = this.transform.Find("Character Body").GetComponent<Renderer>().material.GetColor("_BaseColor");
     }
 
     void Update()
@@ -148,7 +142,7 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     public void ActivateBasicAttack()
     {
         animator.SetBool("isBasicAttacking", true);
-        StartCoroutine(PunchAttack());
+
         actionCoreScript.Invoke("FinishBasicAttackLogic", basicAttackClip.length);
     }
 
@@ -168,16 +162,7 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
 
     public void ActivateUltimate()
     {
-        if (bullet == null)
-        {
-            isCharging = true;
-        } else {
-            if (photonView.IsMine)
-            {
-                playerUI.UnshadeIcon(SkillUI.ULTIMATE);
-            }
-            this.gameObject.GetComponent<PlayerActionCore>().setImmobile(false);
-        }
+        isCharging = true;
     }
 
     public float[] GetCooldown()
@@ -188,12 +173,6 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     #endregion
 
     #region Private Methods
-    IEnumerator PunchAttack() {
-        yield return new WaitForSeconds(basicAttackDelay);
-        GameObject currentPunch = PhotonNetwork.Instantiate(basicAttackObj.name, this.transform.position, this.transform.rotation);
-        yield return new WaitForSeconds(basicAttackClip.length - basicAttackDelay);
-        PhotonNetwork.Destroy(currentPunch);
-    }
 
     IEnumerator SecondarySkill() {
         // Start skill
@@ -209,31 +188,31 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     /* not properly named, but this is for the ultimate (charged) attack */
     private void HandleAttack()
     {
-        if (bullet == null)
+        if ((Input.GetButtonDown("Fire3") || Input.GetButton("Fire3")))
         {
-            if ((Input.GetButtonDown("Fire3") || Input.GetButton("Fire3")))
+            if (charge < maxCharge)
             {
-                if (charge < maxCharge)
-                {
-                    charge += Time.deltaTime;
-                }
+                charge += Time.deltaTime;
+                this.transform.Find("Character Body").GetComponent<Renderer>().material.SetColor("_BaseColor", Color.Lerp(originalBaseColor, Color.red / 2, charge / maxCharge));
+            } else {
+                this.transform.Find("Character Body").GetComponent<Renderer>().material.SetColor("_BaseColor", Color.red);
             }
+        }
             
-            if (Input.GetButtonUp("Fire3")) // Does GetButtonUp imply Getbuttondown was called? And vice versa?
-            {
-                Vector3 cameraDirection = this.gameObject.GetComponent<CameraWork>().GetCameraForward();
-                cameraDirection.y = 0;
-                this.transform.forward = cameraDirection;
+        if (Input.GetButtonUp("Fire3")) // Does GetButtonUp imply Getbuttondown was called? And vice versa?
+        {
+            Vector3 cameraDirection = this.gameObject.GetComponent<CameraWork>().GetCameraForward();
+            cameraDirection.y = 0;
+            this.transform.forward = cameraDirection;
 
-                //Animations and fire attack
-                animator.SetBool("isUltimating", true);
-                isCharging = false;
+            //Animations and fire attack
+            animator.SetBool("isUltimating", true);
+            isCharging = false;
 
-                isUltimatingMoveForward = true;
+            isUltimatingMoveForward = true;
 
-                actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
-                this.Invoke("FinishUltimateMoveForward", ultimateClip.length / 3); // The berserker doesn't actually jump the full length of the ultimateClip animation.
-            }
+            actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
+            this.Invoke("FinishUltimateMoveForward", ultimateClip.length / 3); // The berserker doesn't actually jump the full length of the ultimateClip animation.
         }
     }
 
@@ -244,13 +223,14 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
         if (charge >= maxCharge)
         {
             Debug.Log("Berserker MaxCharge Fire!");
-            shootSlashScript.InstantiateProjectile(bulletLifetime * 2);
+            shootSlashScript.InstantiateProjectile(chargedAttackMaxDamage, chargedBulletLifetime * 2);
         }
         else
         {
-            shootSlashScript.InstantiateProjectile(bulletLifetime);
+            shootSlashScript.InstantiateProjectile(chargedAttackMaxDamage / unchargedPenalty, chargedBulletLifetime);
         }
 
+        this.transform.Find("Character Body").GetComponent<Renderer>().material.SetColor("_BaseColor", originalBaseColor);
         charge = 0f;
     }
     #endregion
@@ -274,6 +254,24 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     public void PlayImpactVfx() {
         basicAttackVfx.gameObject.SetActive(false);
         basicAttackVfx.gameObject.SetActive(true);
+
+        RaycastHit hitInfo;
+
+        /* Hit range is based on vfx distance */
+        Debug.Log("distance: " + basicAttackVfx.transform.localPosition.z);
+        if (Physics.Raycast(this.transform.position + Vector3.up, this.transform.forward, out hitInfo, basicAttackVfx.transform.localPosition.z))
+        {
+            if (hitInfo.collider.CompareTag("BossTentacle"))
+            {
+                /* hit boss here */
+                hitInfo.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, basicAttackDamage);
+            }
+
+        }
+        else
+        {
+            /* Hit nothing, do nothing */
+        }
     }
     #endregion
 }
