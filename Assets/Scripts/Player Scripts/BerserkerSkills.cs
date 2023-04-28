@@ -22,7 +22,7 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     private GameObject basicAttackObj;
     [SerializeField]
     private GameObject basicAttackVfx;
-    private float basicAttackDelay = 0.3f;
+    private float basicAttackDelay = 0.8f;
     #endregion
 
     #region Secondary Skill Variables
