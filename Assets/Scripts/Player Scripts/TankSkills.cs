@@ -6,6 +6,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 using Photon.Pun;
 
@@ -16,6 +17,14 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
 
     private Animator animator;
     private PlayerActionCore actionCoreScript;
+
+    #region Slash Variables
+    [Header("Slash GameObjects")]
+    [SerializeField]
+    private GameObject slashObj;
+    private const float slashDelay = 0.2f;
+    private float slashLifetime; // Note : Need to manually set the slashObj's VFX to have this lifetime, annoying through script
+    #endregion
 
     #region Shield Variables
      [Header("Shielding GameObjects")]
@@ -50,6 +59,8 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
     #region Animation variables
      [Header("Animation Clips")]
     // Used to tell how long the secondary/ultimate skills take
+    [SerializeField]
+    private AnimationClip basicAttackClip;
     [SerializeField]
     private AnimationClip secondarySkillClip;
     [SerializeField]
@@ -129,6 +140,7 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
             Debug.LogError("BeserkerSkills is Missing Animator Component", this);
         }
 
+        // Check for shield prefabs
         if (!smallShieldCollider || !largeShieldCollider || !smallShieldVfx || !largeShieldVfx)
         {
             Debug.LogError("TankSkills is Missing Shield GameObject", this);
@@ -151,10 +163,17 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
             shieldLargeParticles.GetComponent<ParticleSystem>().enableEmission = false;
         }
 
+        // Check for action core script
         actionCoreScript = GetComponent<PlayerActionCore>();
         if (!actionCoreScript)
         {
             Debug.LogError("TankSkills is Missing PlayerActionCore.cs");
+        }
+
+        // Check for animation clips
+        if (!basicAttackClip)
+        {
+            Debug.LogError("TankSkills is Missing Basic Attack Animation Clip");
         }
         if (!secondarySkillClip)
         {
@@ -164,11 +183,23 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
         {
             Debug.LogError("TankSkills is Missing Ultimate Animation Clip");
         }
+
+        // Check for slash vfx
+        if (!slashObj) {
+            Debug.LogError("TankSkills is Missing Slash Projectile/VFX");
+        }
+        slashLifetime = basicAttackClip.length - slashDelay;
     }
 
     #endregion
 
     #region IPlayerSkills Implementation
+    public void ActivateBasicAttack()
+    {
+        animator.SetBool("isBasicAttacking", true);
+        StartCoroutine(AttackSlash());
+        actionCoreScript.Invoke("FinishBasicAttackLogic", basicAttackClip.length);
+    }
 
     public void ActivateSkill()
     {
@@ -218,6 +249,24 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
     public void DeactivateLargeShield()
     {
         largeShieldEnabled = false;
+    }
+
+    IEnumerator AttackSlash() 
+    {
+        yield return new WaitForSeconds(slashDelay);
+        
+        //Calculate direction for attack by intersecting mouse ray with selectable objects on raycastable layer.
+        Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        int mainRaycastMask = 1 << 6; // Mask to just the main Raycast layer, so we only find hits to objects in that layer.
+
+        RaycastHit hitInfo;
+        if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, mainRaycastMask))
+        {
+            this.transform.LookAt(new Vector3(hitInfo.point.x, 1, hitInfo.point.z));
+        }
+        GameObject projectile = PhotonNetwork.Instantiate(slashObj.name, this.transform.position, this.transform.rotation);
+        projectile.GetComponent<ProjectileMovement>().SetLifetime(slashLifetime);
+        projectile.GetComponent<ProjectileMovement>().SetPlayer(this.gameObject);
     }
     #endregion
 

@@ -122,6 +122,10 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
     #endregion
 
     #region IPlayerSkills Implementation
+    public void ActivateBasicAttack()
+    {
+        actionCoreScript.ActivateBasicAttack();
+    }
 
     public void ActivateSkill()
     {

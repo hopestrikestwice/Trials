@@ -119,7 +119,7 @@ public class PlayerActionCore : MonoBehaviourPun
                 }
                 isPrimaryCooldown = true;
                 primaryCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[0]);
-                this.ActivateBasicAttack();
+                skills.ActivateBasicAttack();
             } else if (Input.GetButtonDown("Fire2") && !isSecondaryCooldown)
             {
                 immobile = true;
@@ -238,6 +238,17 @@ public class PlayerActionCore : MonoBehaviourPun
         Debug.Log("Changing Element (action): "+element);
     }
 
+    public void FinishBasicAttackLogic() {
+        animator.SetBool("isBasicAttacking", false);
+
+        if (photonView.IsMine)
+        {
+            playerUI.UnshadeIcon(SkillUI.PRIMARY);
+        }
+
+        this.immobile = false;
+    }
+
     public void FinishSecondarySkillLogic() {
         if (photonView.IsMine) {
             playerUI.UnshadeIcon(SkillUI.SECONDARY);
@@ -256,7 +267,7 @@ public class PlayerActionCore : MonoBehaviourPun
     #endregion
 
     #region Private Functions
-    private void ActivateBasicAttack()
+    public void ActivateBasicAttack() // Change eventually so all logic is in individual players; used to be private and used for all characters
     {
         animator.SetBool("isBasicAttacking", true);
 
