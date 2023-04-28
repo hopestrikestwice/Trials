@@ -42,8 +42,20 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 
     private float bulletOffset = 1f;
     private float bulletLifetime = 1f;
-    private int sigCharge = 0;
+
     private bool isBlocked = false;
+
+    private int currentSignatureCharges = 0;
+    [SerializeField]
+    private int maxSignatureCharges = 5;
+    [SerializeField]
+    private int maxSignatureHeal = 50;
+    [SerializeField]
+    private int maxSignatureDamage = 50;
+
+
+    [SerializeField]
+    private GameObject lightningBolt;
     #endregion
 
     #endregion
@@ -129,7 +141,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 
     public void ActivateUltimate()
     {
-        if (GetCharge() > 0) {
+        if (currentSignatureCharges > 0) {
             Debug.Log("AOE heal ability pressed");
 
             Vector3 cameraDirection = this.gameObject.GetComponent<CameraWork>().GetCameraForward();
@@ -138,7 +150,6 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 
             animator.SetBool("isUltimating", true);
             DoSignature();
-            ResetCharge();
             actionCoreScript.Invoke("FinishUltimateLogic", ultimateClip.length);
         }
         else {
@@ -153,44 +164,62 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     #region Public Methods
     public void DoSignature()
     {
-        //Calculate direction for attack by intersecting mouse ray with selectable objects on raycastable layer.
-        Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        // Ray mouseRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        int mainRaycastMask = 1 << 6; // Mask to just the main Raycast layer, so we only find hits to objects in that layer.
-
         RaycastHit hitInfo;
 
-        if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, mainRaycastMask))
+        if (Physics.Raycast(this.transform.position + Vector3.up, this.transform.forward, out hitInfo, 8f))
         {
-            this.transform.LookAt(new Vector3(hitInfo.point.x, 1, hitInfo.point.z));
-            Debug.Log("Hit: "+hitInfo.collider.name);
+            this.photonView.RPC("StartLightningParticles", RpcTarget.All);
+
+            if (hitInfo.collider.CompareTag("Player"))
+            {
+                int healAmount = currentSignatureCharges * maxSignatureHeal / maxSignatureCharges;
+                hitInfo.collider.GetComponent<PhotonView>().RPC("HealPlayer", RpcTarget.Others, healAmount);
+                this.GetComponent<PlayerManagerCore>().HealPlayer(healAmount);
+            }
+            else
+            {
+                /* hit boss here */
+                int damageAmount = currentSignatureCharges * maxSignatureDamage / maxSignatureCharges;
+                hitInfo.collider.GetComponent<PhotonView>().RPC("HealPlayer", RpcTarget.Others, damageAmount);
+                int healAmount = currentSignatureCharges * maxSignatureHeal / maxSignatureCharges;
+                this.GetComponent<PlayerManagerCore>().HealPlayer(healAmount);
+            }
+
+        } else
+        {
+            /* Hit nothing, do nothing */
         }
 
-        object[] myCustomInitData = new object[]
-        {
-            GetCharge()
-        };
+        currentSignatureCharges = 0;
 
-        bullet = PhotonNetwork.Instantiate(this.defaultBulletPrefab.name, this.transform.position + Vector3.up * bulletOffset, this.transform.rotation, 0, myCustomInitData);
-        bullet.GetComponent<HealerProjectile>().SetLifetime(bulletLifetime);
-        bullet.GetComponent<HealerProjectile>().SetPlayer(this.gameObject);
+        ////Calculate direction for attack by intersecting mouse ray with selectable objects on raycastable layer.
+        //Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //// Ray mouseRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        //int mainRaycastMask = 1 << 6; // Mask to just the main Raycast layer, so we only find hits to objects in that layer.
+
+        //RaycastHit hitInfo;
+
+        //if (Physics.Raycast(mouseRay, out hitInfo, Mathf.Infinity, mainRaycastMask))
+        //{
+        //    this.transform.LookAt(new Vector3(hitInfo.point.x, 1, hitInfo.point.z));
+        //    Debug.Log("Hit: "+hitInfo.collider.name);
+        //}
+
+        //object[] myCustomInitData = new object[]
+        //{
+        //    GetCharge()
+        //};
+
+        //bullet = PhotonNetwork.Instantiate(this.defaultBulletPrefab.name, this.transform.position + Vector3.up * bulletOffset, this.transform.rotation, 0, myCustomInitData);
+        //bullet.GetComponent<HealerProjectile>().SetLifetime(bulletLifetime);
+        //bullet.GetComponent<HealerProjectile>().SetPlayer(this.gameObject);
     }
 
     //Increments signature charge
     public void AddCharge()
     {
-        if (this.sigCharge < 5) this.sigCharge++;
-        Debug.Log("Added charge - total charge: "+this.sigCharge);
-    }
-
-    public void ResetCharge()
-    {
-        this.sigCharge = 0;
-    }
-
-    public int GetCharge()
-    {
-        return this.sigCharge;
+        if (this.currentSignatureCharges < maxSignatureCharges) this.currentSignatureCharges++;
+        Debug.Log("Added charge - total charge: "+this.currentSignatureCharges);
     }
 
     #endregion
@@ -231,19 +260,32 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         long before/after), we can dispatch a separate event instead of handling
         the same-named event.
     */
+    public void StartLightningBolt()
+    {
+        this.lightningBolt.SetActive(true);
+    }
+
+    public void FinishLightningBolt()
+    {
+        this.lightningBolt.SetActive(false);
+    }
 
     /* Ultimate Skill Animation Events */
-    public void StartLightningParticles()
-    {
-        lightningParticles.GetComponent<ParticleSystem>().enableEmission = true;
-        Debug.Log("Lightning Enabled");
-    }
     public void FinishLightningParticles()
     {
         lightningParticles.GetComponent<ParticleSystem>().enableEmission = false;
         Debug.Log("Lightning Disabled");
     }
 
+    #endregion
+
+    #region RPCs
+    [PunRPC]
+    public void StartLightningParticles()
+    {
+        lightningParticles.GetComponent<ParticleSystem>().enableEmission = true;
+        Debug.Log("Lightning Enabled");
+    }
     #endregion
 
 }

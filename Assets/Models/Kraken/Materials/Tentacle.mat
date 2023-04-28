@@ -463,7 +463,7 @@ Material:
     - _utsVersionZ: 1
     m_Colors:
     - Toon_Ramp_Tint: {r: 0.490566, g: 0.490566, b: 0.490566, a: 1}
-    - _1st_ShadeColor: {r: 0, g: 0.18867916, b: 0.10613199, a: 0.18431373}
+    - _1st_ShadeColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
     - _2nd_ShadeColor: {r: 1, g: 1, b: 1, a: 1}
     - _AngelRingMaskColor: {r: 0, g: 1, b: 0, a: 1}
     - _AngelRing_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -43,6 +43,7 @@ MonoBehaviour:
   - HealPlayer
   - TakeDamage
   - SetAura
+  - StartLightningParticles
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

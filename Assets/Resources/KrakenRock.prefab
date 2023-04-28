@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8087487053105947309}
   - component: {fileID: 8087487053105947308}
   - component: {fileID: 4743208005952106666}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: KrakenRock
   m_TagString: BossProjectile
   m_Icon: {fileID: 0}

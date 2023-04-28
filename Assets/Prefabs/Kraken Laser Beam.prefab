@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8374192791263793065}
   - component: {fileID: 3348629909833337667}
   - component: {fileID: 2735110127358506817}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Kraken Laser Beam
   m_TagString: BossProjectile
   m_Icon: {fileID: 0}

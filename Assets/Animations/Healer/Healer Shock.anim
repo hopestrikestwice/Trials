@@ -45072,21 +45072,28 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: StartLightningParticles
+    functionName: StartLightningBolt
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.93333334
-    functionName: FinishUltimateAnimation
+  - time: 0.96666664
+    functionName: FinishLightningBolt
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.93333334
+  - time: 0.96666664
     functionName: FinishLightningParticles
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.96666664
+    functionName: FinishUltimateAnimation
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

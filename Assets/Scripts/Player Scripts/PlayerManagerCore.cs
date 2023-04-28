@@ -270,6 +270,11 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void HealPlayer(int amount)
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         Debug.Log("Healing "+this.gameObject+"by "+amount);
         this.health = Mathf.Min(this.health + amount, this.maxHealth);
     }

@@ -259,7 +259,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     public void ActivateRandomSpecialAttack()
     {
 
-        int randNum = Random.Range(0, 1);
+        int randNum = Random.Range(2, 3);
 
         switch (randNum)
         {
@@ -391,6 +391,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
         if (!this.laserTentacles.activeSelf)
         {
             this.laserTentaclesActive = true;
+            this.lasersActive = true;
             this.Invoke("EndLaser", laserTime);
         }
     }
@@ -410,6 +411,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     {
         this.rotateLasers = false;
         this.laserTentaclesActive = false;
+        this.lasersActive = false;
     }
 
     /* Screech only affects the head, so we tell it to screech and
