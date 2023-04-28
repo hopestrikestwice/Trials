@@ -12,7 +12,7 @@ public class PlayerReady : MonoBehaviourPun
     public GameObject waitingPanel;
 
     private int numReady;
-    private int maxPlayers = 2;
+    private int maxPlayers = 4;
 
     private void Start()
     {
