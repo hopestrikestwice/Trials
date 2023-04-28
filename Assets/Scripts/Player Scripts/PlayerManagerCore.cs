@@ -117,7 +117,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
 
             int currentPhase = GameObject.FindGameObjectWithTag("Boss").GetComponent<BossManagerCore>().GetPhase();
 
-            this.health -= 25 * currentPhase / 3;
+            this.health -= 5 * currentPhase * currentPhase;
 
             this.timeSinceHit = 0f;
         }
@@ -128,7 +128,7 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
 
             int currentPhase = GameObject.FindGameObjectWithTag("Boss").GetComponent<BossManagerCore>().GetPhase();
 
-            this.health -= 50 * currentPhase / 3;
+            this.health -= 7 * currentPhase * currentPhase;
 
             this.timeSinceHit = 0f;
         }
