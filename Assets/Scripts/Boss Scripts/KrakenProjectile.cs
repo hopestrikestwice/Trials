@@ -12,19 +12,22 @@ using Photon.Pun;
 
 public class KrakenProjectile : MonoBehaviourPun
 {
-    private float speed = 10f;
+    private float timePassed = 0;
 
-    private bool markedForDestroy = false;
-
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (!photonView.IsMine)
+        if (this.transform.position.y > 0)
         {
-            return;
+            this.GetComponent<Rigidbody>().AddForce(Vector3.down * 1000f * timePassed);
+            timePassed += Time.deltaTime;
         }
 
-        this.transform.position += this.transform.forward * this.speed * Time.deltaTime;
+        if (this.transform.position.y < 0)
+        {
+            this.GetComponent<Rigidbody>().useGravity = false;
+            this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            Invoke("DestroySelf", 1f);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -34,9 +37,11 @@ public class KrakenProjectile : MonoBehaviourPun
             return;
         }
 
-        if (this.transform.position.y < 0)
-        {
-            PhotonNetwork.Destroy(this.gameObject);
-        }
+        Invoke("DestroySelf", 1f);
+    }
+
+    private void DestroySelf()
+    {
+        Destroy(this.gameObject);
     }
 }

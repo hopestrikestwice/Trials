@@ -114,7 +114,10 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         if (other.CompareTag("BossTentacle") && this.timeSinceHit >= this.immunitySinceHit && !(isShielded || isProtected))
         {
             Debug.Log("Player " + photonView.Owner + " hit!");
-            this.health -= 20;
+
+            int currentPhase = GameObject.FindGameObjectWithTag("Boss").GetComponent<BossManagerCore>().GetPhase();
+
+            this.health -= 25 * currentPhase / 3;
 
             this.timeSinceHit = 0f;
         }
@@ -122,7 +125,10 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         if (other.CompareTag("BossProjectile") && !(isShielded || isProtected))
         {
             Debug.Log("Player " + photonView.Owner + " hit!");
-            this.health -= 20;
+
+            int currentPhase = GameObject.FindGameObjectWithTag("Boss").GetComponent<BossManagerCore>().GetPhase();
+
+            this.health -= 50 * currentPhase / 3;
 
             this.timeSinceHit = 0f;
         }

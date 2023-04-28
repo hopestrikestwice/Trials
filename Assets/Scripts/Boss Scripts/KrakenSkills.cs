@@ -259,7 +259,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
     public void ActivateRandomSpecialAttack()
     {
 
-        int randNum = Random.Range(3, 4);
+        int randNum = Random.Range(1, 2);
 
         switch (randNum)
         {
@@ -382,7 +382,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject player in players)
         {
-            PhotonNetwork.Instantiate(this.projectile.name, player.transform.position + Vector3.up * 10, Quaternion.Euler(90, 0, 0));
+            PhotonNetwork.Instantiate(this.projectile.name, player.transform.position + Vector3.up * 30, Quaternion.Euler(90, 0, 0));
         }
     }
 

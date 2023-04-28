@@ -26,6 +26,7 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
     private int bossPhase = 1;
 
     private const float phase1Cutoff = 0.75f;
+    private const float phase2Cutoff = 0.3f;
 
     private void Start()
     {
@@ -44,6 +45,11 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
     private void Update()
     {
         PhaseCheck();
+    }
+
+    public int GetPhase()
+    {
+        return bossPhase;
     }
 
     public void Hit(int damage)
@@ -80,6 +86,9 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
         {
             bossPhase = 2;
             RuntimeManager.StudioSystem.setParameterByName("boss_phase", 1);
+        } else if (health < phase2Cutoff * maxHealth && bossPhase == 2)
+        {
+            bossPhase = 3;
         }
     }
 
