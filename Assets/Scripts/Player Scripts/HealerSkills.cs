@@ -15,7 +15,6 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     private PlayerUI playerUI;
     private Animator animator;
     private PlayerActionCore actionCoreScript;
-    private GameObject healer;
 
     #region VFX variables
     [Header("VFX GameObjects")]
@@ -24,12 +23,11 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     private bool lightningEnabled = false;
     #endregion
 
-    private float[] cooldown = { 5, 5, 5 };
+    private float[] cooldown = { 1.5f, 5, 5 };
 
     #region Basic Attack Variables
-    [Header("Basic Attack GameObjects")]
     [SerializeField]
-    private GameObject basicAttackObj;
+    private int basicAttackDamage;
     [SerializeField]
     private GameObject basicAttackVfx;
     private float basicAttackDelay = 0.4f;
@@ -47,15 +45,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     #endregion
 
     #region Attack Variables
-    [SerializeField]
-    private GameObject defaultBulletPrefab;
-    [SerializeField]
-    private GameObject bullet;
-
-    private float bulletOffset = 1f;
-    private float bulletLifetime = 1f;
-
-    private int currentSignatureCharges = 0;
+    private int currentSignatureCharges = 5;
     [SerializeField]
     private int maxSignatureCharges = 5;
     [SerializeField]
@@ -130,7 +120,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     public void ActivateBasicAttack()
     {
         animator.SetBool("isBasicAttacking", true);
-        StartCoroutine(PunchAttack());
+
         actionCoreScript.Invoke("FinishBasicAttackLogic", basicAttackClip.length);
     }
     
@@ -182,7 +172,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     {
         RaycastHit hitInfo;
 
-        if (Physics.Raycast(this.transform.position + Vector3.up, this.transform.forward, out hitInfo, 8f))
+        if (Physics.Raycast(this.transform.position + Vector3.up, this.transform.forward, out hitInfo, 6f))
         {
             this.photonView.RPC("StartLightningParticles", RpcTarget.All);
 
@@ -196,7 +186,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
             {
                 /* hit boss here */
                 int damageAmount = currentSignatureCharges * maxSignatureDamage / maxSignatureCharges;
-                hitInfo.collider.GetComponent<PhotonView>().RPC("HealPlayer", RpcTarget.Others, damageAmount);
+                hitInfo.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, damageAmount);
                 int healAmount = currentSignatureCharges * maxSignatureHeal / maxSignatureCharges;
                 this.GetComponent<PlayerManagerCore>().HealPlayer(healAmount);
             }
@@ -231,18 +221,22 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         //bullet.GetComponent<HealerProjectile>().SetPlayer(this.gameObject);
     }
 
+    public int GetCharge()
+    {
+        return this.currentSignatureCharges;
+    }
+
+    public int GetMaxCharge()
+    {
+        return this.maxSignatureCharges;
+    }
+
     //Increments signature charge
     public void AddCharge()
     {
         if (this.currentSignatureCharges < maxSignatureCharges) this.currentSignatureCharges++;
+        
         Debug.Log("Added charge - total charge: "+this.currentSignatureCharges);
-    }
-
-    IEnumerator PunchAttack() {
-        yield return new WaitForSeconds(basicAttackDelay);
-        GameObject currentPunch = PhotonNetwork.Instantiate(basicAttackObj.name, this.transform.position, this.transform.rotation);
-        yield return new WaitForSeconds(basicAttackClip.length - basicAttackDelay);
-        PhotonNetwork.Destroy(currentPunch);
     }
 
     #endregion
@@ -287,6 +281,25 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     public void PlayHealerImpactVfx() {
         basicAttackVfx.gameObject.SetActive(false);
         basicAttackVfx.gameObject.SetActive(true);
+
+        RaycastHit hitInfo;
+
+        /* Hit range is based on vfx distance */
+        Debug.Log("distance: " + basicAttackVfx.transform.localPosition.z);
+        if (Physics.Raycast(this.transform.position + Vector3.up, this.transform.forward, out hitInfo, basicAttackVfx.transform.localPosition.z))
+        {
+            if (hitInfo.collider.CompareTag("BossTentacle"))
+            {
+                /* hit boss here */
+                hitInfo.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, basicAttackDamage);
+                this.AddCharge();
+            }
+
+        }
+        else
+        {
+            /* Hit nothing, do nothing */
+        }
     }
 
     #endregion

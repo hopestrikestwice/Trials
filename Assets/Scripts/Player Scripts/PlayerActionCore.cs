@@ -4,6 +4,8 @@
 /// specific skills implementation.
 ///
 
+// TODO: remove character-specific healerskills references.
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -122,7 +124,8 @@ public class PlayerActionCore : MonoBehaviourPun
                 isPrimaryCooldown = true;
                 primaryCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[0]);
                 skills.ActivateBasicAttack();
-            } else if (Input.GetButtonDown("Fire2") && !isSecondaryCooldown)
+            }
+            else if (Input.GetButtonDown("Fire2") && !isSecondaryCooldown)
             {
                 immobile = true;
 
@@ -134,19 +137,40 @@ public class PlayerActionCore : MonoBehaviourPun
                 isSecondaryCooldown = true;
                 secondaryCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[1]);
                 skills.ActivateSkill();
-            } else if (Input.GetButtonDown("Fire3") && !isUltimateCooldown)
+            }
+            else if (Input.GetButtonDown("Fire3"))
             {
-                immobile = true;
-
-                if (photonView.IsMine)
+                /* TODO: Jank code for healer on release day. Healer can ult anytime so long as they have charges */
+                if (this.GetComponent<HealerSkills>() != null)
                 {
-                    playerUI.ShadeIcon(SkillUI.ULTIMATE);
-                }
+                    if (this.GetComponent<HealerSkills>().GetCharge() > 0) {
+                        immobile = true;
 
-                isUltimateCooldown = true;
-                ultimateCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[2]);
-                skills.ActivateUltimate();
-            } else
+                        if (photonView.IsMine)
+                        {
+                            playerUI.ShadeIcon(SkillUI.ULTIMATE);
+                        }
+
+                        isUltimateCooldown = true;
+                        ultimateCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[2]);
+
+                        skills.ActivateUltimate();
+                    }
+                } else if (!isUltimateCooldown)
+                {
+                    immobile = true;
+
+                    if (photonView.IsMine)
+                    {
+                        playerUI.ShadeIcon(SkillUI.ULTIMATE);
+                    }
+
+                    isUltimateCooldown = true;
+                    ultimateCooldown = new CooldownData(Time.time, this.GetComponent<IPlayerSkills>().GetCooldown()[2]);
+                    skills.ActivateUltimate();
+                }
+            }
+            else
             {
                 MoveCharacter();
             }
@@ -174,7 +198,16 @@ public class PlayerActionCore : MonoBehaviourPun
             ultimateCooldown.calculateTimePassed(Time.time);
             if (photonView.IsMine)
             {
-                playerUI.SkillCooldown(SkillUI.ULTIMATE, ultimateCooldown.getTimePassed());
+                /* TODO: jank code for healer charges for release day */
+                if (this.GetComponent<HealerSkills>() != null)
+                {
+                    playerUI.SkillCooldown(SkillUI.ULTIMATE, ((float) this.GetComponent<HealerSkills>().GetCharge()) / ((float) this.GetComponent<HealerSkills>().GetMaxCharge()));
+                }
+                else
+                {
+                    playerUI.SkillCooldown(SkillUI.ULTIMATE, ultimateCooldown.getTimePassed());
+
+                }
             }
         }
 
@@ -197,7 +230,7 @@ public class PlayerActionCore : MonoBehaviourPun
             }
             secondaryCooldown.reset();
         }
-        if (isUltimateCooldown && ultimateCooldown.getEndTime() < Time.time)
+        if (this.GetComponent<HealerSkills>() == null && isUltimateCooldown && ultimateCooldown.getEndTime() < Time.time)
         {
             isUltimateCooldown = false;
             if (photonView.IsMine)
