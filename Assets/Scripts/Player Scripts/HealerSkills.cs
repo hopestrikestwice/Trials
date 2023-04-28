@@ -17,7 +17,14 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     private PlayerActionCore actionCoreScript;
     private GameObject healer;
 
-    private float[] cooldown = {5, 5, 5};
+    #region VFX variables
+    [Header("VFX GameObjects")]
+    [SerializeField]
+    private GameObject lightningParticles;
+    private bool lightningEnabled = false;
+    #endregion
+
+    private float[] cooldown = { 5, 5, 5 };
 
     #region Animation variables
     // Used to tell how long the secondary/ultimate skills take
@@ -69,6 +76,14 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         {
             Debug.LogError("HealerSkills is Missing Ultimate Animation Clip");
         }
+
+        if (!lightningParticles)
+        {
+            Debug.LogError("HealerSkills is Missing Lightning Particles", this);
+        }
+        else {
+            lightningParticles.GetComponent<ParticleSystem>().enableEmission = false;
+        }
     }
 
     // Update is called once per frame
@@ -82,6 +97,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         {
             this.isBlocked = false;
         }
+        // lightningParticles.SetActive(lightningEnabled);
     }
 
     #endregion
@@ -210,6 +226,19 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         long before/after), we can dispatch a separate event instead of handling
         the same-named event.
     */
+
+    /* Ultimate Skill Animation Events */
+    public void StartLightningParticles()
+    {
+        lightningParticles.GetComponent<ParticleSystem>().enableEmission = true;
+        Debug.Log("Lightning Enabled");
+    }
+    public void FinishLightningParticles()
+    {
+        lightningParticles.GetComponent<ParticleSystem>().enableEmission = false;
+        Debug.Log("Lightning Disabled");
+    }
+
     #endregion
 
 }
