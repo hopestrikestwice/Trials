@@ -26,8 +26,19 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 
     private float[] cooldown = { 5, 5, 5 };
 
+    #region Basic Attack Variables
+    [Header("Basic Attack GameObjects")]
+    [SerializeField]
+    private GameObject basicAttackObj;
+    [SerializeField]
+    private GameObject basicAttackVfx;
+    private float basicAttackDelay = 0.4f;
+    #endregion
+
     #region Animation variables
     // Used to tell how long the secondary/ultimate skills take
+    [SerializeField]
+    private AnimationClip basicAttackClip;
     [SerializeField]
     private AnimationClip[] secondarySkillClips;
     [SerializeField]
@@ -105,7 +116,9 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     #region IPlayerSkills Implementation
     public void ActivateBasicAttack()
     {
-        actionCoreScript.ActivateBasicAttack();
+        animator.SetBool("isBasicAttacking", true);
+        StartCoroutine(PunchAttack());
+        actionCoreScript.Invoke("FinishBasicAttackLogic", basicAttackClip.length);
     }
     
     public void ActivateSkill()
@@ -208,6 +221,13 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         }
     }
 
+    IEnumerator PunchAttack() {
+        yield return new WaitForSeconds(basicAttackDelay);
+        GameObject currentPunch = PhotonNetwork.Instantiate(basicAttackObj.name, this.transform.position, this.transform.rotation);
+        yield return new WaitForSeconds(basicAttackClip.length - basicAttackDelay);
+        PhotonNetwork.Destroy(currentPunch);
+    }
+
     #endregion
     
     public float[] GetCooldown()
@@ -242,6 +262,10 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     {
         lightningParticles.GetComponent<ParticleSystem>().enableEmission = false;
         Debug.Log("Lightning Disabled");
+    }
+    public void PlayHealerImpactVfx() {
+        basicAttackVfx.gameObject.SetActive(false);
+        basicAttackVfx.gameObject.SetActive(true);
     }
 
     #endregion
