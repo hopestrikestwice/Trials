@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        GameObject.FindGameObjectWithTag("Music").GetComponent<PlayMusic>().StopMusic();
         Instance = this;
 
         if (playerPrefabs.Length <= 0)
