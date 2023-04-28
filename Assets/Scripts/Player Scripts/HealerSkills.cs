@@ -30,6 +30,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     // Used to tell how long the secondary/ultimate skills take
     [SerializeField]
     private AnimationClip[] secondarySkillClips;
+    private float secondarySkillClipLength;
     [SerializeField]
     private AnimationClip ultimateClip;
     #endregion
@@ -42,8 +43,6 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
 
     private float bulletOffset = 1f;
     private float bulletLifetime = 1f;
-
-    private bool isBlocked = false;
 
     private int currentSignatureCharges = 0;
     [SerializeField]
@@ -80,10 +79,16 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         {
             Debug.LogError("HealerSkills is Missing PlayerActionCore.cs");
         }
+
         if (secondarySkillClips.Length == 0)
         {
             Debug.LogError("HealerSkills is Missing Secondary Skill Animation Clip");
         }
+        foreach (AnimationClip secondarySkillClip in secondarySkillClips)
+        {
+            secondarySkillClipLength += secondarySkillClip.length;
+        }
+
         if (!ultimateClip)
         {
             Debug.LogError("HealerSkills is Missing Ultimate Animation Clip");
@@ -105,10 +110,6 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         {
             return;
         }
-        if (!animator.GetBool("isSecondarySkilling"))
-        {
-            this.isBlocked = false;
-        }
         // lightningParticles.SetActive(lightningEnabled);
     }
 
@@ -129,14 +130,16 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
         this.transform.forward = cameraDirection;
 
         animator.SetBool("isSecondarySkilling", true);
-        isBlocked = true;
 
-        // Calculate total length of secondary skill
-        float secondarySkillClipLength = 0;
-        foreach (AnimationClip secondarySkillClip in secondarySkillClips) {
-            secondarySkillClipLength += secondarySkillClip.length;
-        }
-        actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClipLength);
+        StartCoroutine(SecondarySkill());
+        //isBlocked = true;
+
+        //// Calculate total length of secondary skill
+        //float secondarySkillClipLength = 0;
+        //foreach (AnimationClip secondarySkillClip in secondarySkillClips) {
+        //    secondarySkillClipLength += secondarySkillClip.length;
+        //}
+        //actionCoreScript.Invoke("FinishSecondarySkillLogic", secondarySkillClipLength);
     }
 
     public void ActivateUltimate()
@@ -223,21 +226,6 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     }
 
     #endregion
-
-    #region Private Methods
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if ((other.CompareTag("BossTentacle") || other.CompareTag("BossProjectile")) && isBlocked)
-        {
-            Debug.Log("Boss atk blocked by healer");
-            AddCharge();
-            //Negates damage from atk
-            this.GetComponent<PlayerManagerCore>().HealPlayer(20);
-        }
-    }
-
-    #endregion
     
     public float[] GetCooldown()
     {
@@ -285,6 +273,20 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
     {
         lightningParticles.GetComponent<ParticleSystem>().enableEmission = true;
         Debug.Log("Lightning Enabled");
+    }
+    #endregion
+
+    #region Private Methods
+    IEnumerator SecondarySkill()
+    {
+        // Start skill
+        GetComponent<PlayerManagerCore>().SetShielded(true);
+
+        // Wait until skill is over
+        yield return new WaitForSeconds(secondarySkillClipLength);
+        // End skill
+        GetComponent<PlayerManagerCore>().SetShielded(false);
+        actionCoreScript.FinishSecondarySkill();
     }
     #endregion
 
