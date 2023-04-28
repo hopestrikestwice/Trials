@@ -21,9 +21,16 @@ public class TankProjectile : MonoBehaviourPun
 
     private int projectileDamage = 10;
 
+    private GameObject playerSource;
+
     public void SetLifetime(float l)
     {
         this.lifetime = l;
+    }
+
+    public void SetSource(GameObject source)
+    {
+        this.playerSource = source;
     }
 
     // Update is called once per frame
@@ -56,7 +63,7 @@ public class TankProjectile : MonoBehaviourPun
         if (other.CompareTag("BossTentacle"))
         {
             Debug.Log("Player Projectile hit Boss");
-            other.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, projectileDamage);
+            other.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, projectileDamage, playerSource.GetComponent<PlayerManagerCore>().GetElement());
         }
     }
 

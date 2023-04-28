@@ -28,6 +28,9 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
     private const float phase1Cutoff = 0.75f;
     private const float phase2Cutoff = 0.3f;
 
+    [SerializeField]
+    private AudioClip phase3BGM;
+
     private void Start()
     {
         health = maxHealth;
@@ -89,6 +92,11 @@ public class BossManagerCore : MonoBehaviourPun, IPunObservable
         } else if (health < phase2Cutoff * maxHealth && bossPhase == 2)
         {
             bossPhase = 3;
+            FMOD.Studio.Bus masterBus = FMODUnity.RuntimeManager.GetBus("bus:/");
+            masterBus.setVolume(0f);
+
+            this.GetComponent<AudioSource>().Play();
+            this.GetComponent<AudioSource>().volume = 0.25f;
         }
     }
 

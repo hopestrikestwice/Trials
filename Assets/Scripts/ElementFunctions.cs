@@ -47,4 +47,16 @@ public class ElementFunctions
                 return Element.None;
         }
     }
+    
+    /* True if b is a weakness of a */
+    public static bool isWeakness(Element a, Element b)
+    {
+        return (a == Element.None & b != Element.None) || (a == Element.Fire && b == Element.Water) || (a == Element.Water && b == Element.Earth) || (a == Element.Earth && b == Element.Fire);
+    }
+
+    /* True if b is resisted by a */
+    public static bool isResistance(Element a, Element b)
+    {
+        return (b == Element.None & a != Element.None) || (b == Element.Fire && a == Element.Water) || (b == Element.Water && a == Element.Earth) || (b == Element.Earth && a == Element.Fire);
+    }
 }

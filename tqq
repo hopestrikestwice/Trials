@@ -1,0 +1,1509 @@
+[33mcommit 803312ba91b1476ea34c5d4f7e3364cb5659b090[m[33m ([m[1;36mHEAD -> [m[1;32mgsfan_final[m[33m, [m[1;31morigin/gsfan_final[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 16:41:26 2023 -0400
+
+    Kraken damage numbers scale with phases. Also fix rock animation.
+
+[33mcommit 5a2a269368614d6cdcad1a58811ee376b858404d[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 15:33:45 2023 -0400
+
+    Support logic/animation speeds finalized
+
+[33mcommit fdc21111a75dc34b464a3f184d738eac1b6c492c[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 15:04:08 2023 -0400
+
+    Tank animation speeds and cooldown balancing.
+
+[33mcommit ef298877d61e5508a3aa7808e795fdb736ebf083[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 14:25:30 2023 -0400
+
+    Healer visuals and numbers tuned.
+
+[33mcommit 08ec671b3be0cd8a1da3af0c4cd7aea607d725e6[m
+Merge: 71fee29 ddecffc
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 13:27:55 2023 -0400
+
+    Merge branch 'spethani_healer_basic' into gsfan_final
+
+[33mcommit 71fee29bb721a43f92166b2175cdbc19d992686b[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 13:24:47 2023 -0400
+
+    Fix some problems with berserker/healer prefab not getting imported
+    correctly.
+
+[33mcommit b6a6a8a69a33aeeab73c2e703da8d16b0faba233[m
+Merge: cf78aad a6fb584
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 13:13:30 2023 -0400
+
+    Merge branch 'spethani_support_ultimate' into gsfan_final
+
+[33mcommit cf78aad435e243bfe516a1fabf3e7c66225f2e58[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 13:07:42 2023 -0400
+
+    Berserker visuals and logic done.
+    
+    Still need to do sound and numbers maybe
+
+[33mcommit ddecffc809b368ce02053e4563f67be0fb124286[m[33m ([m[1;31morigin/spethani_healer_basic[m[33m, [m[1;32mspethani_healer_basic[m[33m)[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Fri Apr 28 11:36:18 2023 -0400
+
+    added animation with animation event
+
+[33mcommit bf4676b6de388d7eccc82ea4fd2c1e9c1ad5d0ad[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Fri Apr 28 11:28:14 2023 -0400
+
+    added healer basic attack
+
+[33mcommit ed80d7a8afa27521dcad61f88615231109c6fd7c[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 04:02:16 2023 -0400
+
+    Fix Healer UI
+
+[33mcommit a64750e9bac8f1abda89ede75224979fd1f3f69f[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 03:59:18 2023 -0400
+
+    Imported shield and healer block.
+
+[33mcommit eb9596ca3dad400efcebc2e609abe469bb9df493[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 03:39:02 2023 -0400
+
+    Implement healer ultimate vfx and fix some side bugs in kraken laser.
+
+[33mcommit a6fb584080ed5a44cae15cdda0b54f19c9e61c52[m[33m ([m[1;31morigin/spethani_support_ultimate[m[33m, [m[1;32mspethani_support_ultimate[m[33m)[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Fri Apr 28 02:56:20 2023 -0400
+
+    added elemental smoke for all characters
+
+[33mcommit 7ae89f9c3cf9023d544c78ee3ef85b5320d920b5[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Fri Apr 28 02:47:23 2023 -0400
+
+    smoke trail changes based on element
+
+[33mcommit 3e0098e521d4ae4c1a801ca86a9951fbad4ea7e3[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Fri Apr 28 02:15:56 2023 -0400
+
+    added element vfx to aoe
+
+[33mcommit 7928ae4c2eb1c02619496659e947a12d07de17d7[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 01:19:04 2023 -0400
+
+    Fix boss tinting on damage.
+
+[33mcommit dd1b17fd87a783f674723b20b36d4dad2ef04ecb[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m, [m[1;32mhealer_merge[m[33m)[m
+Merge: c3b8331 fef44b7
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 00:17:40 2023 -0400
+
+    Merge branch 'spethani_berserker_impact_vfx' into healer_merge
+
+[33mcommit c3b8331fc55a97485a3756cffbcf7fc0f647ebcd[m[33m ([m[1;31morigin/healer_merge[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 28 00:16:30 2023 -0400
+
+    Fix Kraken materials being weird after merging
+
+[33mcommit b503f4129a33541281da4088457de5c1eb468cb7[m
+Merge: 68b7f5a 416bf21
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Apr 27 23:32:12 2023 -0400
+
+    Merge branch 'spethani_armourer_slash_vfx' into healer_merge
+
+[33mcommit 68b7f5ab7d857c081bad3502d5619c1f6003479c[m
+Merge: 318e67d 5fbb573
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Apr 27 23:06:17 2023 -0400
+
+    Merge branch 'spethani_berserker_vfx' into healer_merge
+
+[33mcommit 318e67df8845285a83824bd7210ea86e5243a1d3[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Apr 27 23:04:17 2023 -0400
+
+    Fix Kraken chainslam bug.
+
+[33mcommit e44cc35f91e7a82d044f8f551174001f1afb2eb1[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Apr 27 22:51:17 2023 -0400
+
+    Fixing some things missed by the merge.
+
+[33mcommit 9b7350da3d77e61421a2e97ec447ff7623c7d1be[m
+Merge: 576c8e3 6fbef5e
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Apr 27 22:30:17 2023 -0400
+
+    Merge branch 'healer-vfx' into healer_merge
+
+[33mcommit 576c8e305494296a775cf67c09741dda9333383f[m[33m ([m[1;31morigin/kraken_sounds[m[33m, [m[1;32mkraken_sounds[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Apr 27 21:09:41 2023 -0400
+
+    Support smoke trail, also basic attack smoke trail effect.
+
+[33mcommit fef44b733f91ce776029f2eaeb4e1f813834d6d3[m[33m ([m[1;31morigin/spethani_berserker_impact_vfx[m[33m, [m[1;32mspethani_berserker_impact_vfx[m[33m)[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Thu Apr 27 20:01:45 2023 -0400
+
+    modified delay for punch
+
+[33mcommit 716869d5f0ce0c7d0338e4712a7664ed7c60582e[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Thu Apr 27 19:58:10 2023 -0400
+
+    added berserker impact vfx
+
+[33mcommit 6fbef5ebd63247277e4af4ea2d65ccc77daa2630[m[33m ([m[1;31morigin/healer-vfx[m[33m, [m[1;32mhealer-vfx[m[33m)[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Thu Apr 27 18:11:58 2023 -0400
+
+    Animation file change
+
+[33mcommit f0ba27d4c450bdac2509a10cba741559a0d33a76[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Thu Apr 27 18:07:21 2023 -0400
+
+    Added VFX for signature (issue: does not move with player)
+
+[33mcommit f2f00835317d0f90a2aba9e5de01b8d48957dd14[m
+Merge: 416bf21 5fbb573
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Thu Apr 27 17:24:13 2023 -0400
+
+    Merge branch 'spethani_berserker_vfx' into spethani_berserker_impact_vfx
+
+[33mcommit 149d0d71ceb62521f418616b563fd3172d0fe18a[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Apr 27 17:08:32 2023 -0400
+
+    Added chainslam sfx.
+
+[33mcommit 7a25d567e11fb20589ead54b619cc2415c21b770[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Apr 27 15:36:13 2023 -0400
+
+    Kraken emergeSFX when initially coming out of water.
+    sweeepSFX on sweep attack.
+    screech SFX on screech attack.
+
+[33mcommit cfb38058890281b3557275e931bd0d908ab22650[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Apr 27 03:58:26 2023 -0400
+
+    Kraken slam SFX, also speedup slam animation. Also lowered bgm volume.
+
+[33mcommit 279a84ffe0c41a8a026a95a61814878231ec6ef7[m[33m ([m[1;31morigin/kraken_screech[m[33m, [m[1;32mkraken_screech[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Apr 27 02:28:27 2023 -0400
+
+    Adding PhotonServerSettings. Seems like Photon needs these to work with
+    any new RPCS.
+
+[33mcommit 9c7a16359006be49311189a4c1df25ac445c3c1b[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Apr 27 02:27:27 2023 -0400
+
+    Added Kraken elemental auras, the kraken changes an element after a
+    screech by the kraken head.
+
+[33mcommit 416bf210b4f09e5f7aa982ccd65d4b94409edc7f[m[33m ([m[1;31morigin/spethani_armourer_slash_vfx[m[33m, [m[1;32mspethani_armourer_slash_vfx[m[33m)[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Thu Apr 27 01:07:43 2023 -0400
+
+    renamed files
+
+[33mcommit 668129066c3e8599acd9ea32756d844f82259664[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Thu Apr 27 01:00:37 2023 -0400
+
+    updated armourer slash animation
+
+[33mcommit 4723799d0f06f0f22b964421a34247c9cb9402ab[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Thu Apr 27 00:36:26 2023 -0400
+
+    get rid of green ball in favor of slash
+
+[33mcommit 2d8325e71dcf156dc79616992d6bfa668bc0ee51[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Wed Apr 26 22:04:10 2023 -0400
+
+    only using necessary files for slash
+
+[33mcommit 47e84c782e3e381efc5b17e0d6f48ee0a331ba3f[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Wed Apr 26 21:50:06 2023 -0400
+
+    imported slash asset
+
+[33mcommit b5f567f4f81cd03d57be7c2b991dc7f8308e85c5[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Wed Apr 26 21:07:54 2023 -0400
+
+    imported armourer slash and added visual effect graph
+
+[33mcommit 5fbb57337c575878d97ed9c6fc1144fba25d8126[m[33m ([m[1;31morigin/spethani_berserker_vfx[m[33m, [m[1;32mspethani_berserker_vfx[m[33m)[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Wed Apr 26 15:39:06 2023 -0400
+
+    green ball no longer appears for berserker charged slash
+
+[33mcommit 8e8ce5d64df603813e84d422ce1f3f207296b83f[m[33m ([m[1;31morigin/tentacles_rise[m[33m, [m[1;32mtentacles_rise[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Mon Apr 24 02:43:52 2023 -0400
+
+    Kraken rises from the water at start of game. Also chainslam attack.
+    
+    Also adds BossTentacle tag to differentiate from Bossprojectile.
+
+[33mcommit d9d89e5c72a40f857f12796ff17483cf82b77c18[m[33m ([m[1;31morigin/arena_sizing_and_limits[m[33m, [m[1;32marena_sizing_and_limits[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Apr 23 23:27:23 2023 -0400
+
+    Changed health to be integer based on a set max health (100)
+    Changed damage/healing projectile to send an RPC instead of ontrigger
+    updates in most cases.
+    Kraken lasers now behind the kraken, so we can get the kraken tentacles
+    closer. They also disappear when overlapping tentacles so it doesn't
+    look weird.
+
+[33mcommit c92464ecf95340950561895c092f869a263c9d0e[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Apr 23 17:42:04 2023 -0400
+
+    Restrict characters to arena floor boundary so they don't fall off.
+
+[33mcommit ced4b7e54df1b211a79346fe5599ee01b20d539d[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Apr 23 17:25:05 2023 -0400
+
+    added slash vfx for berserker
+
+[33mcommit 5461b538d48e2e8e4640f8ae03be8414a38cc661[m[33m ([m[1;31morigin/main_menu[m[33m, [m[1;32mmain_menu[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Apr 23 16:58:08 2023 -0400
+
+    Main menu and transitions working. Note it doesn't show characters other
+    than the support.
+
+[33mcommit 8f58e7fe01b75d5266662a978d646a8b558a1c87[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Apr 23 15:27:27 2023 -0400
+
+    imported berserker vfx assets
+
+[33mcommit 3f602799ee5b5ecfd992e4fd530ebe418866938d[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Apr 23 15:24:42 2023 -0400
+
+    added visualeffectgraph
+
+[33mcommit 4c000cff572aa2d7b0760e3dd7cfa2f0021460ce[m[33m ([m[1;31morigin/kraken_hit_feedback[m[33m, [m[1;32mkraken_hit_feedback[m[33m)[m
+Merge: 12014ac 22b0063
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Apr 23 15:01:16 2023 -0400
+
+    Merge branch 'character_control_update' into kraken_hit_feedback
+
+[33mcommit 12014ace19b8df1202148d418a11cc00f0f880b8[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Apr 23 15:00:12 2023 -0400
+
+    Kraken will tint red on hit for 1 second, slowly gradienting back into
+    normal color.
+
+[33mcommit 22b006351915528cc0cceeaf12ec9f8fa65d6073[m[33m ([m[1;31morigin/character_control_update[m[33m, [m[1;32mcharacter_control_update[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sat Apr 22 19:34:49 2023 -0400
+
+    Targeting abilities are now directed towards where the camera is
+    looking, rather than where the character is facing.
+    
+    The exception being for the support, since it feels nicer to dash where
+    you are moving to.
+
+[33mcommit 46c6503d59fcf1ee464f30a4f96e37c58ad569cb[m
+Merge: e87986f 80859db
+Author: spethani <sarahpethani@gmail.com>
+Date:   Fri Apr 21 19:59:11 2023 -0400
+
+    Merge pull request #31 from hopestrikestwice/gsfan_kraken_laser
+    
+    Gsfan kraken laser
+
+[33mcommit 80859dbfbd32b65dafa17aa5ab864e3722e95c8e[m[33m ([m[1;31morigin/gsfan_kraken_laser[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 21 19:13:07 2023 -0400
+
+    Fix kraken lasers not sycing across the network.
+
+[33mcommit 37f9f6984b87572b4b05890e970a56e1ce2e26d4[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 21 17:52:26 2023 -0400
+
+    Added rotating laser abiltity to boss.
+
+[33mcommit 330e7b387bff0c7d9bac72ecc56d88b1a86b075c[m
+Merge: ff43a56 e87986f
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 21 17:37:53 2023 -0400
+
+    Merge branch 'main' into gsfan_kraken_laser
+
+[33mcommit e87986f3b24026826a85b7c82092a53a66cd3c19[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 21 17:34:20 2023 -0400
+
+    Fix PlayerUI compilation error where it was targeting the wrong object
+    for the skill image.
+    
+    Fix bug with playerprojectile sometimes destroying itself too early,
+    resulting in hits not being registered for secondary clients sometimes.
+
+[33mcommit 9e5659612e5a1be3b3efd3fda5b5874f42f3985b[m
+Merge: d8b3bb3 fec9101
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Fri Apr 21 17:08:57 2023 -0400
+
+    Merge pull request #30 from hopestrikestwice/cooldown-ui
+    
+    Cooldown UI
+
+[33mcommit fec9101c9c6cf109de11ecc86a6d4e1f0ab8ecbc[m[33m ([m[1;31morigin/cooldown-ui[m[33m)[m
+Merge: ce557a7 d8b3bb3
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Fri Apr 21 16:55:15 2023 -0400
+
+    Merge branch 'main' into cooldown-ui
+
+[33mcommit d8b3bb3e8b034e7a2e1b1a03e074ea49ef9c92bf[m
+Merge: 2d01f29 aeeb46c
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Fri Apr 21 16:31:32 2023 -0400
+
+    Merge pull request #29 from hopestrikestwice/spethani_support_fog
+    
+    Support Ultimate Implemented
+
+[33mcommit 2d01f29e84da5dba3068913030c8e4931439e6b6[m
+Merge: 0216636 0a53131
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Fri Apr 21 16:24:37 2023 -0400
+
+    Merge pull request #28 from hopestrikestwice/spethani_berserker_shield
+    
+    Added logic for berserker shield
+
+[33mcommit 0216636162f8b4063c7cb898f6ba5aff3cf8dc98[m
+Merge: faad2b1 b43fe5d
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Fri Apr 21 16:19:50 2023 -0400
+
+    Merge pull request #27 from hopestrikestwice/spethani_armourer_vfx
+    
+    Armourer Shield Bug Fix & VFX
+
+[33mcommit ff43a56c7c4d1e0607a2ddd3c7996ae616c3fbb5[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 21 16:03:07 2023 -0400
+
+    Added Kraken begin laser wall attack. Also fixed bloom on the laser.
+
+[33mcommit c4102d883d6d72d27a8e36fc1d3b78ba6801c0e7[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Apr 21 15:36:03 2023 -0400
+
+    Kraken spawns with lasers on, sizing needs a bit of work.
+    
+    Fix a bug with kraken projectile rock. It is now only destroyed when it
+    hits the bottom of the arena.
+
+[33mcommit aeeb46c1b92ca204aef64e47c7ec2b2e67802d47[m[33m ([m[1;31morigin/spethani_support_fog[m[33m)[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Fri Apr 21 01:56:42 2023 -0400
+
+    changing fog material aesthetically
+
+[33mcommit d69f95cb2093dde150ca37b66108a4a0dd5422f0[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Fri Apr 21 01:48:27 2023 -0400
+
+    element changes in fog which is separated from support movement
+
+[33mcommit fd17f704cf44e567a477dfc1546d3b8eca4bca37[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Thu Apr 20 23:33:05 2023 -0400
+
+    changed fog material to urp
+
+[33mcommit c1e22e46126433dbe90c4925979872dbcfc2d9e9[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Thu Apr 20 23:23:58 2023 -0400
+
+    added support fog which dashes players in fog
+
+[33mcommit 0a5313186833add04ae89efb10dd626270e60172[m[33m ([m[1;31morigin/spethani_berserker_shield[m[33m)[m
+Merge: 8c7ee22 faad2b1
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Wed Apr 19 22:12:06 2023 -0400
+
+    Merge branch 'main' into spethani_berserker_shield
+
+[33mcommit b43fe5d6516a07c50bb134e1f47e4854e94ea988[m[33m ([m[1;31morigin/spethani_armourer_vfx[m[33m)[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Wed Apr 19 21:19:41 2023 -0400
+
+    different time for small shield to enable vs large shield to enable
+
+[33mcommit 74e64ff85926fd9670267ff293c8fd5f1675889c[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Wed Apr 19 17:54:50 2023 -0400
+
+    moved files around
+
+[33mcommit 111f2954a1b6daea5cde95d1dfb94f4441317126[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Wed Apr 19 17:36:06 2023 -0400
+
+    added vfx for armourer
+
+[33mcommit c1e93d1cdaa215c926ffebab92c90f8323466b6e[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Tue Apr 18 01:01:49 2023 -0400
+
+    armourer shield bug fix
+
+[33mcommit ce557a77288de16290764dd0cf5746c5b4aed60d[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Apr 16 16:30:07 2023 -0400
+
+    Changed cooldowns to be unique for each player
+
+[33mcommit bbb7a6bee69ba5323ef159397cb9f7bffe61e3a6[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Apr 16 16:07:15 2023 -0400
+
+    Made cooldown time distinct for each ability (same for all players however)
+
+[33mcommit 66d2a485282b96fc6d4a2fb04eed0b1dd20a38df[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Apr 16 15:59:14 2023 -0400
+
+    Fixed UI cooldown features to work on all players
+
+[33mcommit 1e4ae00002bf23431c0b1e3628bb39395a25adc9[m[33m ([m[1;31morigin/gsfan_kraken_rock[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Apr 16 15:58:49 2023 -0400
+
+    Adds Kraken rock throwing attack (placeholder rock)
+
+[33mcommit 1988a92dbe63c85c74a04a874b1d0349fb9008f5[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Apr 16 15:53:08 2023 -0400
+
+    Implemented cooldown UI
+
+[33mcommit faad2b14771584ad2c6fca5cb341a67d5262e81d[m[33m ([m[1;31morigin/etong_healer_abilities[m[33m)[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Apr 9 17:01:50 2023 -0400
+
+    Destroys healer projectile upon collision with player and heals player
+
+[33mcommit f7b6318de391228695489e1432f007fe21a3e16a[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Apr 9 16:52:04 2023 -0400
+
+    Debug heal attempt
+
+[33mcommit b7bf8d53661e7bca416712e33fa781168f775905[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Apr 9 16:44:27 2023 -0400
+
+    Debugging heal
+
+[33mcommit 3c63c4c5c765c0a9107fa6e91c37be5468ac2c7b[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Apr 9 16:30:13 2023 -0400
+
+    Fix multiplayer projectile crash bug
+
+[33mcommit 8c7ee227394b39afe0e124fd6e2beecbad2a5aed[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Apr 9 15:38:13 2023 -0400
+
+    added berserker shield
+
+[33mcommit 3f059137d9634b2917968327b13fa4440e60732f[m
+Merge: 35898c8 23db430
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Apr 9 15:37:00 2023 -0400
+
+    Merge branch 'main' into etong_healer_abilities
+
+[33mcommit 35898c89f482408368af78061bbc5dbe2e0b9785[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Apr 9 15:28:15 2023 -0400
+
+    Reorganized Healer abilities code
+    
+    Does not destroy the healer projectile upon collision with a player which may allow for the healer to both heal players and damage the kraken with one ult
+
+[33mcommit 23db4307b4bdebc92d04f33b921c5b191ff594e8[m
+Merge: 2cbef17 f18b345
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Sun Apr 9 13:32:04 2023 -0500
+
+    Merge pull request #26 from hopestrikestwice/fmod-bgm
+    
+    Adds FMOD integration to game and phase bgm logic depending on Kraken health.
+
+[33mcommit f18b345f2a0f24ab5edb72f6ce3ee8e712ff85b9[m[33m ([m[1;31morigin/fmod-bgm[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Apr 9 14:27:58 2023 -0400
+
+    Fix phase bgm not transitioning between multiplayer.
+
+[33mcommit 2c0a06a0571783fac9d01b5eb31dea0ec6792211[m
+Author: Alex-Shen-CMU <ajshen@andrew.cmu.edu>
+Date:   Sun Apr 9 09:53:34 2023 -0400
+
+    additional files generated
+
+[33mcommit 7ace7f914081e032abad8169693f1cf1331a5a93[m
+Author: Alex-Shen-CMU <ajshen@andrew.cmu.edu>
+Date:   Sun Apr 9 01:59:55 2023 -0400
+
+    fmod files
+
+[33mcommit dc94d419d5c71ad77130247b471b680e16bb0cbd[m
+Author: Alex-Shen-CMU <ajshen@andrew.cmu.edu>
+Date:   Sun Apr 9 01:59:37 2023 -0400
+
+    sound assets
+
+[33mcommit 12552a86c94c294ef0e3d006891ed0319ab063f4[m
+Author: Alex-Shen-CMU <ajshen@andrew.cmu.edu>
+Date:   Sun Apr 9 01:56:20 2023 -0400
+
+    modified bgm object to use FMOD
+
+[33mcommit a88eb32453735171313bfe7dbd3f10d94c45e0ff[m
+Author: Alex-Shen-CMU <ajshen@andrew.cmu.edu>
+Date:   Sun Apr 9 01:56:02 2023 -0400
+
+    logic for phase checking bgm
+
+[33mcommit 3dc798f7f8e3e8b5147b91c51032997cec5e1b0f[m
+Author: Alex-Shen-CMU <ajshen@andrew.cmu.edu>
+Date:   Sun Apr 9 01:55:47 2023 -0400
+
+    disable unity audio for FMOD
+
+[33mcommit 2e7890df05257a9154f1bb61d2130c1af1c519e0[m
+Author: Alex-Shen-CMU <ajshen@andrew.cmu.edu>
+Date:   Sun Apr 9 01:55:24 2023 -0400
+
+    not sure why this was modified?
+
+[33mcommit e669526cc5896f59b8ece07315a11653a8a2cc7f[m
+Author: Alex-Shen-CMU <ajshen@andrew.cmu.edu>
+Date:   Sun Apr 9 01:53:26 2023 -0400
+
+    fmod generated gitignores
+
+[33mcommit 2cbef17209a1826bce71c893bb18d82d1c902509[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Apr 2 17:35:35 2023 -0400
+
+    Cleaned up the arena/kraken head import assets into the correct folders.
+
+[33mcommit 3c2cdc2bb385ebf1f2e4508925899a964f11199e[m
+Merge: c6d1e79 394a3fa
+Author: spethani <sarahpethani@gmail.com>
+Date:   Sun Apr 2 16:41:53 2023 -0400
+
+    Merge pull request #24 from hopestrikestwice/camera
+    
+    New camera implementation
+
+[33mcommit 394a3fa682c485a6d6695c960986affb238666ee[m[33m ([m[1;31morigin/camera[m[33m)[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Apr 2 16:41:01 2023 -0400
+
+    removed debug.log
+
+[33mcommit c6d1e79811496ba7645e9e281db1f2dc2b081d0b[m
+Merge: 6906965 fa89d96
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Sun Apr 2 15:39:56 2023 -0500
+
+    Merge pull request #25 from hopestrikestwice/spethani_add_armourer_shield
+    
+    Add Armourer Shield
+
+[33mcommit fa89d961a57f75110f60786b8a208a656334beda[m[33m ([m[1;31morigin/spethani_add_armourer_shield[m[33m)[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Apr 2 16:26:55 2023 -0400
+
+    fixed bugs during merge
+
+[33mcommit e045b74b8a6f70da8d590754740302f1db9baba6[m
+Merge: 851e093 6906965
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Apr 2 16:09:28 2023 -0400
+
+    Merge branch 'main' into spethani_add_armourer_shield
+
+[33mcommit 851e093c664752da8206e0169a523048ee96e0c3[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Apr 2 16:06:31 2023 -0400
+
+    added ipunobservable to tank skills
+
+[33mcommit 0b2f9c8ad10ee58b4dfcc60075e898ce75fe1e0f[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Apr 2 15:50:08 2023 -0400
+
+    Corrected player movement to follow new camera rotation.
+
+[33mcommit 6b8b959f1b2d6deb9832c163d0ae00b33111fd32[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Apr 2 15:30:50 2023 -0400
+
+    Camera rotation follows mouse.
+    
+    Note this currently makes the character movement direction very
+    confusing and broken feeling.
+
+[33mcommit 43556a9f420795af2774320f9a733f6bfde604d8[m
+Author: Emma Tong <53305901+etong11@users.noreply.github.com>
+Date:   Sat Apr 1 13:39:59 2023 -0400
+
+    Changed code organization of healer abilities (tested on a different unity version)
+
+[33mcommit 69069656f6cad250e6520734fd9cd0321187a5c2[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Mar 31 18:46:34 2023 -0400
+
+    Fix bug kraken chainslam locking out of future animations because it was only slamming 3 tentacles instead of the 4 that exist now.
+    
+    Also fixed some transform positioning stuff for the kraken in the main
+    scene.
+
+[33mcommit 79e5d4fd195927a4478dda5bad5287f9519535db[m
+Merge: 3579b5f 3d47ebd
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Fri Mar 31 17:23:36 2023 -0500
+
+    Merge pull request #23 from hopestrikestwice/Audrey_arena
+    
+    Retexture kraken and arena assets.
+
+[33mcommit 3d47ebd71650a810644ed8f693b1a9e09c75ce5a[m[33m ([m[1;31morigin/Audrey_arena[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Mar 31 17:53:57 2023 -0400
+
+    Fix typo in berseker animator controller that was transitioning into
+    running while basic attacking, locking the character in place.
+
+[33mcommit 79db5929bf94834f5543c37d5fb09400bd8e0eb1[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Mar 31 17:53:20 2023 -0400
+
+    Deleted extranneous DreamTeamMobile folder?
+
+[33mcommit 267a13cd2431d8443309a8c0a114d6ef28626b4e[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Mar 31 17:51:52 2023 -0400
+
+    Fix collider for healer
+
+[33mcommit 84d512746b05b2bfb5fe1eb253c0e78a9e5034d0[m
+Author: Oodbirds <90927949+Oodbirds@users.noreply.github.com>
+Date:   Fri Mar 31 17:26:23 2023 -0400
+
+    new arena assets added
+
+[33mcommit 3579b5fb0ec952ad18ffdb76c93c3ad472c2be2b[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Mar 31 12:01:51 2023 -0400
+
+    Fix typo in berserker animator logic that was transitioning into running animation while in basic attack
+
+[33mcommit e04ff144ad3d3075764bea2c7915606bc147807b[m
+Merge: 510b2cd b1664dc
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Fri Mar 31 10:59:04 2023 -0500
+
+    Merge pull request #21 from hopestrikestwice/gsfan_arena_import
+    
+    Add new arena environment and kraken model
+
+[33mcommit 510b2cd4e5cb7bd16afeeab0d19e6a072729d77f[m
+Merge: e4990a0 18c9617
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Fri Mar 31 10:58:41 2023 -0500
+
+    Merge pull request #20 from hopestrikestwice/berserker_bugfix
+    
+    Berserker bugfix
+
+[33mcommit b1664dc3574ab1616475f099eaca0b1981b5af12[m[33m ([m[1;31morigin/gsfan_arena_import[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Mar 31 11:56:06 2023 -0400
+
+    Finished adding the new kraken
+
+[33mcommit 8082d94dfb457d9811d0151451a80c93785c3040[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Mar 30 12:35:12 2023 -0400
+
+    Imported package and also setup the arena assets. Need to do kraken assets next.
+
+[33mcommit b5745b02069f8813bdf20031fe80bab781716a29[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Mar 30 11:42:28 2023 -0400
+
+    Imported Arena and Kraken, not organized yet.
+
+[33mcommit 18c9617523b50c1a70ef487be8392f4e1291301a[m[33m ([m[1;31morigin/berserker_bugfix[m[33m)[m
+Merge: 81918b6 e4990a0
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Mar 26 17:45:10 2023 -0400
+
+    Merge branch 'main' into berserker_bugfix
+
+[33mcommit 81918b6f426dc453ac486adf6e43c20439a9b06b[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Mar 26 17:44:48 2023 -0400
+
+    Modified berserker ultimate skill to move the berserker model through code
+
+[33mcommit ab65ca426ee720531fa07de239d04dad3e593057[m
+Merge: 6abaf99 e4990a0
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Mar 26 17:25:36 2023 -0400
+
+    Merge branch 'main' into spethani_add_armourer_shield
+
+[33mcommit 6abaf99b1c9a541548bda1328ee820044919f901[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Mar 26 17:25:12 2023 -0400
+
+    add shield object to armourer, shield does not work for other characters
+
+[33mcommit ff8bcfca93f0bc73196c6e3aba731c7695ed764b[m
+Merge: 651656e 51e89a9
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Mar 26 17:14:56 2023 -0400
+
+    Merge branch 'spethani_refactor_animation_events_berserker' into berserker_bugfix
+
+[33mcommit e4990a0473706a79a0f6a2404609c43bbd5ec914[m
+Merge: ec0d1c6 d2301b5
+Author: spethani <sarahpethani@gmail.com>
+Date:   Sun Mar 26 17:08:20 2023 -0400
+
+    Merge pull request #19 from hopestrikestwice/multi_test_separate_rooms
+    
+    Multi test separate rooms
+
+[33mcommit d2301b5db2d3c709cc117b228ebdf228b17495c2[m[33m ([m[1;31morigin/multi_test_separate_rooms[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Mar 26 17:03:25 2023 -0400
+
+    Adding Launcher.cs to gitignore so the join room string is not
+    overwritten by multiple coders.
+    
+    Note this means future updates to Launcher.cs will have to unignore.
+
+[33mcommit 52236afcbb4643e902017e1574d2e7b0b5059d4e[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Mar 26 16:45:54 2023 -0400
+
+    Instead of joining random room, will find a room named the specified
+    string.
+
+[33mcommit 7f8279dcf31203ac0e96142349bed1938e943211[m
+Author: Emma Tong <53305901+etong11@users.noreply.github.com>
+Date:   Sun Mar 26 16:44:43 2023 -0400
+
+    Implemented healer abilities (done in another unity version)
+
+[33mcommit 651656e7210eb560288fa7e5a725c47f94ef5cd7[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Mar 26 16:35:59 2023 -0400
+
+    Deleted Position movement from Berserker Slam animation clip.
+    
+    This is in preparation to have movement done in code logic instead, to
+    fix the bug where rootmotion being ticked is causing berserker not to
+    sync on multiplayer screens.
+
+[33mcommit ec0d1c6ba57bac18b8ff8a4bc62fbcd36bea1b19[m
+Merge: 12ed935 3c9b4c4
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Sun Mar 26 12:55:53 2023 -0500
+
+    Merge pull request #17 from hopestrikestwice/spethani_refactor_animation_events_healer
+    
+    Refactor Animation Events for Healer
+
+[33mcommit 12ed9354372c2c058ce7476148b7b85e7f8d432b[m
+Merge: 48d7f45 db1272d
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Sun Mar 26 12:55:21 2023 -0500
+
+    Merge pull request #18 from hopestrikestwice/spethani_refactor_animation_events_support
+    
+    Refactor Animation Events for Support
+
+[33mcommit 48d7f455f95f9c069bb81b3740426a52e452bed5[m
+Merge: 7c86a50 d5ff08d
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Sun Mar 26 12:54:31 2023 -0500
+
+    Merge pull request #16 from hopestrikestwice/spethani_refactor_animation_events_tank
+    
+    Refactor Animation Events for Armourer
+
+[33mcommit db1272df5f9701a7a5ab34815dbfa7a7246fcf7a[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Mar 26 01:23:28 2023 -0400
+
+    changed logs to say support skills
+
+[33mcommit dfbba8f95773e87ed9c4a50d11aa1fb28df0b39d[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Mar 26 01:19:38 2023 -0400
+
+    remove unused animation event and finishchannelingelement is invoked instead of animation event
+
+[33mcommit 797a6f5d20a0c42d37e51082f8f01e3ae330df23[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Mar 26 01:05:25 2023 -0400
+
+    invoke end of skill logic, animation events handle animation transitions
+
+[33mcommit 785ddd985925858d68d4b211e0d667c6cca59f40[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Mar 26 00:51:06 2023 -0400
+
+    added playeractioncore from spethani_refactor_animation_events_tank
+
+[33mcommit 3c9b4c462ea97bd8972df7e5f9d4898455868b48[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Mar 26 00:44:15 2023 -0400
+
+    healer using invokes for logic and animation events to finish animation
+
+[33mcommit deb5f042ef2c9660d5bf8088a7cbf501a59ab672[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sat Mar 25 23:57:38 2023 -0400
+
+    took playeractioncore script from spethani_refactor_animation_events_tank
+
+[33mcommit 51e89a98cf4011f182dd4189960af76e0474abce[m[33m ([m[1;31morigin/spethani_refactor_animation_events_berserker[m[33m)[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sat Mar 25 23:04:34 2023 -0400
+
+    berserker uses finish animation / finish logic functions for secondary skill and ultimate
+
+[33mcommit 158da89cb7eb0ee00da735c9057ed33d2e551297[m
+Merge: 7c86a50 d5ff08d
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sat Mar 25 22:44:12 2023 -0400
+
+    added finish animation and finish logic functions
+
+[33mcommit 01f4c3fc3df167a240f2ba19bcda649c6a11993a[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Mar 19 16:55:23 2023 -0400
+
+    Some issues debugged, stored playersource of projectiles
+    
+    Bugs:
+    - When only healer exists, says the playersource of projectile is a clone
+    
+    When main client is tank:
+    - Does not heal them both
+            - registers that proj hits the players but heals them by 0 (the charge associated with the healer projectile is wrong - this is set in healerskills)
+    - No source for healer projectile (should be set when proj created in healerskills)
+            - Get Null reference exception
+    - Registering the healer as hit by the healer projectile
+    
+    When main client is healer:
+    - Only heals healer, not tank
+            - does not call heal method at all for tank
+
+[33mcommit 7c86a501da87fcd94a4e45bbf221ae7b2c7fe8e9[m
+Merge: faff2c4 60cd10b
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Sun Mar 19 14:10:23 2023 -0500
+
+    Merge pull request #14 from hopestrikestwice/spethani_install_urp
+    
+    Installed URP and upgraded materials
+
+[33mcommit f7a8ecac1c61613c8877fd03c14a75d299eb4e10[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Mar 19 02:58:55 2023 -0400
+
+    Finished rough version of healer-abilities (has issues in multiplayer)
+    
+    Issues:
+    - Issue with UI (4 hp but healer ult has 5)
+    - Does not work in multiplayer if healer is not host
+    - If heal is delayed until projectile hits player - can't heal healer
+
+[33mcommit d5ff08db291bea46345bcc1fdf6b2306bffabd30[m[33m ([m[1;31morigin/spethani_refactor_animation_events_tank[m[33m)[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sat Mar 18 23:01:58 2023 -0400
+
+    fixed accidentally deleted animation info
+
+[33mcommit f1cb887504ac56162127abece7298caa5acc9d3a[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sat Mar 18 22:51:55 2023 -0400
+
+    added comments and removed debug log
+
+[33mcommit a92465c98ab30809840ffe0f8362030950852c16[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sat Mar 18 22:47:20 2023 -0400
+
+    updated armourer animations to use the finish animation only functions
+
+[33mcommit cb5caf56535ed80b2b044b6dcd25c17bb58458b9[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sat Mar 18 22:41:27 2023 -0400
+
+    changed Armourer to use Invoke instead of animation events for ending skill logic
+
+[33mcommit 89e326971c5be6faa87d5abdf7965c8ea82aa881[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Mar 12 01:34:08 2023 -0500
+
+    Started coding signature charge + ult ability
+
+[33mcommit 60cd10b530ff1460dd4600622b8e6c841738a427[m[33m ([m[1;31morigin/spethani_install_urp[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Mar 9 16:52:02 2023 -0500
+
+    Upgrades Armourer material to use URP/lit shader instead of toon shader.
+
+[33mcommit 7c2027e9b5aa958b35fb9d7642d0a8eb7851cc69[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Mar 9 16:47:14 2023 -0500
+
+    Fixed some naming issues with materials and the "Berserker" prefab
+    resource that was causing GameManager.cs to be unable to find it
+
+[33mcommit fcf3da82b4ad45aa14999242219fe587ca7ad040[m
+Merge: 1feaef1 faff2c4
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Mar 9 16:42:41 2023 -0500
+
+    Merge branch 'main' into spethani_install_urp
+    
+    This merges in the new armourer from main, but since it does not update
+    the armourer's materials, it is still broken. All other changes from
+    main should be good though.
+
+[33mcommit 1feaef178d8d57ed2d67684574c92e1949aebbf3[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Mar 9 16:34:24 2023 -0500
+
+    Fix berserker material to work with URP.
+    
+    (the other stuff on the commit besides BersekerMaterial should be
+    unimportant).
+
+[33mcommit faff2c4471933962f48479853a867533938ee0fc[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Mar 9 16:07:46 2023 -0500
+
+    Bugfix: Add "FinishParticleEffect" calls to armourer animations.
+
+[33mcommit ff1b475dc230d1ad4384739f77a29bba599ca940[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Mar 3 19:21:45 2023 -0500
+
+    Fixing minor bugs in Armourer import:
+    
+    1. Tagged Armourer as "Player"
+    2. Added particle effects back in.
+
+[33mcommit c62b2d2477c6f89de0ac430d8a368131d2b011b9[m
+Merge: 4c1b873 f3d68eb
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Fri Mar 3 17:26:32 2023 -0500
+
+    Merge pull request #15 from hopestrikestwice/armourer-model
+    
+    Armourer model
+
+[33mcommit f3d68ebce9a1dc658e2a22f1a75e192b97750baa[m[33m ([m[1;31morigin/armourer-model[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Mar 3 17:25:37 2023 -0500
+
+    Imported Armourer art assets and replaced the tank
+
+[33mcommit 4c1b873a4365dc02062cc5186424ae9b3ebe5d1b[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Mar 3 13:23:15 2023 -0500
+
+    Added Kraken Phase1 BGM into game
+
+[33mcommit f6aeb586729fe0908a105a21d5882c28d42d19bd[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 26 21:53:10 2023 -0500
+
+    Deleted extranneous gameobject in main scene
+
+[33mcommit c51e586148257b88bde8233bef142ca41f1db2ee[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 26 20:57:06 2023 -0500
+
+    Updated Camera Viewing angle to make character smaller
+
+[33mcommit f6536899b3871570e3336004344a086c18d12daf[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 26 20:52:20 2023 -0500
+
+    imported armourer but not sorted yet
+
+[33mcommit 63665e86b25e2aa7baaa6d9843cfc0ef1ec385cd[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Feb 26 15:27:57 2023 -0500
+
+    installed urp and upgraded materials
+
+[33mcommit 32783159ec14c5aa8dded89e99991a55639c24a0[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 26 15:09:59 2023 -0500
+
+    fixed some more minor additional components added by merge extravaganza
+
+[33mcommit 6f9426eb08b0f098e69b84126e1e417c9d704f58[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 26 14:51:18 2023 -0500
+
+    Fixed minor error after merge extravaganza
+
+[33mcommit 1797e85a103b3dc9cb44e95ada0f2f2da4a59380[m
+Merge: 0825165 e1b162b
+Author: spethani <sarahpethani@gmail.com>
+Date:   Sun Feb 26 14:48:23 2023 -0500
+
+    Merge pull request #12 from hopestrikestwice/healer-model
+    
+    Healer Model Assets Import
+
+[33mcommit e1b162b8a5ea71b29450305d05170aecdf2a9884[m[33m ([m[1;31morigin/healer-model[m[33m)[m
+Merge: ad51e11 0825165
+Author: spethani <sarahpethani@gmail.com>
+Date:   Sun Feb 26 14:48:16 2023 -0500
+
+    Merge branch 'main' into healer-model
+
+[33mcommit 0825165923bec663d7a60b04e509e50a68b28ad0[m
+Merge: 6082000 cf541b1
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Sun Feb 26 14:46:07 2023 -0500
+
+    Merge pull request #13 from hopestrikestwice/kraken-UI
+    
+    Finished Kraken UI
+
+[33mcommit cf541b1ccc8ce19e1d5129a4400351e452703974[m[33m ([m[1;31morigin/kraken-UI[m[33m)[m
+Merge: c376ef8 682ebea
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 26 14:45:17 2023 -0500
+
+    Fixing merge conflicts
+
+[33mcommit 6082000eec80ef59064fd947852b1264c3a1138f[m
+Merge: 682ebea 89777fe
+Author: spethani <sarahpethani@gmail.com>
+Date:   Sun Feb 26 14:37:30 2023 -0500
+
+    Merge pull request #11 from hopestrikestwice/berserker-model
+    
+    Berserker model
+
+[33mcommit ad51e11f8d730a5c6278dedbefe949d15a2ca3c3[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 26 11:43:44 2023 -0500
+
+    Completed healer art assets import
+
+[33mcommit c376ef8b5606470aa0b85f0b4c9400faa5664724[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Feb 26 04:18:53 2023 -0500
+
+    Added in Health Bar for Kraken
+
+[33mcommit c3af8a84e3dfdb4f4369ed7b472338b305d8e418[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Feb 19 19:42:54 2023 -0500
+
+    Added in image + slider for Kraken Health Bar
+    
+    Sets Kraken Health Bar to a max health of 100. The health bar graphic is a bit messy/scuffed.
+
+[33mcommit 89777fe8e74b3da774173759a2c9f6a215a8f0e7[m[33m ([m[1;31morigin/berserker-model[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 19 18:48:03 2023 -0500
+
+    Berserker slam movement fix.
+    
+    Berserker was reverting to old position after slam. Seems like this fix
+    didn't get saved on the old commit.
+
+[33mcommit 1929f88920d988ffe925cbc1b8c81c736b2bb870[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 19 18:15:33 2023 -0500
+
+    Clearing old berserker art assets
+
+[33mcommit 9ad1760300002b3d16d7992f32049438f7c2fc9a[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 19 18:09:37 2023 -0500
+
+    Berserker successfully with code.
+    
+    Had to fix animation a bit to work off position change due to
+    Berserker's Signature Slam.
+
+[33mcommit b5f4841daba9e3a7604975fd4c7f60c220d39cf3[m
+Merge: fdf4788 682ebea
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 19 16:29:44 2023 -0500
+
+    Merge branch 'main' into berserker-model
+
+[33mcommit 682ebea208f81317e6b62627901c05361ccef925[m
+Merge: 1662aa1 1c84d9b
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Sun Feb 19 16:14:57 2023 -0500
+
+    Merge pull request #6 from hopestrikestwice/spethani_defensive_particles
+    
+    Added Particles for Tank Shield Skills
+
+[33mcommit 1662aa1d0b0385df2bffc5dac058fb9fdc1f7313[m
+Merge: 6089350 4fe7920
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Sun Feb 19 16:06:48 2023 -0500
+
+    Merge pull request #5 from hopestrikestwice/spethani_multiplayer_test
+    
+    Added package ParrelSync for multiplayer testing
+
+[33mcommit 6089350978ced0da5494f41415fe76c6ae96248a[m
+Merge: 5caa136 3340a0a
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Sun Feb 19 15:57:13 2023 -0500
+
+    Merge pull request #7 from hopestrikestwice/gsfan-boss-refactor
+    
+    Refactor Boss Scripts
+
+[33mcommit 1c84d9bf40418c37c620a15fcf83274b6e4b7f1b[m[33m ([m[1;31morigin/spethani_defensive_particles[m[33m)[m
+Merge: 89463a2 5caa136
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sun Feb 19 15:53:21 2023 -0500
+
+    merged from main
+
+[33mcommit 5caa1364d45de4a534282431c30da1021d2b7d1a[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 19 15:48:29 2023 -0500
+
+    Support and Tank PhotonAnimationView now 'discrete' syncs all animation
+    params
+
+[33mcommit 11733de6f179e16273c35cf0b02911adf00fa0bf[m
+Merge: 1cc8372 2c9375e
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 19 15:06:11 2023 -0500
+
+    Merge branch 'main' of https://github.com/hopestrikestwice/Trials
+
+[33mcommit 1cc8372da063aa857d23888cb829e075b97d4388[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 19 15:06:03 2023 -0500
+
+    healer added to gamemanager
+
+[33mcommit 2c9375e27acbb7097b01edda80d2baccd73c2987[m
+Merge: a5bc878 14dd8b1
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Sun Feb 19 14:11:15 2023 -0500
+
+    Merge pull request #4 from hopestrikestwice/support-abilities
+    
+    Adds support ability correctly granting elements on contact.
+    
+    Also syncs all player animations across the network.
+
+[33mcommit 14dd8b11078fcdf3dded0c7257d228fafe154451[m[33m ([m[1;31morigin/support-abilities[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 19 14:09:39 2023 -0500
+
+    Added animation sync for berserker and healer. All characters should have animations synced over network now
+
+[33mcommit fdf4788be15f885ca783aa165bbbadacd10f187c[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 19 13:57:52 2023 -0500
+
+    Imported Berserker Assets. This is not properly organzied or integrated with code.
+
+[33mcommit 3340a0ada3df6cfc35ef6878f76eeffe9f6cebd6[m[33m ([m[1;31morigin/gsfan-boss-refactor[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 19 11:36:44 2023 -0500
+
+    Removes the defunct KrakenAnimationManager script. It has already been
+    replaced by BossActionCore and KrakenSkills.cs
+
+[33mcommit 4fbc1c91dcffa0bfbe5d8c0e2210d96539c4cf22[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 19 11:34:59 2023 -0500
+
+    Kraken scripts refactored into generic boss logic and kraken specific
+    abilities.
+
+[33mcommit 3639a69d0a3a7402d7415ae7280870d2b2e580e4[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Feb 19 03:14:50 2023 -0500
+
+    Added in animations for tank and support
+    
+    Now, player's element changes if in contact with element buff
+
+[33mcommit da3ca37e3e83ab7fc0b532c8af713e5b9829eff3[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sun Feb 19 00:21:45 2023 -0500
+
+    Finished script for element buff
+
+[33mcommit 99058d0497d2e30453cb056417354efd81ef8ad9[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sat Feb 18 23:56:31 2023 -0500
+
+    Added script to element buff obj (buggy)
+
+[33mcommit 89463a23cc5b76fcd46e190e263755e7d00d4c97[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sat Feb 18 23:01:13 2023 -0500
+
+    sync tank animations and move particles to entirely animation events
+
+[33mcommit 0708e44459d3c0058fdfaae737c2007f97f90d41[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sat Feb 18 22:20:08 2023 -0500
+
+    added particles for tank ultimate
+
+[33mcommit 1eb37bb1b1794598c24a930ce298563f42a3f32f[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sat Feb 18 22:01:50 2023 -0500
+
+    added particle effect for first few seconds of small shield skill
+
+[33mcommit d5c36e0bb7e0121c0e334b51f314adefb6716d47[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sat Feb 18 21:40:53 2023 -0500
+
+    added tank particle system for small shield
+
+[33mcommit 4fe792027e5f690191c8f0bd809b145de49f7dea[m[33m ([m[1;31morigin/spethani_multiplayer_test[m[33m)[m
+Author: Sarah Pethani <sarahpethani@gmail.com>
+Date:   Sat Feb 18 14:02:21 2023 -0500
+
+    added package ParrelSync for multiplayer testing
+
+[33mcommit a5bc8787912f6e45aa45a37c0d73717c06d1b704[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 12 15:33:40 2023 -0500
+
+    Main Game scene now only refers to prefab. After this point we should be able to only modify the Game Manager prefab to test different characters.
+
+[33mcommit ae8ed0c73d6dcddddb073f22f73b1ed11f6da50f[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 12 12:21:45 2023 -0500
+
+    Added file headers to all scripts.
+    
+    Documentation !
+
+[33mcommit 4f01c88f1bd9cbf6c6c37d0836bc914898e3c176[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 12 11:31:08 2023 -0500
+
+    Removes PlayerMovementAlt.cs
+    
+    This was an old, unused file that implemented a slightly different
+    movement system that allowed players to move while using abilities. It
+    is no longer necessary to keep as the player scripts have developed to
+    the point where it is more efficient to make the change in existing code
+    than try to update this file.
+
+[33mcommit d56ff89c3b05d6eeb991619f0b92cfc8b632b38d[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sat Feb 11 22:51:43 2023 -0500
+
+    Update to element buff
+    
+    Removed code that may have temporary removed element from character after element buff
+
+[33mcommit b743e457a89c106f9d463c2a81ab4452ce59863b[m
+Author: Emma Tong <eat2004@gmail.com>
+Date:   Sat Feb 11 22:34:08 2023 -0500
+
+    Implemented element buff
+
+[33mcommit bcbcf9bb41664c4d69729a9180ee1cf611ad7ee2[m
+Merge: 4811072 0af6b88
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Thu Feb 9 13:38:13 2023 -0500
+
+    Merge pull request #3 from hopestrikestwice/jwruan-healer
+    
+    Get ability controls working for all characters, refactor animation receivers.
+    Healer character logic is done, ready for art assets.
+
+[33mcommit 0af6b884efaa1c505129c64bc01c329aa3164cf7[m[33m ([m[1;31morigin/jwruan-healer[m[33m)[m
+Merge: ab3f10b 4811072
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Feb 9 13:35:39 2023 -0500
+
+    Merge branch 'main' into jwruan-healer
+    
+    Adding in the Healer and Player Animation Param refactors on the
+    jwruan-healer branch.
+    
+    Hopefully I did this correctly...
+
+[33mcommit ab3f10b8b7b2e88129cd6b9cd7f5e3e3f16df102[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Feb 9 13:17:16 2023 -0500
+
+    Replaces PoorMan.blend with PoorMan.fbx. The fbx file extension is more
+    consistent with existing models and also plays nicer with git and unity
+    version control.
+
+[33mcommit 481107228b8410575bdfa4057d94ff552934d3f4[m
+Merge: 1acffaa bad4a05
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Thu Feb 9 00:10:05 2023 -0500
+
+    Merge pull request #1 from hopestrikestwice/jwruan-kraken
+    
+    Fix Kraken synchronization issue
+
+[33mcommit bad4a05c616a6c4272015fd1bfac391383d5f2f4[m[33m ([m[1;31morigin/jwruan-kraken[m[33m)[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Thu Feb 9 00:02:48 2023 -0500
+
+    Synchronizes Kraken across multiplayer by refactoring all animation events to only be handled by the client who owns the Kraken gameobject (the one who instantiated it).
+
+[33mcommit 22ce698786a5e5d0bb9c00542a9e565808eb5c69[m
+Author: Jessica Ruan <jessica.ruan@outlook.com>
+Date:   Mon Feb 6 16:45:55 2023 -0500
+
+    fix beserker frozen from consecutive charge attacks
+
+[33mcommit 4dbd86679e3d740e580a00f406349ea3eb6a1904[m
+Author: Jessica Ruan <jessica.ruan@outlook.com>
+Date:   Mon Feb 6 16:25:08 2023 -0500
+
+    move shared callback behavior to PlayerActionCore
+
+[33mcommit 85e3248d39e03d71ee40c8f841280d66167e86f1[m
+Author: Jessica Ruan <jessica.ruan@outlook.com>
+Date:   Mon Feb 6 14:30:31 2023 -0500
+
+    implement healer, todo update assets when design finalized
+
+[33mcommit 1acffaab36872aefb76ad2fb6f389f853d511fc2[m
+Merge: 2552354 333bdf3
+Author: gsfan <54427372+hopestrikestwice@users.noreply.github.com>
+Date:   Mon Feb 6 12:27:04 2023 -0500
+
+    Merge pull request #2 from hopestrikestwice/jwruan-player-refactor
+    
+    Create skillUI enum to consolidate ShadeIcon helpers
+
+[33mcommit 333bdf30a7bbea525c2642645bc1cc52c6bc46ca[m[33m ([m[1;31morigin/jwruan-player-refactor[m[33m)[m
+Author: Jessica Ruan <jessica.ruan@outlook.com>
+Date:   Sun Feb 5 22:24:07 2023 -0500
+
+    create skillUI enum to consolidate ShadeIcon helpers
+
+[33mcommit 99fe5d9914d83690d3c25bc490c81a524d27ef89[m
+Author: Jessica Ruan <jessica.ruan@outlook.com>
+Date:   Sun Feb 5 19:12:26 2023 -0500
+
+    Kraken behavior is now in sync for players
+
+[33mcommit 2cffde42ebe828f2d9b11998dbcb18fb2277a44e[m
+Author: Jessica Ruan <jessica.ruan@outlook.com>
+Date:   Sun Feb 5 19:02:39 2023 -0500
+
+    Get animation to sync for Kraken
+
+[33mcommit f50d2ac9388786721d4474c48961be71e92e86bd[m
+Author: Jessica Ruan <jessica.ruan@outlook.com>
+Date:   Sun Feb 5 18:13:04 2023 -0500
+
+    Update Main Game scene config
+
+[33mcommit 977bb343b7e51a083fce344ffb5c908b99a6341d[m
+Author: Jessica Ruan <jessica.ruan@outlook.com>
+Date:   Sun Feb 5 18:03:58 2023 -0500
+
+    Instantiate Kraken from script instead of scene
+
+[33mcommit 2552354fc506634babf82f2f0475651b77b400cd[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 5 17:03:17 2023 -0500
+
+    Fixed Support's animations not reseting immobile flag properly.
+
+[33mcommit 80e88f0111b8526a4a3ad3e2d1871b2849efce0e[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 5 15:06:57 2023 -0500
+
+    Changed name of 'Room for 1' to 'Main Game' in code as well so not buggy.
+
+[33mcommit aa27967ff7f4083ffd262194331bdc506eccaca6[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Sun Feb 5 12:31:30 2023 -0500
+
+    Rename scene 'room for 1' into 'main game' to be more clear
+
+[33mcommit c34b3584d2e0f571e2ab58d78d11cb1a0f62be94[m
+Author: hopestrikestwice <gsfan73@gmail.com>
+Date:   Fri Feb 3 23:20:17 2023 -0500
+
+    Initial commit of Trials Files.
+    Basic architecture for players, boss, animations. Three skills for tank, beserker, and support. Three attacks for the kraken. Everything works decently on a single local player, but networked multiplayer is a bit shaky.
+    Known bugs include: Kraken not synced between clients. Player 2 freezes after any Player 1 abilities are used (possible Player UI null reference bug).

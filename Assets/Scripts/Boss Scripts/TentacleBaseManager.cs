@@ -40,12 +40,21 @@ public class TentacleBaseManager : MonoBehaviourPun
     #region RPC
 
     [PunRPC]
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Element playerElement)
     {
         /* We only want the MasterClient to be performing boss functions. */
         if (!PhotonNetwork.IsMasterClient)
         {
             return;
+        }
+
+        if (ElementFunctions.isWeakness(krakenManager.GetComponent<KrakenSkills>().GetElement(), playerElement))
+        {
+            damage = damage * 5 / 4;
+        }
+        else if (ElementFunctions.isResistance(krakenManager.GetComponent<KrakenSkills>().GetElement(), playerElement))
+        {
+            damage = damage * 3 / 4;
         }
 
         this.krakenManager.Hit(damage);

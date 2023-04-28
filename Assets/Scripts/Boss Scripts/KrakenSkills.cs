@@ -258,16 +258,28 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
 
     public void ActivateRandomSpecialAttack()
     {
+        int randNum;
+        switch (this.GetComponent<BossManagerCore>().GetPhase()) {
+            case 1:
+                randNum = Random.Range(0, 1);
+                break;
+            case 2:
+                randNum = Random.Range(0, 4);
+                break;
+            default:
+            case 3:
+                randNum = Random.Range(0, 5);
+                break;
+        }
 
-        int randNum = Random.Range(1, 2);
 
         switch (randNum)
         {
             case 0:
-                this.SetChainslam(1);
+                this.SetProjectileThrow(1);
                 break;
             case 1:
-                this.SetProjectileThrow(1);
+                this.Screech();
                 break;
             case 2:
                 this.BeginLaser();
@@ -276,7 +288,7 @@ public class KrakenSkills : MonoBehaviourPun, IBossSkills, IPunObservable
                 this.BeginRotateLaser();
                 break;
             case 4:
-                this.Screech();
+                this.SetChainslam(1);
                 break;
         }
     }

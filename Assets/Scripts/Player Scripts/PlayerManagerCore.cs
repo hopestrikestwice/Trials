@@ -42,6 +42,8 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     // How many seconds to make character immune after taking damage
     private float immunitySinceHit = 0.5f;
 
+    private float timeSinceElement = 0f;
+
     #endregion
 
     #region MonoBehaviour CallBacks
@@ -100,6 +102,13 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
             }
 
             this.timeSinceHit = Mathf.Min(this.timeSinceHit + Time.deltaTime, this.immunitySinceHit);
+
+            timeSinceElement += Time.deltaTime;
+            if (timeSinceElement > 10f)
+            {
+                this.currentElement = Element.None;
+                playerUI.GetComponent<PlayerUI>().UpdateElement();
+            }
         }
     }
 
@@ -115,9 +124,22 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         {
             Debug.Log("Player " + photonView.Owner + " hit!");
 
-            int currentPhase = GameObject.FindGameObjectWithTag("Boss").GetComponent<BossManagerCore>().GetPhase();
+            GameObject boss = GameObject.FindGameObjectWithTag("Boss");
+            int currentPhase = boss.GetComponent<BossManagerCore>().GetPhase();
+            Element bossElement = boss.GetComponent<KrakenSkills>().GetElement();
 
-            this.health -= 5 * currentPhase * currentPhase;
+            int damage = 5 * currentPhase * currentPhase;
+
+            if (ElementFunctions.isWeakness(this.currentElement, bossElement))
+            {
+                damage = damage * 5 / 4;
+            }
+            else if (ElementFunctions.isResistance(this.currentElement, bossElement))
+            {
+                damage = damage * 3 / 4;
+            }
+
+            this.health -= damage;
 
             this.timeSinceHit = 0f;
         }
@@ -126,9 +148,21 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
         {
             Debug.Log("Player " + photonView.Owner + " hit!");
 
-            int currentPhase = GameObject.FindGameObjectWithTag("Boss").GetComponent<BossManagerCore>().GetPhase();
+            GameObject boss = GameObject.FindGameObjectWithTag("Boss");
+            int currentPhase = boss.GetComponent<BossManagerCore>().GetPhase();
+            Element bossElement = boss.GetComponent<KrakenSkills>().GetElement();
 
-            this.health -= 7 * currentPhase * currentPhase;
+            int damage = 7 * currentPhase * currentPhase;
+
+            if (ElementFunctions.isWeakness(this.currentElement, bossElement))
+            {
+                damage = damage * 5 / 4;
+            } else if (ElementFunctions.isResistance(this.currentElement, bossElement))
+            {
+                damage = damage * 3 / 4;
+            }
+
+            this.health -= damage;
 
             this.timeSinceHit = 0f;
         }
@@ -251,6 +285,8 @@ public class PlayerManagerCore : MonoBehaviourPunCallbacks, IPunObservable
     {
         this.currentElement = newElement;
         playerUI.GetComponent<PlayerUI>().UpdateElement();
+
+        timeSinceElement = 0;
     }
 
     /* Gets the script PlayerUI attached to the playerUI for this player */

@@ -90,7 +90,7 @@ public class HealerProjectile : MonoBehaviourPun, IPunInstantiateMagicCallback
         if (other.CompareTag("BossTentacle"))
         {
             Debug.Log("Healer Projectile hit Boss");
-            other.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, this.maxDamageValue * this.sigCharge / 5.0);
+            other.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, this.maxDamageValue * this.sigCharge / 5.0, Element.None);
 
             PhotonNetwork.Destroy(this.gameObject);
         }

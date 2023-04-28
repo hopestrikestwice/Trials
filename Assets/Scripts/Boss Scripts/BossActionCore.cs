@@ -18,8 +18,10 @@ public class BossActionCore : MonoBehaviourPun
     private IBossSkills skills;
 
     // AI logic
-    private float attackCooldown = 5f;
-    private float currentAttackCooldown = 5f;
+    private float phase1Cooldown = 7f;
+    private float phase2Cooldown = 5f;
+    private float phase3Cooldown = 4f;
+    private float currentAttackCooldown = 7f;
 
     private GameObject targetPlayer;
 
@@ -51,7 +53,18 @@ public class BossActionCore : MonoBehaviourPun
                 if (currentAttackCooldown <= 0f)
                 {
                     RandomAttack();
-                    currentAttackCooldown = attackCooldown;
+
+                    switch (this.GetComponent<BossManagerCore>().GetPhase()) {
+                        case 1:
+                            currentAttackCooldown = phase1Cooldown;
+                            break;
+                        case 2:
+                            currentAttackCooldown = phase2Cooldown;
+                            break;
+                        case 3:
+                            currentAttackCooldown = phase3Cooldown;
+                            break;
+                    }
                 }
                 else
                 {
@@ -72,18 +85,52 @@ public class BossActionCore : MonoBehaviourPun
     #region Private Methods
     private void RandomAttack()
     {
-        int randNum = Random.Range(2, 3);
+        int randNum = Random.Range(0, 5);
 
-        switch (randNum)
+        if (this.GetComponent<BossManagerCore>().GetPhase() == 1)
         {
-            case 0:
-            case 1:
-                this.skills.ActivateRandomBasicAttack();
-                break;
-            case 2:
-                this.skills.ActivateRandomSpecialAttack();
-                break;
+            switch (randNum)
+            {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    this.skills.ActivateRandomBasicAttack();
+                    break;
+                case 4:
+                    this.skills.ActivateRandomSpecialAttack();
+                    break;
+            }
+        } else if (this.GetComponent<BossManagerCore>().GetPhase() == 2)
+        {
+            switch (randNum)
+            {
+                case 0:
+                case 1:
+                case 2:
+                    this.skills.ActivateRandomBasicAttack();
+                    break;
+                case 3:
+                case 4:
+                    this.skills.ActivateRandomSpecialAttack();
+                    break;
+            }
+        } else
+        {
+            switch (randNum)
+            {
+                case 0:
+                case 1:
+                    this.skills.ActivateRandomBasicAttack();
+                    break;
+                case 2:
+                case 3:
+                case 4:
+                    this.skills.ActivateRandomSpecialAttack();
+                    break;
+            }
         }
+
     }
 
     private void TargetNearestPlayer()

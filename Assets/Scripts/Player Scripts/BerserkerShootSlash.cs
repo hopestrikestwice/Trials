@@ -38,7 +38,7 @@ public class BerserkerShootSlash : MonoBehaviour
         yield return new WaitForSeconds(destroyDelay);
 
         /* Also time the damage with the destroy so it's synced */
-        other.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, damage);
+        other.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, damage, this.GetComponent<PlayerManagerCore>().GetElement());
 
         PhotonNetwork.Destroy(currentProjectile);
     }

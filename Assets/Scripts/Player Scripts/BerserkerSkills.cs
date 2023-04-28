@@ -264,7 +264,7 @@ public class BerserkerSkills : MonoBehaviourPun, IPlayerSkills
             if (hitInfo.collider.CompareTag("BossTentacle"))
             {
                 /* hit boss here */
-                hitInfo.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, basicAttackDamage);
+                hitInfo.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, basicAttackDamage, this.GetComponent<PlayerManagerCore>().GetElement());
             }
 
         }

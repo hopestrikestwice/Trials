@@ -186,7 +186,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
             {
                 /* hit boss here */
                 int damageAmount = currentSignatureCharges * maxSignatureDamage / maxSignatureCharges;
-                hitInfo.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, damageAmount);
+                hitInfo.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, damageAmount, this.GetComponent<PlayerManagerCore>().GetElement());
                 int healAmount = currentSignatureCharges * maxSignatureHeal / maxSignatureCharges;
                 this.GetComponent<PlayerManagerCore>().HealPlayer(healAmount);
             }
@@ -291,7 +291,7 @@ public class HealerSkills : MonoBehaviourPun, IPlayerSkills
             if (hitInfo.collider.CompareTag("BossTentacle"))
             {
                 /* hit boss here */
-                hitInfo.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, basicAttackDamage);
+                hitInfo.collider.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, basicAttackDamage, this.GetComponent<PlayerManagerCore>().GetElement());
                 this.AddCharge();
             }
 

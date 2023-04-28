@@ -266,6 +266,7 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
         }
         GameObject projectile = PhotonNetwork.Instantiate(slashObj.name, this.transform.position, this.transform.rotation);
         projectile.GetComponent<TankProjectile>().SetLifetime(0.3f); /* TODO: hardcoded for release day */
+        projectile.GetComponent<TankProjectile>().SetSource(this.gameObject); /* TODO: hardcoded for release day */
     }
     #endregion
 

@@ -265,6 +265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   KrakenUiPrefab: {fileID: 6649751427905233598, guid: 19e3cd41f43de2b43aa2a8740c08c42b, type: 3}
   maxHealth: 500
+  phase3BGM: {fileID: 8300000, guid: f8ca8ee4f9ff680438fd935bf72bca47, type: 3}
 --- !u!114 &6234844265434215157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,7 +359,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: f8ca8ee4f9ff680438fd935bf72bca47, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

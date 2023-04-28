@@ -70,7 +70,7 @@ public class ProjectileMovement : MonoBehaviourPun
         if (other.CompareTag("BossTentacle"))
         {
             Debug.Log("Player Projectile hit Boss");
-            other.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, projectileDamage);
+            other.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, projectileDamage, playerSource.GetComponent<PlayerManagerCore>().GetElement());
 
             if (playerSource != null && playerSource.GetComponent<HealerSkills>() != null)
             {
