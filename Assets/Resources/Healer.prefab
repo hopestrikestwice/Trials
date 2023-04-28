@@ -5205,6 +5205,7 @@ Transform:
   - {fileID: 9128255834017219949}
   - {fileID: 3350844784504956654}
   - {fileID: 6105572026778051260}
+  - {fileID: 8996383287079534868}
   - {fileID: 6561329531694940663}
   - {fileID: 531658695590201501}
   - {fileID: 8486529867815321392}
@@ -5355,6 +5356,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightningParticles: {fileID: 98802339065465138}
+  basicAttackObj: {fileID: 1711334343360315152, guid: 33f3ea5366b850543b8666e1d1625f88, type: 3}
+  basicAttackVfx: {fileID: 8211784892468798263}
+  basicAttackClip: {fileID: 7400000, guid: 3d0b3642417545a42ab7104a4e5058ff, type: 2}
   secondarySkillClips:
   - {fileID: 7400000, guid: 37f0dc01443c2644ab68205770c9c789, type: 2}
   - {fileID: 7400000, guid: 91e0d82ef1a900649b2492bc0c89756b, type: 2}
