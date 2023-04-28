@@ -14,7 +14,8 @@ public class TentacleBaseManager : MonoBehaviourPun
     private BossManagerCore krakenManager; 
 
     /* Kraken hit feedback. */
-    private Color originalTint;
+    private Color originalBaseColor;
+    private Color originalFirstShadeColor;
     private Color hitTint = Color.red;
     private float timeSinceHit = 1;
 
@@ -23,13 +24,15 @@ public class TentacleBaseManager : MonoBehaviourPun
     {
         this.krakenManager = transform.parent.GetComponent<BossManagerCore>();
 
-        this.originalTint = this.transform.Find("Cone").GetComponent<Renderer>().material.GetColor("Toon_Ramp_Tint");
+        this.originalBaseColor = this.transform.Find("Cone").GetComponent<Renderer>().material.GetColor("_BaseColor");
+        this.originalFirstShadeColor = this.transform.Find("Cone").GetComponent<Renderer>().material.GetColor("_1st_ShadeColor");
     }
 
     private void Update()
     {
-        this.transform.Find("Cone").GetComponent<Renderer>().material.SetColor("Toon_Ramp_Tint", Color.Lerp(hitTint, originalTint, timeSinceHit));
-        
+        this.transform.Find("Cone").GetComponent<Renderer>().material.SetColor("_BaseColor", Color.Lerp(hitTint, originalBaseColor, timeSinceHit));
+        this.transform.Find("Cone").GetComponent<Renderer>().material.SetColor("_1st_ShadeColor", Color.Lerp(hitTint, originalFirstShadeColor, timeSinceHit));
+
         timeSinceHit = Mathf.Min(timeSinceHit + Time.deltaTime, 1);
     }
     #endregion
