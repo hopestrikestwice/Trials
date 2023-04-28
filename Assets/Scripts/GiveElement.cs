@@ -8,6 +8,27 @@ public class GiveElement : MonoBehaviour, IPunObservable
 {
     private Element mostRecentElement = Element.Fire;
 
+    [SerializeField]
+    private GameObject fireVfx;
+    [SerializeField]
+    private GameObject waterVfx;
+    [SerializeField]
+    private GameObject earthVfx;
+
+    [SerializeField]
+    private bool checkElementInUpdate = false;
+
+    void Update() {
+        if (checkElementInUpdate) {
+            Element parentElement = this.GetComponentInParent<PlayerManagerCore>().GetElement();
+            
+            if (parentElement != this.mostRecentElement) {
+                Debug.Log("parent element was updated");
+                setElement(parentElement);
+            }
+        }
+    }
+
     public Element getElement()
     {
         return this.mostRecentElement;
@@ -17,6 +38,10 @@ public class GiveElement : MonoBehaviour, IPunObservable
     {
         this.mostRecentElement = nextElement;
         Debug.Log("Element set to: " + this.mostRecentElement);
+
+        fireVfx.gameObject.SetActive(nextElement == Element.Fire);
+        waterVfx.gameObject.SetActive(nextElement == Element.Water);
+        earthVfx.gameObject.SetActive(nextElement == Element.Earth);
     }
 
     #region IPunObservable Implementation
@@ -32,6 +57,7 @@ public class GiveElement : MonoBehaviour, IPunObservable
             // Network player, receive data
             mostRecentElement = (Element)stream.ReceiveNext();
             Debug.Log("Element sent through stream: " + this.mostRecentElement);
+            setElement(mostRecentElement);
         }
     }
     #endregion
