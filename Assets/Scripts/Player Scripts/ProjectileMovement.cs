@@ -4,6 +4,9 @@
 /// can create "melee" and "ranged" projectiles.
 ///
 
+//TODO: only used by the support now
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,9 +15,9 @@ using Photon.Pun;
 
 public class ProjectileMovement : MonoBehaviourPun
 {
-    private float speed = 10f;
+    private float speed = 5f;
 
-    private float lifetime = float.MaxValue;
+    private float lifetime = 3f;
     private float aliveTime = 0f;
 
     private GameObject playerSource;

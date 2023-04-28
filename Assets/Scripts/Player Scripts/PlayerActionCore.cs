@@ -43,7 +43,6 @@ public class PlayerActionCore : MonoBehaviourPun
     private Element currentElement = Element.None;
 
     private float attackProjectileOffset = 1f;
-    private float attackProjectileLifetime = 1f;
     #endregion
     
     #region Cooldown Variables
@@ -61,7 +60,7 @@ public class PlayerActionCore : MonoBehaviourPun
     private Vector3 dashDirection = Vector3.zero;
     private float dashSpeed = 50f;
     // Maximum dash time in seconds
-    private float dashTimeMax = 0.1f;
+    private float dashTimeMax = 0.2f;
     // Current amount of time spent dashing.
     private float dashTimeCurrent = 0f;
     #endregion
@@ -253,6 +252,7 @@ public class PlayerActionCore : MonoBehaviourPun
             dashTimeCurrent += Time.deltaTime;
             if (dashTimeCurrent >= dashTimeMax)
             {
+                this.GetComponent<PlayerManagerCore>().SetShielded(false);
                 dashTimeCurrent = 0;
                 dashDirection = Vector3.zero;
             }
@@ -309,12 +309,10 @@ public class PlayerActionCore : MonoBehaviourPun
         if (currentElement == Element.None)
         {
             this.currentAttackProjectile = PhotonNetwork.Instantiate(this.defaultAttackPrefab.name, this.transform.position + Vector3.up * this.attackProjectileOffset, this.transform.rotation);
-            this.currentAttackProjectile.GetComponent<ProjectileMovement>().SetLifetime(attackProjectileLifetime);
         }
         else
         {
             this.currentAttackProjectile = PhotonNetwork.Instantiate(this.elementalAttackPrefabs[(int)currentElement].name, this.transform.position + Vector3.up * this.attackProjectileOffset, this.transform.rotation);
-            this.currentAttackProjectile.GetComponent<ProjectileMovement>().SetLifetime(attackProjectileLifetime);
         }
         this.currentAttackProjectile.GetComponent<ProjectileMovement>().SetPlayer(this.gameObject);
     }
@@ -369,6 +367,7 @@ public class PlayerActionCore : MonoBehaviourPun
 
     public void SetDashDirection(Vector3 direction)
     {
+        this.GetComponent<PlayerManagerCore>().SetShielded(true);
         this.dashDirection = direction;
     }
 

@@ -20,7 +20,7 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
 
     #region Ultimate Variables
     private Element currentElement = Element.Fire;
-    private const float fogDuration = 5f;
+    private const float fogDuration = 3f;
     #endregion
 
     #region Animation variables
@@ -31,7 +31,7 @@ public class SupportSkills : MonoBehaviourPun, IPlayerSkills
     private AnimationClip ultimateClip;
     #endregion
 
-    private float[] cooldown = { 5, 5, 5 };
+    private float[] cooldown = { 2, 5, 5 };
 
     #endregion
 

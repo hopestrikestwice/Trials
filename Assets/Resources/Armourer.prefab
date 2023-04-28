@@ -6229,7 +6229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1354775a90ec6cb43b7b3dbc14258862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 7
+  walkSpeed: 9
   defaultAttackPrefab: {fileID: 8087487053105947311, guid: 72e89f17914084144a9e42be17ab1f2d, type: 3}
   elementalAttackPrefabs: []
 --- !u!114 &811720703718290936
