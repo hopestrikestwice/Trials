@@ -22,7 +22,7 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
     [Header("Slash GameObjects")]
     [SerializeField]
     private GameObject slashObj;
-    private const float slashDelay = 0.2f;
+    private const float slashDelay = 0.4f;
     private float slashLifetime; // Note : Need to manually set the slashObj's VFX to have this lifetime, annoying through script
     #endregion
 
@@ -52,7 +52,7 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
     private const float startVfxDisolve = 0.8f;
     private const float endVfxDisolve = 0.2f;
 
-    private float[] cooldown = {5, 5, 5};
+    private float[] cooldown = {1.5f, 3, 10};
 
     #endregion
 
@@ -265,8 +265,7 @@ public class TankSkills : MonoBehaviourPunCallbacks, IPlayerSkills, IPunObservab
             this.transform.LookAt(new Vector3(hitInfo.point.x, 1, hitInfo.point.z));
         }
         GameObject projectile = PhotonNetwork.Instantiate(slashObj.name, this.transform.position, this.transform.rotation);
-        projectile.GetComponent<ProjectileMovement>().SetLifetime(slashLifetime);
-        projectile.GetComponent<ProjectileMovement>().SetPlayer(this.gameObject);
+        projectile.GetComponent<TankProjectile>().SetLifetime(0.3f); /* TODO: hardcoded for release day */
     }
     #endregion
 

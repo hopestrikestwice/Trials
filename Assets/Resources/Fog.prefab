@@ -16376,6 +16376,7 @@ MonoBehaviour:
   fireVfx: {fileID: 3871922662384502560}
   waterVfx: {fileID: 9027061483424176206}
   earthVfx: {fileID: 8418690641911449368}
+  checkElementInUpdate: 0
 --- !u!135 &5175637732336940842
 SphereCollider:
   m_ObjectHideFlags: 0

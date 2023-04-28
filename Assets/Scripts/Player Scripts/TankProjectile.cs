@@ -4,37 +4,26 @@
 /// can create "melee" and "ranged" projectiles.
 ///
 
+//TODO: note this is same as projmovement but without destroy on hit.
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 using Photon.Pun;
 
-public class ProjectileMovement : MonoBehaviourPun
+public class TankProjectile : MonoBehaviourPun
 {
     private float speed = 10f;
 
     private float lifetime = float.MaxValue;
     private float aliveTime = 0f;
 
-    private GameObject playerSource;
-
     private int projectileDamage = 10;
 
     public void SetLifetime(float l)
     {
         this.lifetime = l;
-    }
-
-    public void SetPlayer(GameObject player)
-    {
-        this.playerSource = player;
-        Debug.Log("This player: "+player);
-    }
-
-    public GameObject GetPlayer()
-    {
-        return this.playerSource;
     }
 
     // Update is called once per frame
@@ -68,14 +57,6 @@ public class ProjectileMovement : MonoBehaviourPun
         {
             Debug.Log("Player Projectile hit Boss");
             other.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.MasterClient, projectileDamage);
-
-            if (playerSource != null && playerSource.GetComponent<HealerSkills>() != null)
-            {
-                playerSource.GetComponent<HealerSkills>().AddCharge();
-            }
-
-            /* Destroy projectile on hit */
-            PhotonNetwork.Destroy(this.gameObject);
         }
     }
 

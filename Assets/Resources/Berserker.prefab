@@ -375,7 +375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   basicAttackVfx: {fileID: 1198641298362968213}
   basicAttackDamage: 10
-  chargedAttackMaxDamage: 50
+  chargedAttackMaxDamage: 75
   basicAttackClip: {fileID: 7400000, guid: eec8bd8c299b4a441bfd88607b1644e3, type: 2}
   secondarySkillClip: {fileID: 7400000, guid: 5de46aaeb1b3ec5478b3a3879da9a1f7, type: 2}
   ultimateClip: {fileID: 7400000, guid: b8cf1125315a89f49b672c52fd80f8d8, type: 2}
@@ -1723,6 +1723,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1589722684025254890}
     m_Modifications:
+    - target: {fileID: 1384088354388915727, guid: d4e46934b29c84b4ebad5b35056e2814, type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[0].m_Value.y
+      value: 0.03875816
+      objectReference: {fileID: 0}
     - target: {fileID: 1817796500710598630, guid: d4e46934b29c84b4ebad5b35056e2814, type: 3}
       propertyPath: m_Enabled
       value: 0
