@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{d455cf00-49a8-4d19-ad62-1a69f5e748a6}">
+		<property name="assetPath">
+			<value>phase3-wrapremainder.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>107.33714285714285</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{d709295b-6e0d-48f1-92ed-15cc1e76f3ec}</destination>
+		</relationship>
+	</object>
+</objects>
