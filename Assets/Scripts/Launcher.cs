@@ -154,6 +154,4 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
     #endregion
-
-
 }
